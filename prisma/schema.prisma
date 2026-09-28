@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Employee {
+  id              String           @id @default(uuid())
+  employeeCode    String           @unique
+  name            String
+  role            String
+  email           String
+  department      String
+  privilegeLevel  String           @default("STANDARD") // STANDARD, ELEVATED, ADMIN
+  riskScore       Float            @default(0.0)
+  status          String           @default("ACTIVE")
+  createdAt       DateTime         @default(now())
+
+  accessEvents     AccessEvent[]
+  employeeActions  EmployeeAction[]
+  txInitiated      Transaction[]    @relation("TxInitiated")
+  txApproved       Transaction[]    @relation("TxApproved")
+}
+
+model Customer {
+  id           String    @id @default(uuid())
+  customerCode String    @unique
+  name         String
+  type         String    @default("INDIVIDUAL") // INDIVIDUAL, CORPORATE, SME
+  riskProfile  String    @default("MEDIUM")
+  kycStatus    String    @default("VERIFIED")
+  createdAt    DateTime  @default(now())
+
+  accounts     Account[]
+}
+
+model Account {
+  id            String   @id @default(uuid())
+  accountNumber String   @unique
+  customerId    String
+  customer      Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  accountType   String   @default("SAVINGS") // SAVINGS, CHECKING, INVESTMENT, CORPORATE
+  balance       Float    @default(0.0)
+  currency      String   @default("INR")
+  status        String   @default("ACTIVE")
+  createdAt     DateTime @default(now())
+
+  outgoingTx    Transaction[] @relation("SourceAccount")
+  incomingTx    Transaction[] @relation("DestAccount")
+}
+
+model Transaction {
+  id                    String   @id @default(uuid())
+  txHash                String   @unique
+  sourceAccountId       String
+  sourceAccount         Account  @relation("SourceAccount", fields: [sourceAccountId], references: [id])
+  destinationAccountId  String
+  destinationAccount    Account  @relation("DestAccount", fields: [destinationAccountId], references: [id])
+  amount                Float
+  currency              String   @default("INR")
+  channel               String   @default("NET_BANKING") // NET_BANKING, ATM, WIRE, INSIDER_PORTAL
+  status                String   @default("COMPLETED")
+  initiatedByEmployeeId String?
+  initiatedByEmployee   Employee? @relation("TxInitiated", fields: [initiatedByEmployeeId], references: [id])
+  approvedByEmployeeId  String?
+  approvedByEmployee    Employee? @relation("TxApproved", fields: [approvedByEmployeeId], references: [id])
+  timestamp             DateTime @default(now())
+  flagsJson             String?  // JSON string of suspicious tags
+}
+
+model AccessEvent {
+  id          String   @id @default(uuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  entityType  String   // CUSTOMER, ACCOUNT, SYSTEM
+  entityId    String
+  accessType  String   // VIEW, MODIFY, EXPORT, BENEFICIARY_UPDATE
+  ipAddress   String   @default("10.0.4.12")
+  timestamp   DateTime @default(now())
+}
+
+model EmployeeAction {
+  id          String   @id @default(uuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  actionType  String   // BENEFICIARY_CHANGE, OVERRIDE_LIMIT, PERMISSION_ESCALATION
+  targetType  String   // ACCOUNT, CUSTOMER
+  targetId    String
+  detailsJson String?  // JSON object describing action
+  timestamp   DateTime @default(now())
+}
+
+model Alert {
+  id                String        @id @default(uuid())
+  alertCode         String        @unique
+  title             String
+  severity          String        // LOW, MEDIUM, HIGH, CRITICAL
+  status            String        @default("OPEN") // OPEN, IN_REVIEW, ESCALATED, RESOLVED, FALSE_POSITIVE
+  confidence        String        @default("HIGH") // LOW, MEDIUM, HIGH
+  financialExposure Float         @default(0.0)
+  primaryEntityId   String
+  primaryEntityType String        // TRANSACTION, EMPLOYEE, ACCOUNT, CUSTOMER
+  summary           String
+  riskExplanation   String
+  detectionMethod   String        // HYBRID_RULE_GRAPH_ML, GRAPH_CIRCULAR, INSIDER_TIMELINE, ML_ANOMALY
+  scenarioName      String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  signals           AlertSignal[]
+  recommendations   Recommendation[]
+  cases             CaseAlert[]
+}
+
+model AlertSignal {
+  id               String   @id @default(uuid())
+  alertId          String
+  alert            Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  type             String   // CIRCULAR_FLOW, STRUCTURING, INSIDER_ACCESS, BASELINE_DEVIATION, BENEFICIARY_CHANGE
+  title            String
+  description      String
+  observedValue    String
+  expectedValue    String?
+  weight           Float    @default(1.0)
+  evidenceCategory String   // GRAPH, TIMELINE, TRANSACTION, PRIVILEGE, ML
+}
+
+model Case {
+  id                   String         @id @default(uuid())
+  caseCode             String         @unique
+  title                String
+  severity             String         // LOW, MEDIUM, HIGH, CRITICAL
+  status               String         @default("OPEN") // OPEN, IN_REVIEW, ESCALATED, RESOLVED, FALSE_POSITIVE
+  assignedInvestigator String         @default("Investigator Sarah Jenkins")
+  summary              String
+  recommendationsJson  String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  alerts               CaseAlert[]
+  evidenceItems        CaseEvidence[]
+  auditLogs            AuditLog[]
+}
+
+model CaseAlert {
+  caseId  String
+  alertId String
+  case    Case  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  alert   Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
+
+  @@id([caseId, alertId])
+}
+
+model CaseEvidence {
+  id           String   @id @default(uuid())
+  caseId       String
+  case         Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  evidenceType String   // TRANSACTION, EMPLOYEE_ACTIVITY, ACCESS_EVENT, GRAPH_RELATIONSHIP, ML_ANOMALY
+  title        String
+  contentJson  String   // Detailed JSON structure of evidence
+  timestamp    DateTime @default(now())
+}
+
+model Investigator {
+  id     String @id @default(uuid())
+  name   String
+  email  String @unique
+  role   String
+  avatar String
+}
+
+model Recommendation {
+  id         String   @id @default(uuid())
+  alertId    String
+  alert      Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  actionText String
+  category   String   // ACCESS_REVIEW, TRANSACTION_HOLD, CUSTOMER_VERIFICATION
+  status     String   @default("PENDING") // PENDING, ACCEPTED, DISMISSED, COMPLETED
+  priority   String   @default("HIGH")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  caseId     String?
+  case       Case?    @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  actorId    String
+  actorName  String
+  action     String   // CASE_CREATED, STATUS_CHANGED, EVIDENCE_ADDED, INVESTIGATOR_ASSIGNED, REPORT_EXPORTED
+  targetType String
+  targetId   String
+  details    String
+  timestamp  DateTime @default(now())
+}
+
+model Scenario {
+  id           String   @id @default(uuid())
+  scenarioCode String   @unique
+  name         String
+  type         String   // CIRCULAR, STRUCTURING, INSIDER_PRIVILEGE, PROFILE_MISMATCH, LEGITIMATE_PAYROLL, LEGITIMATE_CORPORATE
+  description  String
+  isSuspicious Boolean
+  groundTruth  String
+}

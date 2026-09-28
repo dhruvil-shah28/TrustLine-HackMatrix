@@ -1,0 +1,863 @@
+@import "tailwindcss";
+
+/* ============================================================
+   TRUSTLINE — DARK PREMIUM DESIGN SYSTEM
+   Charcoal + Warm White + Gold
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* Surface hierarchy */
+    --bg-page: #111111;
+    --bg-card: #1B1B1B;
+    --bg-panel: #202020;
+    --bg-inset: #242424;
+
+    /* Text hierarchy */
+    --text-primary: #F5F2EA;
+    --text-secondary: #B8B5AE;
+    --text-tertiary: #85827C;
+    --text-heading: #F5F2EA;
+    --text-body: #B8B5AE;
+    --text-muted: #85827C;
+
+    /* Gold accent */
+    --gold: #E8C66A;
+    --gold-dim: rgba(232, 198, 106, 0.12);
+    --gold-border: rgba(232, 198, 106, 0.25);
+
+    /* Semantic risk */
+    --status-critical: #E05252;
+    --status-high: #D4863C;
+    --status-warning: #D4A844;
+    --status-medium: #D4A844;
+    --status-success: #4CAF82;
+    --status-info: #6B9FD4;
+
+    /* Borders */
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+
+    /* Brand kept for compatibility */
+    --brand-primary: var(--gold);
+    --brand-hover: #D4B05A;
+  }
+
+  * {
+    border-color: var(--border-subtle);
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--bg-page);
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg-page);
+    color: var(--text-body);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  ::selection {
+    background: rgba(232, 198, 106, 0.25);
+    color: #F5F2EA;
+  }
+}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+
+.app-shell {
+  background: var(--bg-page);
+  color: var(--text-body);
+}
+
+.app-container {
+  max-width: none;
+}
+
+/* ============================================================
+   CARD & PANEL SURFACES
+   ============================================================ */
+
+.ui-card,
+.glass-panel {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.ui-card:hover,
+.glass-panel-hover:hover {
+  border-color: var(--border-strong) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Semantic left-border accent — replace old colorful backgrounds */
+.ui-card-critical {
+  border-left: 2px solid var(--status-critical) !important;
+}
+
+.ui-card-warning {
+  border-left: 2px solid var(--status-warning) !important;
+}
+
+.ui-card-success {
+  border-left: 2px solid var(--status-success) !important;
+}
+
+.ui-card-info {
+  border-left: 2px solid var(--status-info) !important;
+}
+
+/* Text inside cards: ensure warm white contrast */
+.ui-card .text-white,
+.ui-card .text-slate-100,
+.glass-panel .text-white,
+.glass-panel .text-slate-100 {
+  color: var(--text-primary) !important;
+}
+
+.ui-card .text-slate-200,
+.glass-panel .text-slate-200 {
+  color: var(--text-primary) !important;
+}
+
+.ui-card .text-slate-300,
+.glass-panel .text-slate-300 {
+  color: var(--text-secondary) !important;
+}
+
+.ui-card .text-slate-400,
+.ui-card .text-slate-500,
+.glass-panel .text-slate-400,
+.glass-panel .text-slate-500 {
+  color: var(--text-secondary) !important;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 34px;
+  padding: 0 0.9rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* PRIMARY — Gold CTA */
+.btn-primary {
+  background: var(--gold);
+  color: #1A1500;
+  border-color: var(--gold);
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: #D4B05A;
+  border-color: #D4B05A;
+  box-shadow: 0 2px 8px rgba(232, 198, 106, 0.2);
+}
+
+/* SECONDARY — Dark surface */
+.btn-secondary {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-inset);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* GHOST */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+/* DANGER */
+.btn-danger {
+  background: rgba(224, 82, 82, 0.1);
+  color: var(--status-critical);
+  border-color: rgba(224, 82, 82, 0.25);
+}
+
+.btn-danger:hover {
+  background: rgba(224, 82, 82, 0.18);
+}
+
+/* SUCCESS */
+.btn-success {
+  background: rgba(76, 175, 130, 0.1);
+  color: var(--status-success);
+  border-color: rgba(76, 175, 130, 0.25);
+}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 5px;
+  padding: 0.22rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  border: 1px solid transparent;
+}
+
+.badge-critical {
+  background: rgba(224, 82, 82, 0.12);
+  color: #F08080;
+  border-color: rgba(224, 82, 82, 0.28);
+}
+
+.badge-high {
+  background: rgba(212, 134, 60, 0.12);
+  color: #E8A86C;
+  border-color: rgba(212, 134, 60, 0.28);
+}
+
+.badge-medium {
+  background: rgba(212, 168, 68, 0.12);
+  color: #E0C070;
+  border-color: rgba(212, 168, 68, 0.28);
+}
+
+.badge-low {
+  background: rgba(76, 175, 130, 0.12);
+  color: #6ECBA0;
+  border-color: rgba(76, 175, 130, 0.28);
+}
+
+.badge-neutral {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  border-color: var(--border-subtle);
+}
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+
+.ui-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0 0.75rem;
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ui-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(232, 198, 106, 0.12);
+  outline: 0;
+}
+
+.ui-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   DATA TABLES
+   ============================================================ */
+
+.ui-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8125rem;
+}
+
+.ui-table th {
+  background: var(--bg-inset);
+  color: var(--text-tertiary);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+}
+
+.ui-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.ui-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.ui-table tr:hover td {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+
+.heading-page {
+  color: var(--text-heading);
+  font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.heading-section {
+  color: var(--text-tertiary);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.heading-card {
+  color: var(--text-heading);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   NAVBAR — DARK COMMAND BAR
+   ============================================================ */
+
+.app-shell header {
+  background: #111111 !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  backdrop-filter: none !important;
+}
+
+.app-shell header>div {
+  max-width: none !important;
+}
+
+/* All text in the header */
+.app-shell header .text-white,
+.app-shell header .text-slate-100,
+.app-shell header .text-slate-200 {
+  color: var(--text-primary) !important;
+}
+
+.app-shell header .text-slate-300,
+.app-shell header .text-slate-400 {
+  color: var(--text-secondary) !important;
+}
+
+.app-shell header .text-slate-500,
+.app-shell header .text-slate-600 {
+  color: var(--text-tertiary) !important;
+}
+
+/* Brand logo accent */
+.app-shell header .bg-indigo-600 {
+  background: var(--gold) !important;
+  color: #1A1500 !important;
+}
+
+/* Active nav item — gold instead of indigo */
+.app-shell header a[class*="bg-indigo-600"],
+.app-shell header .bg-indigo-600 {
+  background: var(--gold) !important;
+  color: #1A1500 !important;
+}
+
+/* Inactive nav hover */
+.app-shell header .hover\:bg-slate-800:hover,
+.app-shell header [class*="hover:bg-slate-800"]:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Nav link inactive text */
+.app-shell header .text-slate-300 {
+  color: var(--text-secondary) !important;
+}
+
+/* Search bar in nav */
+.app-shell header .bg-slate-900 {
+  background: var(--bg-inset) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.app-shell header .bg-slate-950 {
+  background: var(--bg-panel) !important;
+}
+
+/* Notification badge stays red */
+.app-shell header .bg-rose-500 {
+  background: var(--status-critical) !important;
+}
+
+/* User avatar disc — use gold */
+.app-shell header .bg-indigo-600.rounded-full {
+  background: var(--gold) !important;
+  color: #1A1500 !important;
+}
+
+/* Dropdown panels */
+.app-shell header [class*="bg-slate-900"],
+.app-shell header [class*="bg-slate-950"] {
+  background: var(--bg-card) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* ============================================================
+   GLOBAL APP-SHELL: SURFACE MAPPING
+   Convert all Tailwind dark-slate utility colors → design tokens
+   ============================================================ */
+
+/* Dark page backgrounds → our layered surfaces */
+.app-shell [class*="bg-slate-950"] {
+  background-color: var(--bg-page) !important;
+}
+
+.app-shell [class*="bg-slate-900"] {
+  background-color: var(--bg-inset) !important;
+}
+
+.app-shell [class*="bg-slate-800"] {
+  background-color: var(--bg-panel) !important;
+}
+
+/* BUT: exclude elements that are already handled by .ui-card / .glass-panel,
+   and exclude the Navbar (handled separately above) */
+
+/* Black inset backgrounds (from page.tsx bg-[#030712], etc.) */
+.app-shell [class*="bg-[#030712]"],
+.app-shell [class*="bg-[#090d16]"] {
+  background-color: var(--bg-inset) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* ============================================================
+   GLOBAL APP-SHELL: TEXT CONTRAST MAP
+   ============================================================ */
+
+.app-shell .text-white {
+  color: var(--text-primary) !important;
+}
+
+.app-shell .text-slate-100 {
+  color: var(--text-primary) !important;
+}
+
+.app-shell .text-slate-200 {
+  color: var(--text-primary) !important;
+}
+
+.app-shell .text-slate-300 {
+  color: var(--text-secondary) !important;
+}
+
+.app-shell .text-slate-400 {
+  color: var(--text-secondary) !important;
+}
+
+.app-shell .text-slate-500 {
+  color: var(--text-tertiary) !important;
+}
+
+.app-shell .text-slate-600 {
+  color: var(--text-tertiary) !important;
+}
+
+/* ============================================================
+   SEMANTIC ACCENT COLORS — keep them vivid on dark bg
+   ============================================================ */
+
+/* Emerald / green → success green */
+.app-shell .text-emerald-400,
+.app-shell .text-emerald-300 {
+  color: #6ECBA0 !important;
+}
+
+/* Amber/yellow → our gold-adjacent warning */
+.app-shell .text-amber-400,
+.app-shell .text-amber-300 {
+  color: #E8C66A !important;
+}
+
+/* Rose/red → critical */
+.app-shell .text-rose-400,
+.app-shell .text-rose-300 {
+  color: #F08080 !important;
+}
+
+.app-shell .text-rose-500 {
+  color: #E05252 !important;
+}
+
+/* Indigo → gold replacement */
+.app-shell .text-indigo-400,
+.app-shell .text-indigo-300 {
+  color: var(--gold) !important;
+}
+
+/* Cyan */
+.app-shell .text-cyan-400 {
+  color: #6B9FD4 !important;
+}
+
+/* ============================================================
+   INDIGO → GOLD COMPONENT REPLACEMENTS
+   ============================================================ */
+
+/* Active nav pill */
+.app-shell a.bg-indigo-600,
+.app-shell .bg-indigo-600 {
+  background-color: var(--gold) !important;
+  color: #1A1500 !important;
+}
+
+.app-shell .bg-indigo-500 {
+  background-color: var(--gold) !important;
+  color: #1A1500 !important;
+}
+
+/* Indigo-tinted backgrounds (dropdown badges etc.) */
+.app-shell [class*="bg-indigo-950"] {
+  background-color: var(--gold-dim) !important;
+}
+
+.app-shell [class*="bg-indigo-500/10"],
+.app-shell [class*="bg-indigo-600/20"] {
+  background-color: var(--gold-dim) !important;
+}
+
+/* Indigo borders */
+.app-shell .border-indigo-500,
+.app-shell .border-indigo-600,
+.app-shell .border-indigo-800,
+.app-shell [class*="border-indigo-500/30"],
+.app-shell [class*="border-indigo-800/40"] {
+  border-color: var(--gold-border) !important;
+}
+
+/* Inline indigo investigate button in alerts */
+.app-shell a.bg-indigo-600,
+.app-shell button.bg-indigo-600 {
+  background: var(--gold) !important;
+  color: #1A1500 !important;
+  border-color: var(--gold) !important;
+}
+
+.app-shell a.hover\:bg-indigo-500:hover,
+.app-shell button.hover\:bg-indigo-500:hover {
+  background: #D4B05A !important;
+}
+
+/* shadow-indigo-600/20 → muted gold shadow */
+.app-shell [class*="shadow-indigo-600"] {
+  box-shadow: 0 4px 12px rgba(232, 198, 106, 0.15) !important;
+}
+
+/* ============================================================
+   BORDER COLORS
+   ============================================================ */
+
+.app-shell .border-slate-800 {
+  border-color: var(--border-subtle) !important;
+}
+
+.app-shell .border-slate-700 {
+  border-color: var(--border-strong) !important;
+}
+
+/* ============================================================
+   BACKGROUNDS FOR INLINE PANEL INSETS
+   (progress bars, small stat boxes, etc.)
+   ============================================================ */
+
+.app-shell .bg-slate-900\/60,
+.app-shell .bg-slate-950\/70,
+.app-shell .bg-slate-900\/50 {
+  background-color: rgba(36, 36, 36, 0.85) !important;
+}
+
+/* ============================================================
+   RISK BADGE INLINE VARIANTS (alerts page uses inline classes)
+   ============================================================ */
+
+/* Critical inline badges */
+.app-shell .bg-rose-500\/10 {
+  background-color: rgba(224, 82, 82, 0.12) !important;
+}
+
+.app-shell .border-rose-500\/30 {
+  border-color: rgba(224, 82, 82, 0.28) !important;
+}
+
+.app-shell [class*="border-l-rose-500"] {
+  border-left-color: var(--status-critical) !important;
+}
+
+.app-shell [class*="border-t-rose-500"] {
+  border-top-color: rgba(224, 82, 82, 0.15) !important;
+}
+
+.app-shell [class*="border-r-rose-500"] {
+  border-right-color: rgba(224, 82, 82, 0.08) !important;
+}
+
+.app-shell [class*="border-b-rose-500"] {
+  border-bottom-color: rgba(224, 82, 82, 0.08) !important;
+}
+
+/* High/Amber inline badges */
+.app-shell .bg-amber-500\/10 {
+  background-color: rgba(212, 134, 60, 0.12) !important;
+}
+
+.app-shell .border-amber-500\/30 {
+  border-color: rgba(212, 134, 60, 0.28) !important;
+}
+
+.app-shell [class*="border-l-amber-500"] {
+  border-left-color: var(--status-high) !important;
+}
+
+.app-shell [class*="border-t-amber-500"] {
+  border-top-color: rgba(212, 134, 60, 0.15) !important;
+}
+
+/* Emerald inline */
+.app-shell [class*="border-l-emerald-500"] {
+  border-left-color: var(--status-success) !important;
+}
+
+.app-shell .bg-emerald-500\/10 {
+  background-color: rgba(76, 175, 130, 0.12) !important;
+}
+
+.app-shell .border-emerald-500\/30 {
+  border-color: rgba(76, 175, 130, 0.28) !important;
+}
+
+/* Emerald online indicator */
+.app-shell .bg-emerald-400 {
+  background-color: var(--status-success) !important;
+}
+
+/* ============================================================
+   ROUNDED RADIUS NORMALIZATION
+   ============================================================ */
+
+.app-shell .rounded-2xl {
+  border-radius: 14px !important;
+}
+
+.app-shell .rounded-xl {
+  border-radius: 12px !important;
+}
+
+.app-shell .rounded-lg {
+  border-radius: 10px !important;
+}
+
+.app-shell .rounded-md {
+  border-radius: 8px !important;
+}
+
+/* Input inside app-shell */
+.app-shell .ui-input {
+  border-radius: 8px;
+  border-color: var(--border-strong);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+}
+
+.app-shell .badge {
+  border-radius: 5px;
+}
+
+/* ============================================================
+   TABLE OVERRIDES
+   ============================================================ */
+
+.app-shell .ui-table th {
+  color: var(--text-tertiary);
+  background: var(--bg-inset);
+  border-color: var(--border-subtle);
+}
+
+.app-shell .ui-table td {
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+/* ============================================================
+   TINY TEXT FLOOR — keep metadata readable
+   ============================================================ */
+
+.app-shell [class*="text-[10px]"] {
+  font-size: 0.6875rem !important;
+  line-height: 1.45 !important;
+}
+
+.app-shell [class*="text-[11px]"] {
+  font-size: 0.75rem !important;
+  line-height: 1.45 !important;
+}
+
+.app-shell [class*="text-[9px]"] {
+  font-size: 0.6875rem !important;
+  line-height: 1.4 !important;
+}
+
+/* ============================================================
+   GRADIENTS & DECORATIVE EFFECTS — Remove old ones safely
+   ============================================================ */
+
+/* Remove any stray gradients that may have come from old code */
+.app-shell .bg-gradient-to-r,
+.app-shell .bg-gradient-to-tr,
+.app-shell [class*="bg-gradient-to-"] {
+  background-image: none !important;
+}
+
+/* Remove blur effects — not part of our design system */
+.app-shell .backdrop-blur,
+.app-shell .backdrop-blur-xs,
+.app-shell .backdrop-blur-sm {
+  backdrop-filter: none !important;
+}
+
+/* ============================================================
+   HOVER INTERACTIONS (fast, controlled)
+   ============================================================ */
+
+.app-shell a,
+.app-shell button {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* ============================================================
+   LOADING STATE (ClientProviders)
+   ============================================================ */
+
+.app-shell .bg-slate-50,
+.app-shell .bg-gray-50,
+.app-shell .bg-white {
+  background-color: var(--bg-page) !important;
+}
+
+.app-shell .text-slate-500 {
+  color: var(--text-tertiary) !important;
+}
+
+/* ============================================================
+   SELECT DROPDOWNS
+   ============================================================ */
+
+.app-shell select {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.app-shell select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   FOCUS RINGS
+   ============================================================ */
+
+.app-shell *:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Override blue focus from Tailwind */
+.app-shell .focus\:border-indigo-500:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(232, 198, 106, 0.12) !important;
+}
+
+/* ============================================================
+   MONO FONT code- and data-heavy areas look professional
+   ============================================================ */
+.app-shell .font-mono {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+}
