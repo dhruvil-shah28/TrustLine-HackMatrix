@@ -10,11 +10,12 @@ TRUSTLINE is an enterprise-grade financial crime, insider risk, and AML investig
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🚀 Quick Start (Local Development with PostgreSQL)
 
 ### Prerequisites
 - Node.js `v18.x` or higher
 - npm `v9.x` or higher
+- PostgreSQL `v14.x` or higher (PostgreSQL 18 tested)
 
 ### 1. Installation & Environment
 ```bash
@@ -25,9 +26,15 @@ npm install
 cp .env.example .env
 ```
 
+Configure your local PostgreSQL connection string in `.env`:
+```env
+DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/trustline_db?schema=public"
+```
+*(Note: If your password contains special characters like `#` or `$`, URL-encode them, e.g., `%23` for `#` and `%24` for `$`).*
+
 ### 2. Database Setup & Seeding
 ```bash
-# Push Prisma schema to SQLite database (prisma/dev.db)
+# Push Prisma schema to PostgreSQL database (trustline_db)
 npx prisma db push
 
 # Seed realistic financial crime & insider risk scenarios
@@ -69,16 +76,16 @@ Ensure the following variables are configured in your deployment platform (e.g. 
 
 | Variable Name | Required | Example / Description |
 | :--- | :--- | :--- |
-| `DATABASE_URL` | **Yes** | `file:./dev.db` (or PostgreSQL/MySQL connection string) |
+| `DATABASE_URL` | **Yes** | `postgresql://user:pass@host:5432/trustline_db?schema=public` |
 | `NEXT_PUBLIC_APP_URL` | **Yes** | Production domain URL (e.g., `https://sentineliq.vercel.app`) |
 | `JWT_SECRET` | **Yes** | Cryptographic secret for session token signing |
-| `GEMINI_API_KEY` | Optional | Gemini API key for AI Copilot (fallback deterministic mode included) |
+| `OPENAI_API_KEY` | Optional | OpenAI API key for Copilot LLM Synthesis (fallback deterministic mode included) |
 
 ---
 
 ## 🧪 Detection Lab Methodology
 
-SentinelIQ evaluates 11 benchmark scenarios (6 Suspicious Fraud/Insider attacks, 5 Legitimate Controls):
+TRUSTLINE evaluates 11 benchmark scenarios (6 Suspicious Fraud/Insider attacks, 5 Legitimate Controls):
 
 | Metric | Measured Score | Description |
 | :--- | :--- | :--- |

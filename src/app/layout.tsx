@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ClientProviders from '@/components/ClientProviders';
+import ClerkWrapper from '@/components/ClerkWrapper';
 
 export const metadata: Metadata = {
   title: 'TRUSTLINE | Financial Crime & Insider Risk Intelligence Platform',
@@ -15,9 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="app-shell min-h-screen flex flex-col antialiased">
-        <ClientProviders>{children}</ClientProviders>
+        <ClerkWrapper>
+          <ClientProviders>{children}</ClientProviders>
+        </ClerkWrapper>
       </body>
     </html>
   );
 }
-

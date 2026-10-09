@@ -7,7 +7,6 @@ export default function CopilotPage() {
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; text: string; evidence?: any[] }>>([
     {
       role: 'assistant',
-      role: 'assistant',
       text: 'Welcome to the TRUSTLINE Investigation Copilot. I retrieve structured graph, timeline, and transaction evidence from the database to answer your compliance and insider-risk questions.',
     },
   ]);
