@@ -3,23 +3,57 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
-  const [email, setEmail] = useState('rahul.sharma@trustline.in');
+  const { refreshSession } = useAuth();
+  const [employeeCode, setEmployeeCode] = useState('');
   const [password, setPassword] = useState('trustline-demo');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
+  const [employeeCodeFocused, setEmployeeCodeFocused] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [passwordFocused, setPasswordFocused] = useState(false);
 
-  const signIn = (e: React.FormEvent) => {
+  const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    window.setTimeout(() => { login(email); router.replace('/'); }, 350);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/auth/employee/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          employeeCode: employeeCode.trim(),
+          password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(result.error || 'Sign-in failed. Please try again.');
+        return;
+      }
+
+      const sessionRestored = await refreshSession();
+
+      if (!sessionRestored) {
+        setErrorMessage('Login succeeded, but your session could not be verified. Please try again.');
+        return;
+      }
+
+      router.replace('/');
+      router.refresh();
+    } catch {
+      setErrorMessage('Unable to reach the server. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Shared input container style
@@ -142,24 +176,25 @@ export default function LoginPage() {
               Sign in to your workspace
             </h2>
             <p style={{ fontSize: 13, color: '#B8B5AE', marginTop: 6 }}>
-              Use your work email to continue.
+              Use your employee ID and password to continue.
             </p>
           </div>
 
           <form onSubmit={signIn} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {/* Email */}
+            {/* Employee ID */}
             <label style={{ display: 'block' }}>
-              <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Work email</span>
-              <div style={inputWrap(emailFocused)}>
-                <Mail style={iconStyle(emailFocused)} />
+              <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Employee ID</span>
+              <div style={inputWrap(employeeCodeFocused)}>
+                <ShieldCheck style={iconStyle(employeeCodeFocused)} />
                 <input
                   style={inputStyle}
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onFocus={() => setEmailFocused(true)}
-                  onBlur={() => setEmailFocused(false)}
-                  placeholder="you@company.com"
+                  type="text"
+                  autoComplete="username"
+                  value={employeeCode}
+                  onChange={(e) => setEmployeeCode(e.target.value.toUpperCase())}
+                  onFocus={() => setEmployeeCodeFocused(true)}
+                  onBlur={() => setEmployeeCodeFocused(false)}
+                  placeholder="e.g. EMP-1001"
                   required
                 />
               </div>
@@ -173,6 +208,7 @@ export default function LoginPage() {
                 <input
                   style={{ ...inputStyle, paddingRight: 44 }}
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onFocus={() => setPasswordFocused(true)}
@@ -209,7 +245,18 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            {/* Primary CTA */}
+            {errorMessage && (
+            <p role="alert" style={{
+              marginTop: -8,
+              color: '#FF8D8D',
+              fontSize: 12,
+              lineHeight: 1.5,
+            }}>
+              {errorMessage}
+            </p>
+          )}
+
+          {/* Primary CTA */}
             <button
               disabled={isSubmitting}
               style={{
@@ -237,32 +284,6 @@ export default function LoginPage() {
             or
             <span style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
           </div>
-
-          {/* Demo button */}
-          <button
-            disabled={isSubmitting}
-            onClick={() => {
-              setIsSubmitting(true);
-              window.setTimeout(() => { login('rahul.sharma@trustline.in'); router.replace('/'); }, 250);
-            }}
-            style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: '100%', padding: '11px 20px', borderRadius: 9,
-              background: 'rgba(255,255,255,0.04)', color: '#B8B5AE',
-              border: '1px solid rgba(255,255,255,0.10)', cursor: 'pointer',
-              fontSize: 13, fontWeight: 600, transition: 'all 0.15s',
-            }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.07)';
-              (e.currentTarget as HTMLButtonElement).style.color = '#F5F2EA';
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.04)';
-              (e.currentTarget as HTMLButtonElement).style.color = '#B8B5AE';
-            }}
-          >
-            Enter demo workspace
-          </button>
 
           <p style={{ marginTop: 24, textAlign: 'center', fontSize: 11, color: '#85827C' }}>
             Protected by Trustline security controls.

@@ -1,4 +1,4 @@
-export type UserRole = 'INVESTIGATOR' | 'COMPLIANCE' | 'RISK_ANALYST' | 'ADMIN';
+export type UserRole = 'EMPLOYEE' | 'INVESTIGATOR' | 'COMPLIANCE' | 'RISK_ANALYST' | 'ADMIN';
 
 export type AlertSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 export type AlertStatus = 'OPEN' | 'IN_REVIEW' | 'ESCALATED' | 'RESOLVED' | 'FALSE_POSITIVE';

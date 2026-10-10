@@ -93,6 +93,9 @@ export default function Navbar() {
 
   // Role-Aware Navigation Mapping
   const roleNavItems: Record<UserRole, Array<{ label: string; href: string; icon: any }>> = {
+    EMPLOYEE: [
+      { label: 'Employee Banking Portal', href: '/employee', icon: LayoutDashboard },
+    ],
     INVESTIGATOR: [
       { label: 'Dashboard', href: '/', icon: LayoutDashboard },
       { label: 'Alerts', href: '/alerts', icon: ShieldAlert },

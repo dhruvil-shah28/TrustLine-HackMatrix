@@ -10,6 +10,7 @@ datasource db {
 model Employee {
   id              String           @id @default(uuid())
   employeeCode    String           @unique
+  passwordHash String? // Hashed employee password; null until activation
   name            String
   role            String
   email           String

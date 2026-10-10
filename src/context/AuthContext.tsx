@@ -47,6 +47,7 @@ interface AuthContextType {
   user: UserProfile;
   isLoggedIn: boolean;
   isAuthReady: boolean;
+  refreshSession: () => Promise<boolean>;
   switchRole: (newRole: UserRole) => void;
   updateUser: (updated: Partial<UserProfile>) => void;
   login: (email: string) => void;
@@ -145,6 +146,7 @@ const fallbackContext: AuthContextType = {
   user: defaultUser,
   isLoggedIn: false,
   isAuthReady: false,
+  refreshSession: async () => false,
   switchRole: () => {},
   updateUser: () => {},
   login: () => {},
@@ -170,20 +172,119 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('sentineliq_user');
-      const savedNotifs = localStorage.getItem('sentineliq_notifications');
-      const savedLogs = localStorage.getItem('sentineliq_audit_logs');
-      const savedAuth = localStorage.getItem('sentineliq_auth');
+    let cancelled = false;
 
-      if (savedUser) setUser(JSON.parse(savedUser));
-      if (savedNotifs) setNotifications(JSON.parse(savedNotifs));
-      if (savedLogs) setAuditLogs(JSON.parse(savedLogs));
-      if (savedAuth !== null) setIsLoggedIn(JSON.parse(savedAuth));
-    } catch (e) {
-      console.warn('LocalStorage error:', e);
-    } finally { setIsAuthReady(true); }
+    async function restoreSession() {
+      try {
+        const savedNotifs = localStorage.getItem('sentineliq_notifications');
+        const savedLogs = localStorage.getItem('sentineliq_audit_logs');
+
+        if (savedNotifs) setNotifications(JSON.parse(savedNotifs));
+        if (savedLogs) setAuditLogs(JSON.parse(savedLogs));
+
+        const response = await fetch('/api/auth/employee/session', {
+          credentials: 'same-origin',
+          cache: 'no-store',
+        });
+
+        if (!response.ok) {
+          if (!cancelled) {
+            setIsLoggedIn(false);
+            setUser(defaultUser);
+          }
+          return;
+        }
+
+        const result = await response.json();
+        if (cancelled || !result.authenticated || !result.employee) return;
+
+        const employee = result.employee;
+        const employeeRole = String(employee.role || '').toUpperCase();
+        const mappedRole: UserRole =
+          employee.privilegeLevel === 'ADMIN'
+            ? 'ADMIN'
+            : ['INVESTIGATOR', 'COMPLIANCE', 'RISK_ANALYST'].includes(employeeRole)
+              ? (employeeRole as UserRole)
+              : 'EMPLOYEE';
+
+        setUser((current) => ({
+          ...current,
+          name: employee.name,
+          email: employee.email,
+          role: mappedRole,
+          department: employee.department || current.department,
+          title: employee.role || current.title,
+          jobTitle: employee.role || current.jobTitle,
+          avatar: employee.name.split(/\s+/).map((part: string) => part[0]).join('').slice(0, 2).toUpperCase(),
+          lastActive: 'Just now',
+        }));
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Session restoration failed:', error);
+        if (!cancelled) {
+          setIsLoggedIn(false);
+          setUser(defaultUser);
+        }
+      } finally {
+        if (!cancelled) setIsAuthReady(true);
+      }
+    }
+
+    void restoreSession();
+    return () => { cancelled = true; };
   }, []);
+
+  const refreshSession = async (): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/auth/employee/session', {
+        credentials: 'same-origin',
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        setIsLoggedIn(false);
+        setUser(defaultUser);
+        return false;
+      }
+
+      const result = await response.json();
+      if (!result.authenticated || !result.employee) {
+        setIsLoggedIn(false);
+        setUser(defaultUser);
+        return false;
+      }
+
+      const employee = result.employee;
+      const employeeRole = String(employee.role || '').toUpperCase();
+      const mappedRole: UserRole =
+        employee.privilegeLevel === 'ADMIN'
+          ? 'ADMIN'
+          : ['INVESTIGATOR', 'COMPLIANCE', 'RISK_ANALYST'].includes(employeeRole)
+            ? (employeeRole as UserRole)
+            : 'EMPLOYEE';
+
+      setUser((current) => ({
+        ...current,
+        name: employee.name,
+        email: employee.email,
+        role: mappedRole,
+        department: employee.department || current.department,
+        title: employee.role || current.title,
+        jobTitle: employee.role || current.jobTitle,
+        avatar: employee.name.split(/\\s+/).map((part: string) => part[0]).join('').slice(0, 2).toUpperCase(),
+        lastActive: 'Just now',
+      }));
+
+      setIsLoggedIn(true);
+      setIsAuthReady(true);
+      return true;
+    } catch (error) {
+      console.error('Session refresh failed:', error);
+      setIsLoggedIn(false);
+      setUser(defaultUser);
+      return false;
+    }
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -208,7 +309,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const switchRole = (newRole: UserRole) => {
+    if (newRole !== user.role) {
+      showToast('Your assigned role is controlled by your employee account.');
+      return;
+    }
+
     const roleTitles: Record<UserRole, { title: string; dept: string }> = {
+      EMPLOYEE: { title: 'Banking Operations Employee', dept: user.department || 'Banking Operations' },
       INVESTIGATOR: { title: 'Lead AML Investigator', dept: 'Financial Crime & AML Investigations' },
       COMPLIANCE: { title: 'Compliance Lead Manager', dept: 'Regulatory Compliance & Legal' },
       RISK_ANALYST: { title: 'Senior Financial Risk Analyst', dept: 'Risk & Graph Analytics' },
@@ -241,27 +348,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     showToast('User profile & settings saved successfully.');
   };
 
-  const login = (email: string) => {
-    setIsLoggedIn(true);
-    const targetEmail = email || 'rahul.sharma@trustline.in';
-    const updated = { ...user, email: targetEmail, lastActive: 'Just now' };
-    setUser(updated);
-    try {
-      localStorage.setItem('sentineliq_user', JSON.stringify(updated));
-      localStorage.setItem('sentineliq_auth', 'true');
-    } catch (e) {}
-
-    addAuditLog('LOGIN_SESSION_INITIATED', 'SYSTEM', 'SENTINEL-WORKSPACE', `User ${targetEmail} authenticated`);
-    showToast('Signed in to TRUSTLINE Workspace.');
+  const login = (_email: string) => {
+    // Authentication is established only by the server-side login endpoint.
+    // The session endpoint will populate the user after the next refresh.
+    showToast('Please sign in through the employee login form.');
   };
 
   const logout = () => {
     setIsLoggedIn(false);
-    try {
-      localStorage.setItem('sentineliq_auth', 'false');
-    } catch (e) {}
+    setUser(defaultUser);
 
-    addAuditLog('LOGOUT_SESSION_TERMINATED', 'SYSTEM', 'SENTINEL-WORKSPACE', 'User signed out');
+    try {
+      localStorage.removeItem('sentineliq_auth');
+      localStorage.removeItem('sentineliq_user');
+    } catch {}
+
+    void fetch('/api/auth/employee/logout', {
+      method: 'POST',
+      credentials: 'same-origin',
+    }).catch((error) => console.error('Server logout failed:', error));
+
+    addAuditLog('LOGOUT_SESSION_TERMINATED', 'SYSTEM', 'TRUSTLINE-WORKSPACE', 'User signed out');
     showToast('Signed out of TRUSTLINE Workspace.');
   };
 
@@ -297,6 +404,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isLoggedIn,
         isAuthReady,
+        refreshSession,
         switchRole,
         updateUser,
         login,
