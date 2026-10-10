@@ -143,6 +143,7 @@ model Case {
 
   alerts               CaseAlert[]
   evidenceItems        CaseEvidence[]
+  revisions            CaseRevision[]
   auditLogs            AuditLog[]
 }
 
@@ -204,4 +205,36 @@ model Scenario {
   description  String
   isSuspicious Boolean
   groundTruth  String
+}
+
+model IngestedEvent {
+  id              String   @id @default(uuid())
+  eventId         String   @unique
+  eventType       String   // TRANSACTION, ACCESS_EVENT, EMPLOYEE_ACTION, BENEFICIARY_CHANGE, EXTERNAL_SIGNAL
+  eventTimestamp  DateTime // When the activity actually occurred
+  arrivalTimestamp DateTime @default(now()) // When TrustLine received or ingested the event
+  entityType      String   // TRANSACTION, EMPLOYEE, ACCOUNT, CUSTOMER
+  entityId        String
+  payloadJson     String   // Full raw event payload
+  processedAt     DateTime @default(now())
+  status          String   @default("PROCESSED") // PROCESSED, DUPLICATE_IGNORED, REPLAYED
+  isLateArrival   Boolean  @default(false)
+  caseId          String?
+  createdAt       DateTime @default(now())
+}
+
+model CaseRevision {
+  id               String   @id @default(uuid())
+  caseId           String
+  case             Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  revisionNumber   Int
+  reason           String   // e.g., 'Late-arriving transaction linked account to insider ring', 'Initial reconstruction'
+  triggerEventId   String?  // Reference to IngestedEvent eventId
+  previousPriority String   // e.g. LOW, MEDIUM, HIGH, CRITICAL
+  newPriority      String   // e.g. LOW, MEDIUM, HIGH, CRITICAL
+  addedEvidenceJson String  // JSON array of evidence titles / IDs added in this revision
+  snapshotSummary  String   // Summary of the case state at this revision
+  createdAt        DateTime @default(now())
+
+  @@index([caseId, revisionNumber])
 }

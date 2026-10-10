@@ -18,6 +18,7 @@ export async function GET(
           },
         },
         evidenceItems: true,
+        revisions: { orderBy: { revisionNumber: 'desc' } },
         auditLogs: { orderBy: { timestamp: 'desc' } },
       },
     });

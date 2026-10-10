@@ -861,3 +861,30 @@
 .app-shell .font-mono {
   font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
 }
+
+/* ============================================================
+   REACT FLOW GRAPH CONTROLS (Black Icons Override)
+   ============================================================ */
+.react-flow__controls-button,
+.react-flow__controls-zoomin,
+.react-flow__controls-zoomout,
+.react-flow__controls-fitview,
+.react-flow__controls-interactive {
+  color: #000000 !important;
+  fill: #000000 !important;
+}
+
+.react-flow__controls-button svg,
+.react-flow__controls-zoomin svg,
+.react-flow__controls-zoomout svg,
+.react-flow__controls-fitview svg,
+.react-flow__controls-interactive svg,
+.react-flow__controls-button path,
+.react-flow__controls-zoomin path,
+.react-flow__controls-zoomout path,
+.react-flow__controls-fitview path,
+.react-flow__controls-interactive path {
+  fill: #000000 !important;
+  color: #000000 !important;
+}
+

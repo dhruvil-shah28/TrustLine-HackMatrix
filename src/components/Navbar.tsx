@@ -26,6 +26,8 @@ import {
   Shield,
   HelpCircle,
   Sliders,
+  Network,
+  Radar,
 } from 'lucide-react';
 import { UserRole } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
@@ -130,6 +132,8 @@ export default function Navbar() {
   const currentNav = roleNavItems[user.role] || roleNavItems.INVESTIGATOR;
 
   const secondaryNav = [
+    { label: 'Behavioural Drift Radar', href: '/lab?tab=radar', icon: Radar, desc: 'Learned anomaly detection & prioritisations' },
+    { label: 'Hidden Link Hunter', href: '/graph?mode=hunter', icon: Network, desc: 'Cross-entity relationship discovery' },
     { label: 'Detection Lab', href: '/lab', icon: FlaskConical, desc: 'Rule, Graph & ML matrix' },
     { label: 'AI Copilot', href: '/copilot', icon: Bot, desc: 'Evidence-grounded assistant' },
     { label: 'Scenario Replay', href: '/scenario-replay', icon: Play, desc: 'Live event simulation' },

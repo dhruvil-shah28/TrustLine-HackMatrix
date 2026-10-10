@@ -30,6 +30,11 @@ import {
   TrendingUp,
   ShieldCheck,
   ArrowRight,
+  Activity,
+  Dna,
+  History,
+  AlertTriangle,
+  Layers,
 } from 'lucide-react';
 import {
   ReactFlow,
@@ -115,6 +120,31 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
 
   // Action Recommendation state
   const [acceptedActions, setAcceptedActions] = useState<Record<string, boolean>>({});
+
+  // Attack DNA State
+  const [attackDna, setAttackDna] = useState<any>(null);
+  const [attackDnaLoading, setAttackDnaLoading] = useState(false);
+  const [attackDnaError, setAttackDnaError] = useState<string | null>(null);
+
+  const handleReconstructAttack = async () => {
+    setAttackDnaLoading(true);
+    setAttackDnaError(null);
+    try {
+      const res = await fetch(`/api/alerts/${id}/reconstruct`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to reconstruct incident');
+      }
+      setAttackDna(data);
+      showToast('Attack DNA successfully reconstructed from verified evidence.');
+      addAuditLog('ATTACK_DNA_RECONSTRUCTED', 'ALERT', alert?.alertCode || id, 'Reconstructed attack DNA timeline and money flow graph');
+    } catch (err: any) {
+      setAttackDnaError(err.message || 'Error reconstructing Attack DNA');
+      showToast(err.message || 'Failed to reconstruct Attack DNA');
+    } finally {
+      setAttackDnaLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetch(`/api/alerts/${id}`)
@@ -316,6 +346,46 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     },
   ];
 
+  // Dynamic Flow Graph nodes & edges from Attack DNA if reconstructed
+  const displayNodes: Node[] = attackDna?.graph?.nodes
+    ? attackDna.graph.nodes.map((n: any, idx: number) => ({
+        id: n.id,
+        type: 'customNode',
+        position: {
+          x: (idx % 3) * 280,
+          y: Math.floor(idx / 3) * 120,
+        },
+        data: {
+          label: n.label,
+          subText: n.details?.accountNumber || n.details?.role || n.details?.subText || `${n.type} Node`,
+          type: n.type,
+          isSuspicious: n.isSuspicious,
+          isDirectEvidence: n.isDirectEvidence,
+        },
+      }))
+    : initialNodes;
+
+  const displayEdges: Edge[] = attackDna?.graph?.edges
+    ? attackDna.graph.edges.map((e: any) => ({
+        id: e.id,
+        source: e.source,
+        target: e.target,
+        label: e.label + (e.amount ? ` ₹${(e.amount / 100000).toFixed(2)}L` : ''),
+        animated: e.isSuspicious,
+        style: {
+          stroke: e.isSuspicious ? '#f43f5e' : e.isDirectEvidence ? '#6366f1' : '#f59e0b',
+          strokeWidth: e.isSuspicious ? 2.5 : 1.5,
+          strokeDasharray: e.isDirectEvidence ? undefined : '5,5',
+        },
+        labelStyle: {
+          fill: e.isSuspicious ? '#f43f5e' : '#a5b4fc',
+          fontSize: 9,
+          fontWeight: 700,
+        },
+      }))
+    : initialEdges;
+
+
   return (
     <div className="space-y-6 pb-12">
       {/* Top Header & Navigation */}
@@ -340,6 +410,19 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
 
         {/* Action Button Hierarchy */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            onClick={handleReconstructAttack}
+            disabled={attackDnaLoading}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 via-indigo-600 to-cyan-600 hover:opacity-90 text-white font-bold text-xs shadow-lg shadow-indigo-600/25 flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+          >
+            {attackDnaLoading ? (
+              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Dna className="h-3.5 w-3.5 text-rose-200" />
+            )}
+            {attackDnaLoading ? 'Reconstructing Attack...' : 'Reconstruct Attack DNA'}
+          </button>
+
           <button
             onClick={() => setShowCaseModal(true)}
             className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-lg shadow-indigo-600/20 flex items-center gap-1.5 transition cursor-pointer"
@@ -460,8 +543,8 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
             {/* React Flow Canvas */}
             <div className="h-[400px] w-full rounded-xl bg-[#090d16] border border-slate-800 overflow-hidden relative">
               <ReactFlow
-                nodes={initialNodes}
-                edges={initialEdges}
+                nodes={displayNodes}
+                edges={displayEdges}
                 nodeTypes={nodeTypes}
                 onNodeClick={(_, node) => {
                   setSelectedEntity(node.data);
@@ -476,7 +559,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
                 proOptions={{ hideAttribution: true }}
               >
                 <Background color="#1e293b" gap={16} size={1} />
-                <Controls className="bg-slate-900 border border-slate-800 text-slate-200 fill-slate-200 rounded-lg p-1" />
+                <Controls className="bg-slate-900 border border-slate-800 text-black fill-black rounded-lg p-1" />
               </ReactFlow>
             </div>
 
@@ -596,7 +679,158 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
         </div>
       </div>
 
-      {/* Interactive AI Copilot Section */}
+      {/* Attack DNA Reconstructed Crime-Chain Workspace (Feature 01) */}
+      {attackDna && (
+        <div className="glass-panel p-6 rounded-2xl border border-rose-500/40 bg-gradient-to-br from-[#120a16] via-slate-950 to-slate-900 shadow-2xl space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-rose-500/20 gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-rose-500/20 text-rose-300 border border-rose-500/40 flex items-center gap-1">
+                  <Dna className="h-3 w-3 text-rose-400" /> ATTACK DNA RECONSTRUCTED
+                </span>
+                <span className="text-xs font-mono text-slate-400">Confidence: {attackDna.confidence}</span>
+                {attackDna.casePriority && (
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+                    Active Priority: {attackDna.casePriority}
+                  </span>
+                )}
+              </div>
+              <h2 className="text-lg font-bold text-white mt-1 flex items-center gap-2">
+                Automatic Crime-Chain Reconstruction
+              </h2>
+              <p className="text-xs text-slate-300 max-w-3xl mt-1 leading-relaxed">
+                {attackDna.incidentSummary}
+              </p>
+            </div>
+
+            {/* Metrics Breakdown */}
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
+                <span className="text-[10px] font-mono text-slate-400 block">DIRECT EVIDENCE</span>
+                <span className="text-base font-extrabold text-emerald-400 font-mono">
+                  {attackDna.evidenceSummary.totalDirectRecords} records
+                </span>
+              </div>
+              <div className="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
+                <span className="text-[10px] font-mono text-slate-400 block">INFERRED LINKS</span>
+                <span className="text-base font-extrabold text-amber-400 font-mono">
+                  {attackDna.evidenceSummary.inferredRelationships} links
+                </span>
+              </div>
+              <div className="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
+                <span className="text-[10px] font-mono text-slate-400 block">REVISIONS</span>
+                <span className="text-base font-extrabold text-indigo-400 font-mono">
+                  {attackDna.revisions.length} history
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Timeline and Case Revisions Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Chronological Incident Timeline (7 cols) */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-rose-400" />
+                  Chronological Evidence Timeline ({attackDna.timeline.length} Events)
+                </h3>
+                <span className="text-[10px] text-slate-400 font-mono">Sorted by Event Timestamp</span>
+              </div>
+
+              <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
+                {attackDna.timeline.map((ev: any, idx: number) => (
+                  <div
+                    key={ev.id || idx}
+                    className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 transition space-y-1.5"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+                          {idx + 1}. {ev.eventType}
+                        </span>
+                        <span className="text-xs font-bold text-white">{ev.title}</span>
+                      </div>
+                      <span className={`text-[9px] font-mono font-semibold px-2 py-0.5 rounded border ${
+                        ev.isDirectEvidence
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                          : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                      }`}>
+                        {ev.isDirectEvidence ? 'DIRECT DB RECORD' : 'INFERRED LINK'}
+                      </span>
+                    </div>
+
+                    <p className="text-[11px] text-slate-300">{ev.description}</p>
+
+                    <div className="pt-1.5 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[10px] font-mono text-slate-400">
+                      <div>
+                        <span className="text-slate-500">Record ID: </span>
+                        <span className="text-indigo-300">{ev.recordId}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500">Time: </span>
+                        <span className="text-slate-200">{new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+                      </div>
+                    </div>
+                    <div className="text-[10px] text-slate-400 italic bg-slate-900/60 p-1.5 rounded">
+                      <span className="text-slate-500 font-semibold not-italic">Inclusion reason: </span>{ev.reasonIncluded}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Case Revisions & Contributing Signals (5 cols) */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-1.5">
+                  <History className="h-3.5 w-3.5 text-indigo-400" />
+                  Case Revisions & Audit History
+                </h3>
+                <span className="text-[10px] text-slate-400 font-mono">FIN04 Incremental Updates</span>
+              </div>
+
+              {attackDna.revisions.length === 0 ? (
+                <div className="p-6 rounded-xl bg-slate-950/60 border border-slate-800 text-center text-xs text-slate-400 space-y-1">
+                  <Layers className="h-6 w-6 text-slate-600 mx-auto" />
+                  <p className="font-semibold text-slate-300">Baseline Case Established</p>
+                  <p className="text-[11px] text-slate-500">
+                    No incremental revisions yet. Ingest late-arriving events to trigger immutable investigation revisions.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
+                  {attackDna.revisions.map((rev: any) => (
+                    <div
+                      key={rev.id}
+                      className="p-3.5 rounded-xl bg-slate-950/80 border border-indigo-500/30 space-y-2 text-xs"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-indigo-300 font-mono text-[11px]">
+                          Revision #{rev.revisionNumber}
+                        </span>
+                        <div className="flex items-center gap-1.5 font-mono text-[10px]">
+                          <span className="text-slate-400">{rev.previousPriority}</span>
+                          <span className="text-slate-500">&rarr;</span>
+                          <span className="px-1.5 py-0.5 rounded font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                            {rev.newPriority}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-slate-200">{rev.reason}</p>
+                      <div className="pt-1.5 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 flex items-center justify-between">
+                        <span>Created: {new Date(rev.createdAt).toLocaleTimeString()}</span>
+                        <span className="text-emerald-400">+{rev.addedEvidence?.length || 1} evidence item(s)</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl">
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <h2 className="text-sm font-bold text-white flex items-center gap-2">
