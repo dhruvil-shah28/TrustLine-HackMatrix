@@ -238,14 +238,14 @@ export default function EmployeesListPage() {
                   {/* Top Bar: Code & Privilege */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/50 px-2 py-0.5 rounded border border-indigo-800/40">
+                      <span className="font-mono technical-metadata text-xs text-indigo-300 bg-indigo-950/50 px-2 py-0.5 rounded border border-indigo-800/40">
                         {emp.employeeCode}
                       </span>
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase border ${riskBadgeBg}`}>
                         {statusText}
                       </span>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-900 text-amber-300 border border-slate-800">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-900 text-amber-300 border border-slate-800">
                       {emp.privilegeLevel}
                     </span>
                   </div>
@@ -272,7 +272,7 @@ export default function EmployeesListPage() {
                         Activity Risk Index
                       </span>
                       <span
-                        className={`font-mono font-extrabold text-sm ${
+                        className={`font-bold text-lg ${
                           isCritical
                             ? 'text-rose-400'
                             : isHigh
@@ -307,18 +307,18 @@ export default function EmployeesListPage() {
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
                       <span className="text-slate-500 block text-[10px]">Workstation Lookups</span>
-                      <span className="font-mono font-bold text-slate-200">{emp.accessCount || 0} events</span>
+                      <span className="font-semibold text-slate-200">{emp.accessCount || 0} events</span>
                     </div>
                     <div className="p-2 rounded-lg bg-slate-900/60 border border-slate-800/60">
                       <span className="text-slate-500 block text-[10px]">Tx Executed/Approved</span>
-                      <span className="font-mono font-bold text-slate-200">{emp.txCount || 0} records</span>
+                      <span className="font-semibold text-slate-200">{emp.txCount || 0} records</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Card Footer CTA */}
                 <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between">
-                  <span className="text-[10px] text-slate-500 font-mono">
+                  <span className="text-[10px] text-slate-500 font-mono technical-metadata">
                     Updated {new Date(emp.lastActive).toLocaleDateString()}
                   </span>
                   <Link
@@ -336,4 +336,3 @@ export default function EmployeesListPage() {
     </div>
   );
 }
-

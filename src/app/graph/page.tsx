@@ -53,40 +53,40 @@ import { formatIST } from '@/lib/date-utils';
 // ─── Design tokens ───────────────────────────────────────────────────
 const T = {
   // surfaces
-  nodeBg: '#1F1F1F',
-  nodeSubBg: '#202A25',   // account default
-  suspBg: '#241B1B',      // suspicious node
-  hunterBg: '#221F28',    // hunter inferred
-  border: 'rgba(255,255,255,0.14)',
-  greenBorder: 'rgba(76,175,130,0.45)',
-  redBorder: '#E05252',
-  purpleBorder: '#A855F7',
+  nodeBg: '#FFFFFF',
+  nodeSubBg: '#F0F4ED',
+  suspBg: '#FBEDEC',
+  hunterBg: '#314644',
+  border: '#405652',
+  greenBorder: 'rgba(114,202,160,0.45)',
+  redBorder: '#E87575',
+  purpleBorder: '#83E0C9',
   // text
-  primary: '#F5F2EA',
-  secondary: '#B8B5AE',
-  muted: '#9B9892',
+  primary: '#F2F4EF',
+  secondary: '#B7C6C0',
+  muted: '#9BAEA7',
   // accents
-  gold: '#E8C66A',
-  green: '#6FD0A1',
-  red: '#FF8A8A',
-  purple: '#C084FC',
-  cyan: '#38BDF8',
+  gold: '#83E0C9',
+  green: '#72CAA0',
+  red: '#FF8585',
+  purple: '#203234',
+  cyan: '#78C8D4',
   // divider
-  divider: 'rgba(255,255,255,0.08)',
+  divider: '#405652',
 };
 
 // ─── Custom Node Component ────────────────────────────────────────────
-const CustomGraphNode = ({ data }: any) => {
+const CustomGraphNode = ({ data, selected }: any) => {
   const isSuspicious = data.isSuspicious;
   const isDimmed = data.isDimmed;
   const nodeType = data.type;
 
   // Derive surface / border
   let bg = T.nodeBg;
-  let border = T.border;
+  let border = '#D7E2DA';
   if (isDimmed) {
-    bg = '#1A1A1A';
-    border = 'rgba(255,255,255,0.05)';
+    bg = '#F7F5EE';
+    border = '#D7E2DA';
   } else if (isSuspicious) {
     bg = T.suspBg;
     border = T.redBorder;
@@ -94,8 +94,12 @@ const CustomGraphNode = ({ data }: any) => {
     bg = T.nodeSubBg;
     border = T.greenBorder;
   } else if (nodeType === 'ALERT') {
-    bg = '#2A1820';
-    border = '#F43F5E';
+    bg = T.suspBg;
+    border = T.redBorder;
+  }
+  if (selected) {
+    bg = '#D9F1E8';
+    border = '#203234';
   }
 
   // Type badge colors
@@ -108,7 +112,7 @@ const CustomGraphNode = ({ data }: any) => {
   };
   const badge = typeBadge[nodeType] || { icon: Info, clr: T.muted };
   const BadgeIcon = badge.icon;
-  const dividerColor = isSuspicious ? 'rgba(224,82,82,0.2)' : T.divider;
+  const dividerColor = isSuspicious ? 'rgba(224,82,82,0.2)' : '#D7E2DA';
 
   return (
     <div
@@ -119,17 +123,17 @@ const CustomGraphNode = ({ data }: any) => {
         padding: '12px 14px',
         width: 250,
         boxShadow: isSuspicious
-          ? '0 4px 20px rgba(224,82,82,0.30)'
-          : '0 4px 20px rgba(0,0,0,0.5)',
+          ? '0 2px 8px rgba(232,117,117,0.16)'
+          : '0 2px 8px rgba(10,28,28,0.18)',
         cursor: 'pointer',
         transition: 'all 0.15s ease',
-        opacity: isDimmed ? 0.35 : 1,
+        color: '#000000',
       }}
     >
       <Handle
         type="target"
         position={Position.Top}
-        style={{ background: T.gold, width: 8, height: 8, border: '2px solid #111111' }}
+        style={{ background: T.gold, width: 8, height: 8, border: '2px solid #FFFFFF' }}
       />
 
       {/* Header badge */}
@@ -151,9 +155,9 @@ const CustomGraphNode = ({ data }: any) => {
             fontSize: 9,
             fontWeight: 700,
             letterSpacing: '0.06em',
-            color: badge.clr,
-            fontFamily: 'monospace',
-            background: 'rgba(255,255,255,0.05)',
+            color: '#000000',
+            fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
+            background: '#FFFFFF',
             border: `1px solid ${dividerColor}`,
             borderRadius: 5,
             padding: '2px 6px',
@@ -172,8 +176,8 @@ const CustomGraphNode = ({ data }: any) => {
               fontSize: 9,
               fontWeight: 700,
               letterSpacing: '0.05em',
-              background: 'rgba(224,82,82,0.15)',
-              color: T.red,
+              background: '#FBEDEC',
+              color: '#000000',
               border: '1px solid rgba(224,82,82,0.45)',
               borderRadius: 5,
               padding: '2px 6px',
@@ -187,10 +191,11 @@ const CustomGraphNode = ({ data }: any) => {
 
       {/* Primary label */}
       <div
+        className={nodeType === 'ACCOUNT' ? 'technical-metadata' : undefined}
         style={{
           fontSize: 13,
           fontWeight: 700,
-          color: isSuspicious ? '#FFF5F5' : T.primary,
+          color: '#000000',
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -203,9 +208,10 @@ const CustomGraphNode = ({ data }: any) => {
       {/* Sub-text */}
       {data.details?.subText && (
         <p
+          className={nodeType === 'ACCOUNT' ? 'technical-metadata' : undefined}
           style={{
             fontSize: 10,
-            color: isSuspicious ? '#D8B4B4' : T.secondary,
+            color: '#000000',
             marginTop: 3,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -229,12 +235,12 @@ const CustomGraphNode = ({ data }: any) => {
             fontSize: 10,
           }}
         >
-          <span style={{ color: T.muted }}>Internal Risk:</span>
+          <span style={{ color: '#000000' }}>Internal Risk:</span>
           <span
             style={{
-              fontFamily: 'monospace',
+              fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
               fontWeight: 700,
-              color: data.details.riskScore > 65 ? T.red : data.details.riskScore > 35 ? T.gold : T.green,
+              color: '#000000',
             }}
           >
             {data.details.riskScore} / 100
@@ -245,7 +251,7 @@ const CustomGraphNode = ({ data }: any) => {
       <Handle
         type="source"
         position={Position.Bottom}
-        style={{ background: T.gold, width: 8, height: 8, border: '2px solid #111111' }}
+        style={{ background: T.gold, width: 8, height: 8, border: '2px solid #FFFFFF' }}
       />
     </div>
   );
@@ -540,7 +546,7 @@ function MoneyFlowGraphCanvas() {
     right: 16,
     top: 16,
     width: 320,
-    background: 'rgba(27, 27, 27, 0.96)',
+    background: 'var(--bg-card)',
     backdropFilter: 'blur(12px)',
     border: `1px solid ${T.border}`,
     borderRadius: 14,
@@ -578,7 +584,7 @@ function MoneyFlowGraphCanvas() {
             <span
               style={{
                 fontSize: 10,
-                fontFamily: 'monospace',
+                fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                 fontWeight: 800,
                 padding: '2px 8px',
                 borderRadius: 6,
@@ -602,7 +608,7 @@ function MoneyFlowGraphCanvas() {
           <div
             style={{
               display: 'flex',
-              background: '#1A1A1A',
+              background: 'var(--bg-card)',
               padding: 3,
               borderRadius: 10,
               border: `1px solid ${T.border}`,
@@ -665,7 +671,7 @@ function MoneyFlowGraphCanvas() {
               width: 36,
               height: 36,
               borderRadius: 8,
-              background: '#242424',
+              background: 'var(--bg-panel)',
               border: `1px solid ${T.border}`,
               color: T.secondary,
               cursor: 'pointer',
@@ -692,50 +698,50 @@ function MoneyFlowGraphCanvas() {
           }}
         >
           <div>
-            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
               Candidate Relationships
             </span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: T.gold, fontFamily: 'monospace', marginTop: 2 }}>
+            <div className="metric-value" style={{ fontSize: 22, fontWeight: 800, color: T.gold, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', marginTop: 2 }}>
               {hunterResult.overview.totalCandidateRelationships}
             </div>
             <span style={{ fontSize: 10, color: T.secondary }}>Across all accounts & actors</span>
           </div>
 
           <div>
-            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
               Connected Entities
             </span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: T.primary, fontFamily: 'monospace', marginTop: 2 }}>
+            <div className="metric-value" style={{ fontSize: 22, fontWeight: 800, color: T.primary, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', marginTop: 2 }}>
               {hunterResult.overview.totalConnectedEntities}
             </div>
             <span style={{ fontSize: 10, color: T.secondary }}>Employees, customers, accounts</span>
           </div>
 
           <div>
-            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
               Multi-Hop Conduits
             </span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: T.cyan, fontFamily: 'monospace', marginTop: 2 }}>
+            <div className="metric-value" style={{ fontSize: 22, fontWeight: 800, color: T.cyan, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', marginTop: 2 }}>
               {hunterResult.overview.meaningfulMultiHopConnections}
             </div>
             <span style={{ fontSize: 10, color: T.secondary }}>Intermediate pass-throughs</span>
           </div>
 
           <div>
-            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
               High-Strength Links (≥75%)
             </span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: T.red, fontFamily: 'monospace', marginTop: 2 }}>
+            <div className="metric-value" style={{ fontSize: 22, fontWeight: 800, color: T.red, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', marginTop: 2 }}>
               {hunterResult.overview.highStrengthCount}
             </div>
             <span style={{ fontSize: 10, color: T.secondary }}>Strong temporal/flow linkage</span>
           </div>
 
           <div>
-            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: 10, color: T.muted, textTransform: 'uppercase', fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
               Linked Alerts & Cases
             </span>
-            <div style={{ fontSize: 22, fontWeight: 800, color: T.green, fontFamily: 'monospace', marginTop: 2 }}>
+            <div className="metric-value" style={{ fontSize: 22, fontWeight: 800, color: T.green, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', marginTop: 2 }}>
               {hunterResult.overview.totalLinkedAlertsAndCases}
             </div>
             <span style={{ fontSize: 10, color: T.secondary }}>Connected investigations</span>
@@ -761,7 +767,7 @@ function MoneyFlowGraphCanvas() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 8,
-                background: '#242424',
+                background: 'var(--bg-panel)',
                 border: `1px solid rgba(255,255,255,0.10)`,
                 borderRadius: 8,
                 padding: '7px 12px',
@@ -795,7 +801,7 @@ function MoneyFlowGraphCanvas() {
                   left: 0,
                   top: 38,
                   width: 260,
-                  background: '#1B1B1B',
+                  background: 'var(--bg-panel)',
                   border: `1px solid rgba(255,255,255,0.09)`,
                   borderRadius: 12,
                   padding: 8,
@@ -825,7 +831,7 @@ function MoneyFlowGraphCanvas() {
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: 12, fontWeight: 600, color: T.primary }}>{n.label}</span>
-                      <span style={{ fontSize: 9, fontFamily: 'monospace', color: T.gold }}>{n.type}</span>
+                      <span style={{ fontSize: 9, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', color: T.gold }}>{n.type}</span>
                     </div>
                   </button>
                 ))}
@@ -841,7 +847,7 @@ function MoneyFlowGraphCanvas() {
                 value={filterEntityType}
                 onChange={(e) => setFilterEntityType(e.target.value)}
                 style={{
-                  background: '#242424',
+                  background: 'var(--bg-panel)',
                   border: `1px solid ${T.border}`,
                   borderRadius: 8,
                   padding: '7px 10px',
@@ -862,7 +868,7 @@ function MoneyFlowGraphCanvas() {
                 value={filterRelType}
                 onChange={(e) => setFilterRelType(e.target.value)}
                 style={{
-                  background: '#242424',
+                  background: 'var(--bg-panel)',
                   border: `1px solid ${T.border}`,
                   borderRadius: 8,
                   padding: '7px 10px',
@@ -884,7 +890,7 @@ function MoneyFlowGraphCanvas() {
                 value={filterMinStrength}
                 onChange={(e) => setFilterMinStrength(Number(e.target.value))}
                 style={{
-                  background: '#242424',
+                  background: 'var(--bg-panel)',
                   border: `1px solid ${T.border}`,
                   borderRadius: 8,
                   padding: '7px 10px',
@@ -956,7 +962,7 @@ function MoneyFlowGraphCanvas() {
           position: 'relative',
           width: '100%',
           height: activeTab === 'HUNTER' ? 580 : 700,
-          background: '#111111',
+          background: 'var(--bg-page)',
           borderRadius: 16,
           border: `1px solid rgba(255,255,255,0.08)`,
           overflow: 'hidden',
@@ -972,7 +978,7 @@ function MoneyFlowGraphCanvas() {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 12,
-              fontFamily: 'monospace',
+              fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
               color: T.muted,
               gap: 8,
             }}
@@ -996,11 +1002,11 @@ function MoneyFlowGraphCanvas() {
             {/* Subtle dot grid */}
             <Background color="rgba(255,255,255,0.04)" gap={24} size={1} />
 
-            {/* Controls with dark theme styling */}
+            {/* Light controls remain distinct from the dark canvas. */}
             <Controls
               style={{
-                background: '#1B1B1B',
-                border: `1px solid rgba(255,255,255,0.09)`,
+                background: '#FFFFFF',
+                border: '1px solid #D7E2DA',
                 borderRadius: 10,
                 padding: 4,
               }}
@@ -1010,7 +1016,7 @@ function MoneyFlowGraphCanvas() {
             <Panel position="top-left">
               <div
                 style={{
-                  background: 'rgba(27,27,27,0.95)',
+                  background: 'var(--bg-card)',
                   border: `1px solid rgba(255,255,255,0.09)`,
                   borderRadius: 12,
                   padding: '12px 14px',
@@ -1089,7 +1095,7 @@ function MoneyFlowGraphCanvas() {
                       borderRadius: 8,
                       fontSize: 12,
                       fontWeight: 600,
-                      background: '#242424',
+                      background: 'var(--bg-panel)',
                       color: T.secondary,
                       border: `1px solid rgba(255,255,255,0.10)`,
                       cursor: 'pointer',
@@ -1121,7 +1127,7 @@ function MoneyFlowGraphCanvas() {
                   fontSize: 10,
                   fontWeight: 700,
                   color: T.gold,
-                  fontFamily: 'monospace',
+                  fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                   letterSpacing: '0.08em',
                 }}
               >
@@ -1258,7 +1264,7 @@ function MoneyFlowGraphCanvas() {
                   fontSize: 10,
                   fontWeight: 700,
                   color: T.gold,
-                  fontFamily: 'monospace',
+                  fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                   letterSpacing: '0.08em',
                 }}
               >
@@ -1273,7 +1279,7 @@ function MoneyFlowGraphCanvas() {
             </div>
 
             <h3 style={{ fontSize: 13, fontWeight: 700, color: T.primary }}>{selectedEdge.label}</h3>
-            <p style={{ fontSize: 10, color: T.muted, fontFamily: 'monospace', marginTop: 2 }}>
+            <p style={{ fontSize: 10, color: T.muted, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', marginTop: 2 }}>
               Edge ID: {selectedEdge.id}
             </p>
 
@@ -1298,7 +1304,7 @@ function MoneyFlowGraphCanvas() {
                   }}
                 >
                   <span style={{ color: T.muted }}>{lbl}:</span>
-                  <span style={{ fontWeight: 600, color: clr, fontFamily: 'monospace' }}>{val}</span>
+                  <span style={{ fontWeight: 600, color: clr, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>{val}</span>
                 </div>
               ))}
             </div>
@@ -1313,7 +1319,7 @@ function MoneyFlowGraphCanvas() {
           <div style={{ gridColumn: 'span 7' }}>
             <div
               style={{
-                background: '#1A1A1A',
+                background: 'var(--bg-card)',
                 border: `1px solid ${T.border}`,
                 borderRadius: 14,
                 padding: 18,
@@ -1337,7 +1343,7 @@ function MoneyFlowGraphCanvas() {
                     Ranked Relationship Discoveries ({hunterResult?.discoveries.length || 0})
                   </h2>
                 </div>
-                <span style={{ fontSize: 10, fontFamily: 'monospace', color: T.muted }}>
+                <span style={{ fontSize: 10, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', color: T.muted }}>
                   Sorted by Linkage Strength
                 </span>
               </div>
@@ -1371,11 +1377,11 @@ function MoneyFlowGraphCanvas() {
                             <span
                               style={{
                                 fontSize: 10,
-                                fontFamily: 'monospace',
+                                fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                                 fontWeight: 800,
                                 padding: '2px 6px',
                                 borderRadius: 4,
-                                background: '#111111',
+                                background: 'var(--bg-page)',
                                 color: T.gold,
                               }}
                             >
@@ -1388,7 +1394,7 @@ function MoneyFlowGraphCanvas() {
                             <span
                               style={{
                                 fontSize: 10,
-                                fontFamily: 'monospace',
+                                fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                                 fontWeight: 800,
                                 padding: '2px 8px',
                                 borderRadius: 6,
@@ -1438,7 +1444,7 @@ function MoneyFlowGraphCanvas() {
                               style={{
                                 color: disc.isDirectEvidence ? T.cyan : T.purple,
                                 fontWeight: 700,
-                                fontFamily: 'monospace',
+                                fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                               }}
                             >
                               {disc.isDirectEvidence ? 'DIRECT DB EVIDENCE' : 'ALGORITHMIC INFERRED'}
@@ -1454,7 +1460,7 @@ function MoneyFlowGraphCanvas() {
                                 <span
                                   key={c}
                                   style={{
-                                    fontFamily: 'monospace',
+                                    fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                                     color: T.red,
                                     background: 'rgba(224,82,82,0.1)',
                                     padding: '1px 5px',
@@ -1479,7 +1485,7 @@ function MoneyFlowGraphCanvas() {
           <div style={{ gridColumn: 'span 5' }}>
             <div
               style={{
-                background: '#1A1A1A',
+                background: 'var(--bg-card)',
                 border: `1px solid ${T.border}`,
                 borderRadius: 14,
                 padding: 18,
@@ -1507,7 +1513,7 @@ function MoneyFlowGraphCanvas() {
                   <span
                     style={{
                       fontSize: 10,
-                      fontFamily: 'monospace',
+                      fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                       fontWeight: 700,
                       color: selectedDiscovery.isSuspicious ? T.red : T.green,
                     }}
@@ -1536,7 +1542,7 @@ function MoneyFlowGraphCanvas() {
                     <span
                       style={{
                         fontSize: 10,
-                        fontFamily: 'monospace',
+                        fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                         color: T.muted,
                         textTransform: 'uppercase',
                         display: 'block',
@@ -1551,7 +1557,7 @@ function MoneyFlowGraphCanvas() {
                         flexWrap: 'wrap',
                         alignItems: 'center',
                         gap: 6,
-                        background: '#141414',
+                        background: 'var(--bg-card)',
                         padding: 10,
                         borderRadius: 8,
                         border: `1px solid ${T.divider}`,
@@ -1561,11 +1567,11 @@ function MoneyFlowGraphCanvas() {
                         <div key={`${step.id}-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <div
                             style={{
-                              background: '#242424',
+                              background: 'var(--bg-panel)',
                               padding: '4px 8px',
                               borderRadius: 6,
                               fontSize: 11,
-                              fontFamily: 'monospace',
+                              fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                               fontWeight: 600,
                               color: i === 0 || i === selectedDiscovery.path.length - 1 ? T.gold : T.primary,
                               border: `1px solid ${T.border}`,
@@ -1586,7 +1592,7 @@ function MoneyFlowGraphCanvas() {
                     <span
                       style={{
                         fontSize: 10,
-                        fontFamily: 'monospace',
+                        fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                         color: T.muted,
                         textTransform: 'uppercase',
                         display: 'block',
@@ -1601,7 +1607,7 @@ function MoneyFlowGraphCanvas() {
                           key={sig}
                           style={{
                             fontSize: 10,
-                            fontFamily: 'monospace',
+                            fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                             padding: '3px 8px',
                             borderRadius: 6,
                             background: 'rgba(232,198,106,0.1)',
@@ -1620,7 +1626,7 @@ function MoneyFlowGraphCanvas() {
                     <span
                       style={{
                         fontSize: 10,
-                        fontFamily: 'monospace',
+                        fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                         color: T.muted,
                         textTransform: 'uppercase',
                         display: 'block',
@@ -1642,7 +1648,7 @@ function MoneyFlowGraphCanvas() {
                         <div
                           key={rec.recordId}
                           style={{
-                            background: '#151515',
+                            background: 'var(--bg-panel)',
                             border: `1px solid ${T.border}`,
                             borderRadius: 8,
                             padding: 10,
@@ -1653,15 +1659,15 @@ function MoneyFlowGraphCanvas() {
                           }}
                         >
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <span style={{ fontWeight: 700, color: T.primary, fontFamily: 'monospace' }}>
+                            <span style={{ fontWeight: 700, color: T.primary, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
                               {rec.identifier}
                             </span>
-                            <span style={{ fontSize: 9, fontFamily: 'monospace', color: T.gold }}>
+                            <span style={{ fontSize: 9, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', color: T.gold }}>
                               {formatIST(rec.timestamp)}
                             </span>
                           </div>
                           <p style={{ fontSize: 10, color: T.secondary }}>{rec.details}</p>
-                          <div style={{ fontSize: 9, color: T.muted, fontFamily: 'monospace' }}>
+                          <div style={{ fontSize: 9, color: T.muted, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
                             PK: {rec.recordId}
                           </div>
                         </div>
@@ -1680,7 +1686,7 @@ function MoneyFlowGraphCanvas() {
                         gap: 8,
                       }}
                     >
-                      <span style={{ fontSize: 10, color: T.muted, fontFamily: 'monospace', textTransform: 'uppercase' }}>
+                      <span style={{ fontSize: 10, color: T.muted, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace', textTransform: 'uppercase' }}>
                         Connected Investigation Files
                       </span>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -1693,7 +1699,7 @@ function MoneyFlowGraphCanvas() {
                               alignItems: 'center',
                               gap: 4,
                               fontSize: 11,
-                              fontFamily: 'monospace',
+                              fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                               padding: '4px 8px',
                               borderRadius: 6,
                               background: 'rgba(224,82,82,0.15)',
@@ -1714,7 +1720,7 @@ function MoneyFlowGraphCanvas() {
                               alignItems: 'center',
                               gap: 4,
                               fontSize: 11,
-                              fontFamily: 'monospace',
+                              fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
                               padding: '4px 8px',
                               borderRadius: 6,
                               background: 'rgba(232,198,106,0.15)',
@@ -1743,7 +1749,7 @@ export default function MoneyFlowGraphPage() {
   return (
     <Suspense
       fallback={
-        <div style={{ padding: 40, textAlign: 'center', color: '#85827C', fontSize: 12, fontFamily: 'monospace' }}>
+        <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-secondary)', fontSize: 12, fontFamily: 'var(--font-plex-mono), ui-monospace, monospace' }}>
           Loading TrustLine Graph Intelligence Workspace...
         </div>
       }

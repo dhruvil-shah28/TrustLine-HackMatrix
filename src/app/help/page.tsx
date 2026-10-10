@@ -57,7 +57,7 @@ export default function HelpSupportPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left Column: Documentation Cards */}
         <div className="md:col-span-2 space-y-4">
-          <h2 className="heading-card">Platform Guide & Methodologies</h2>
+          <h2 id="methodologies" className="heading-card">Platform Guide & Methodologies</h2>
 
           <div className="space-y-3">
             {faqItems.map((faq, idx) => (
@@ -71,6 +71,124 @@ export default function HelpSupportPage() {
                 </p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-800/80">
+            <h2 id="rbi-guidelines" className="heading-card flex items-center gap-2">
+              <FileCheck className="h-4 w-4 text-emerald-400" />
+              RBI Regulatory References
+            </h2>
+            <div className="space-y-4 mt-4">
+
+              <div className="ui-card p-4 space-y-2 border-l-2 border-l-emerald-500/50">
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="font-bold text-slate-100 text-sm">Reserve Bank of India (Know Your Customer (KYC)) Directions, 2016</h3>
+                  <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=11566&Mode=0" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 text-[11px] font-mono w-fit flex items-center gap-1">
+                    Official consolidated direction; updated August 14, 2025 ↗
+                  </a>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-[11px] text-slate-400 bg-slate-950/30 p-2 rounded">
+                  <div><span className="font-semibold text-slate-300">Published / current text:</span> February 25, 2016; updated August 14, 2025</div>
+                  <div><span className="font-semibold text-slate-300">Scope:</span> Every RBI-regulated entity, except where the Direction specifies otherwise</div>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">RBI direction:</strong>
+                  Requires applicable entities to conduct customer due diligence and monitor transactions under the KYC/AML framework, including ongoing review of customer activity.
+                </p>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">TRUSTLINE feature mapping (implementation choice):</strong>
+                  The Customers page, transaction Alerts, and Money Flow graph can support analyst review of customer-linked activity. They do not perform customer identification or establish KYC compliance.
+                </p>
+              </div>
+
+              <div className="ui-card p-4 space-y-2 border-l-2 border-l-emerald-500/50">
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="font-bold text-slate-100 text-sm">Reserve Bank of India (Fraud Risk Management in Commercial Banks (including Regional Rural Banks) and All India Financial Institutions) Directions, 2024</h3>
+                  <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12702&Mode=0" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 text-[11px] font-mono w-fit flex items-center gap-1">
+                    Official Direction, issued July 15, 2024 ↗
+                  </a>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-[11px] text-slate-400 bg-slate-950/30 p-2 rounded">
+                  <div><span className="font-semibold text-slate-300">Issued:</span> July 15, 2024</div>
+                  <div><span className="font-semibold text-slate-300">Scope:</span> Commercial banks (including RRBs) and All India Financial Institutions</div>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">RBI direction:</strong>
+                  Requires a fraud-risk framework that supports prevention, early detection, investigation, and timely reporting; includes Early Warning Signals and Red Flagging of Accounts. Other entity classes have separate RBI directions.
+                </p>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">TRUSTLINE feature mapping (implementation choice):</strong>
+                  Detection Lab, Alerts, Cases, and Audit Logs provide detection and investigation workflow surfaces; they do not replace an entity's approved fraud-risk framework or required reporting.
+                </p>
+              </div>
+
+              <div className="ui-card p-4 space-y-2 border-l-2 border-l-emerald-500/50">
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="font-bold text-slate-100 text-sm">Reserve Bank of India (Information Technology Governance, Risk, Controls and Assurance Practices) Directions, 2023</h3>
+                  <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12562&Mode=0" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 text-[11px] font-mono w-fit flex items-center gap-1">
+                    Official Direction; effective April 1, 2024 ↗
+                  </a>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-[11px] text-slate-400 bg-slate-950/30 p-2 rounded">
+                  <div><span className="font-semibold text-slate-300">Issued / effective:</span> November 7, 2023 / April 1, 2024</div>
+                  <div><span className="font-semibold text-slate-300">Scope:</span> Covered commercial banks, specified NBFCs, CICs, and AIFIs; exclusions apply</div>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">RBI direction:</strong>
+                  Sets IT governance, risk, control, assurance, and business-continuity requirements for entities within its defined scope.
+                </p>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">TRUSTLINE feature mapping (implementation choice):</strong>
+                  Employee records and Audit Logs can help investigators examine employee-linked events and recorded actions. They are not an IT control framework or assurance certification.
+                </p>
+              </div>
+
+              <div className="ui-card p-4 space-y-2 border-l-2 border-l-emerald-500/50">
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="font-bold text-slate-100 text-sm">Reserve Bank of India (Digital Payment Security Controls) Directions, 2021</h3>
+                  <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12032&Mode=0" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 text-[11px] font-mono w-fit flex items-center gap-1">
+                    Official Direction, issued February 18, 2021 ↗
+                  </a>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-[11px] text-slate-400 bg-slate-950/30 p-2 rounded">
+                  <div><span className="font-semibold text-slate-300">Issued:</span> February 18, 2021</div>
+                  <div><span className="font-semibold text-slate-300">Scope:</span> Scheduled commercial banks (excluding RRBs), SFBs, Payments Banks, and credit-card-issuing NBFCs</div>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">RBI direction:</strong>
+                  Requires covered entities to govern and manage security risks for digital payment products and services and implement the prescribed security controls.
+                </p>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">TRUSTLINE feature mapping (implementation choice):</strong>
+                  Alerts and the Money Flow graph can assist with review of transaction activity represented in TRUSTLINE; the product does not secure payment channels or implement RBI-required payment controls.
+                </p>
+              </div>
+
+              <div className="ui-card p-4 space-y-2 border-l-2 border-l-emerald-500/50">
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="font-bold text-slate-100 text-sm">Reserve Bank of India (Cyber Resilience and Digital Payment Security Controls for non-bank PSOs) Master Directions, 2024</h3>
+                  <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12715&Mode=0" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 text-[11px] font-mono w-fit flex items-center gap-1">
+                    Official Direction, issued July 30, 2024 ↗
+                  </a>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-[11px] text-slate-400 bg-slate-950/30 p-2 rounded">
+                  <div><span className="font-semibold text-slate-300">Issued:</span> July 30, 2024; large: April 1, 2025; medium: April 1, 2026; small: April 1, 2028</div>
+                  <div><span className="font-semibold text-slate-300">Scope:</span> All RBI-authorised non-bank Payment System Operators</div>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">RBI direction:</strong>
+                  Establishes cyber-resilience governance and information-security controls, including risk monitoring, identity and access management, and incident preparedness; implementation is phased by PSO size.
+                </p>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  <strong className="text-indigo-300 font-semibold mb-1 block">TRUSTLINE feature mapping (implementation choice):</strong>
+                  Employee records, Audit Logs, Alerts, and Scenario Replay may support investigation of recorded activity and scenarios. They are not cyber-security controls, PSO incident reporting, or a cyber-resilience program.
+                </p>
+              </div>
+
+              <p className="text-[11px] text-slate-500 mt-6 bg-slate-900/50 p-3 rounded italic tracking-wide leading-relaxed border border-slate-800">
+                These references are provided for informational purposes only and do not constitute legal advice, regulatory approval, certification, or confirmation of compliance. Applicability depends on the relevant entity, activity, and current regulatory requirements.
+              </p>
+            </div>
           </div>
         </div>
 

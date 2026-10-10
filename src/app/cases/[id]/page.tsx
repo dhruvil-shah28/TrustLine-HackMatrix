@@ -239,11 +239,11 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Cases Workspace
           </Link>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-sm font-bold text-amber-400">{caseData.caseCode}</span>
+            <span className="font-mono technical-metadata text-sm text-amber-400">{caseData.caseCode}</span>
             <span className="px-2 py-0.5 rounded text-xs font-extrabold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/40">
               {caseData.status}
             </span>
-            <span className="text-xs text-slate-400 font-mono">Assigned: {caseData.assignedInvestigator}</span>
+            <span className="text-sm text-slate-400">Assigned: {caseData.assignedInvestigator}</span>
           </div>
           <h1 className="heading-page mt-1">{caseData.title}</h1>
         </div>
@@ -307,7 +307,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                         {evd.evidenceType}
                       </span>
                     </div>
-                    <pre className="p-2 rounded bg-slate-950 font-mono text-[10px] text-slate-400 overflow-x-auto">
+                    <pre className="p-2 rounded bg-slate-950 font-mono technical-metadata text-[10px] text-slate-400 overflow-x-auto">
                       {evd.contentJson}
                     </pre>
                   </div>
@@ -505,7 +505,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                           Parent: {lock.previousLockHash.substring(0, 16)}...
                         </span>
                       )}
-                      <span>Sealed: {formatIST(lock.sealedAt)}</span>
+                      <span>Sealed: <time className="technical-metadata">{formatIST(lock.sealedAt)}</time></span>
                     </div>
                   </div>
                 ))}
@@ -546,9 +546,9 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                       </div>
                     </div>
                     <p className="text-slate-200 text-[11px]">{rev.reason}</p>
-                    <div className="pt-1.5 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 flex items-center justify-between">
-                      <span>Trigger: {rev.triggerEventId || 'Manual/Reconstruction'}</span>
-                      <span>Revision Persisted: {formatIST(rev.createdAt)}</span>
+                    <div className="pt-1.5 border-t border-slate-800/80 text-[10px] text-slate-400 flex items-center justify-between">
+                      <span>Trigger: <span className="technical-metadata">{rev.triggerEventId || 'Manual/Reconstruction'}</span></span>
+                      <span>Revision Persisted: <time className="technical-metadata">{formatIST(rev.createdAt)}</time></span>
                     </div>
                   </div>
                 ))}
@@ -587,7 +587,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                 <div key={log.id} className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-200">{log.actorName}</span>
-                    <span className="text-[10px] font-mono text-slate-300 font-semibold">{formatIST(log.timestamp)}</span>
+                    <time className="text-[10px] font-mono technical-metadata text-slate-300">{formatIST(log.timestamp)}</time>
                   </div>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-slate-800 text-indigo-400 inline-block font-semibold">
                     {log.action}

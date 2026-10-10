@@ -132,7 +132,7 @@ export default function ProfilePage() {
       {/* Identity Banner */}
       <div className="glass-panel p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-extrabold text-xl flex items-center justify-center shadow-lg border border-indigo-400/30 shrink-0">
+          <div className="h-16 w-16 rounded-2xl bg-indigo-600 text-[#172321] font-semibold text-xl flex items-center justify-center border border-indigo-400/30 shrink-0">
             {user.avatar || 'RS'}
           </div>
           <div className="space-y-1">

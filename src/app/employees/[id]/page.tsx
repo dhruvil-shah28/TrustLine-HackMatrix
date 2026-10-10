@@ -140,10 +140,10 @@ export default function EmployeeProfilePage({ params }: { params: Promise<{ id: 
       <div
         className={`glass-panel p-6 rounded-2xl border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6 ${
           isCritical
-            ? 'bg-gradient-to-r from-rose-950/30 via-slate-900 to-slate-900 border-l-4 border-l-rose-500'
+            ? 'bg-slate-900 border-l-4 border-l-rose-500'
             : isHigh
-            ? 'bg-gradient-to-r from-amber-950/30 via-slate-900 to-slate-900 border-l-4 border-l-amber-500'
-            : 'bg-gradient-to-r from-indigo-950/20 via-slate-900 to-slate-900 border-l-4 border-l-indigo-500'
+            ? 'bg-slate-900 border-l-4 border-l-amber-500'
+            : 'bg-slate-900 border-l-4 border-l-indigo-500'
         }`}
       >
         <div className="space-y-2">
@@ -756,4 +756,3 @@ export default function EmployeeProfilePage({ params }: { params: Promise<{ id: 
     </div>
   );
 }
-

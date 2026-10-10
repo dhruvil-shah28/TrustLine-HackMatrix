@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import LandingNavbar from '@/components/landing/Navbar';
 import { useAuth } from '@/context/AuthContext';
 import {
   ArrowRight,
@@ -145,7 +147,7 @@ export default function LoginPage() {
             return;
           }
           await refreshSession();
-          router.replace(data.redirectTo || '/');
+          router.replace(data.redirectTo || '/dashboard');
           router.refresh();
         } else {
           // Request Access / Onboarding
@@ -178,13 +180,14 @@ export default function LoginPage() {
   const inputWrap = (fieldKey: string): React.CSSProperties => ({
     position: 'relative',
     marginTop: 6,
-    borderRadius: 9,
-    background: '#202020',
-    border: `1px solid ${focusedField === fieldKey ? '#E8C66A' : 'rgba(255,255,255,0.12)'}`,
-    boxShadow: focusedField === fieldKey ? '0 0 0 3px rgba(232,198,106,0.10)' : 'none',
+    background: '#FFFFFF',
+    border: `1px solid ${focusedField === fieldKey ? '#203234' : '#D7E2DA'}`,
+    borderRadius: 8,
+    boxShadow: focusedField === fieldKey ? '0 0 0 3px rgba(142,228,208,0.55)' : 'none',
     transition: 'border-color 0.15s, box-shadow 0.15s',
     display: 'flex',
     alignItems: 'center',
+    height: 52,
   });
 
   const inputStyle: React.CSSProperties = {
@@ -192,9 +195,10 @@ export default function LoginPage() {
     border: 'none',
     outline: 'none',
     width: '100%',
-    fontSize: 14,
-    color: '#F5F2EA',
-    padding: '11px 12px 11px 44px',
+    fontSize: 15,
+    color: '#1B2426',
+    padding: '0 12px 0 44px',
+    height: '100%',
   };
 
   const iconStyle = (fieldKey: string): React.CSSProperties => ({
@@ -203,157 +207,105 @@ export default function LoginPage() {
     top: '50%',
     transform: 'translateY(-50%)',
     pointerEvents: 'none',
-    width: 16,
-    height: 16,
-    color: focusedField === fieldKey ? '#E8C66A' : '#B8B5AE',
+    width: 20,
+    height: 20,
+    color: 'rgba(27,36,38,0.55)',
     transition: 'color 0.15s',
     flexShrink: 0,
   });
 
   return (
     <div
+      className="w-full"
       style={{
         minHeight: '100vh',
-        background: '#111111',
+        background: '#203234',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: '32px 16px',
+        paddingTop: 120,
+        paddingBottom: 56,
+        paddingLeft: 20,
+        paddingRight: 20,
+        fontFamily: 'var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif'
       }}
     >
+      <LandingNavbar logoVariant="image" />
+
       <div
         style={{
           width: '100%',
-          maxWidth: 960,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1.05fr) minmax(0,0.95fr)',
-          overflow: 'hidden',
-          borderRadius: 16,
-          border: '1px solid rgba(255,255,255,0.08)',
-          background: '#1B1B1B',
-          boxShadow: '0 16px 60px rgba(0,0,0,0.7)',
+          maxWidth: 1180,
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 40,
+          margin: 'auto 0',
         }}
-        className="max-md:grid-cols-1"
+        className="flex-col min-[900px]:flex-row"
       >
-        {/* ── Left Brand & Role Selection Panel ── */}
+        {/* ── Left Block ── */}
         <section
           style={{
-            background: 'linear-gradient(155deg, #1A1A18 0%, #111111 100%)',
-            borderRight: '1px solid rgba(255,255,255,0.06)',
-            padding: '44px 40px',
+            flex: '1 1 52%',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
+            position: 'relative'
           }}
-          className="hidden md:flex"
+          className="w-full"
         >
-          {/* Brand Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span
-              style={{
-                width: 38,
-                height: 38,
-                borderRadius: 10,
-                background: 'rgba(232,198,106,0.12)',
-                border: '1px solid rgba(232,198,106,0.3)',
-                display: 'grid',
-                placeItems: 'center',
-              }}
-            >
-              <ShieldCheck style={{ width: 20, height: 20, color: '#E8C66A' }} />
-            </span>
-            <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: '0.08em', color: '#F5F2EA' }}>
-              TRUSTLINE
-            </span>
-          </div>
 
-          {/* Core Value Statement & Role Overview */}
-          <div style={{ maxWidth: 360 }}>
+          <div style={{ marginTop: 40, position: 'relative', zIndex: 10 }}>
+            {/* EYEBROW */}
             <p
               style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.12em',
+                fontSize: 13,
+                fontWeight: 600,
+                letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: '#E8C66A',
-                marginBottom: 14,
+                color: '#83E0C9',
+                marginBottom: 16,
               }}
             >
               Unified Authentication Portal
             </p>
 
-            <h1 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.25, color: '#F5F2EA', marginBottom: 16 }}>
+            {/* HEADLINE */}
+            <h1 style={{ fontSize: 'clamp(38px, 4.6vw, 72px)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-0.02em', color: '#83E0C9', marginBottom: 24, textWrap: 'balance', maxWidth: 640 }}>
               {selectedRole === 'INVESTIGATOR'
                 ? 'Authorized Risk & Financial Crime Investigation Workspace.'
                 : 'Employee Banking Operations & Account Workspace.'}
             </h1>
 
-            <p style={{ fontSize: 13, lineHeight: 1.7, color: '#B8B5AE', marginBottom: 24 }}>
+            {/* PARAGRAPH */}
+            <p style={{ fontSize: 16, fontWeight: 500, lineHeight: 1.7, color: '#FFFFFF', opacity: 0.78, marginBottom: 32, maxWidth: 520 }}>
               {selectedRole === 'INVESTIGATOR'
                 ? 'Access Attack DNA, Hidden Link Hunter, Behavioural Drift Radar, Counterfactual Simulations, and Cryptographic Evidence Seals.'
                 : 'Access customer accounts, limit overrides, transaction processing, and internal banking workflows.'}
             </p>
-
-            {/* Features summary badges */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {selectedRole === 'INVESTIGATOR' ? (
-                <>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
-                    EVIDENCE LOCK (SHA-256)
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
-                    BEHAVIOURAL DRIFT
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
-                    HIDDEN LINK HUNTER
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
-                    CUSTOMER PORTAL
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
-                    LIMIT OVERRIDES
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-slate-500/10 text-slate-300 border border-slate-500/30">
-                    AUDIT TRAIL LOGS
-                  </span>
-                </>
-              )}
-            </div>
           </div>
-
-          <p style={{ fontSize: 11, color: '#85827C' }}>
-            Protected by TrustLine multi-tenant authorization controls.
-          </p>
         </section>
 
-        {/* ── Right Form Panel ── */}
-        <section style={{ padding: '40px 36px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          {/* Mobile brand header */}
-          <div
-            style={{
-              display: 'none',
-              alignItems: 'center',
-              gap: 8,
-              marginBottom: 20,
-              fontSize: 14,
-              fontWeight: 700,
-              color: '#E8C66A',
-            }}
-            className="flex md:hidden"
-          >
-            <ShieldCheck style={{ width: 18, height: 18 }} />
-            TRUSTLINE
-          </div>
-
+        {/* ── Right Form Card ── */}
+        <section
+          style={{
+            flex: '1 1 44%',
+            background: '#FFFFFF',
+            borderRadius: 14,
+            padding: 40,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+            maxWidth: 460,
+            width: '100%',
+            height: 'fit-content'
+          }}
+          className="mx-auto min-[900px]:mx-0"
+        >
           {/* Role Choice Selector */}
-          <div style={{ marginBottom: 24 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', color: '#85827C', textTransform: 'uppercase' }}>
+          <div style={{ marginBottom: 32 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', color: 'rgba(27,36,38,0.6)', textTransform: 'uppercase' }}>
               Select Workspace Role
             </span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 12 }}>
               <button
                 type="button"
                 onClick={() => {
@@ -362,12 +314,12 @@ export default function LoginPage() {
                   setSuccessMessage('');
                 }}
                 style={{
-                  padding: '10px 14px',
-                  borderRadius: 9,
-                  border: `1px solid ${selectedRole === 'INVESTIGATOR' ? '#E8C66A' : 'rgba(255,255,255,0.1)'}`,
-                  background: selectedRole === 'INVESTIGATOR' ? 'rgba(232,198,106,0.12)' : '#202020',
-                  color: selectedRole === 'INVESTIGATOR' ? '#E8C66A' : '#B8B5AE',
-                  fontSize: 13,
+                  height: 44,
+                  borderRadius: 999,
+                  border: `1px solid ${selectedRole === 'INVESTIGATOR' ? '#203234' : '#D7E2DA'}`,
+                  background: selectedRole === 'INVESTIGATOR' ? '#203234' : '#FFFFFF',
+                  color: selectedRole === 'INVESTIGATOR' ? '#FFFFFF' : '#1B2426',
+                  fontSize: 14,
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
@@ -377,7 +329,7 @@ export default function LoginPage() {
                   transition: 'all 0.15s',
                 }}
               >
-                <Briefcase style={{ width: 15, height: 15 }} />
+                <Briefcase style={{ width: 16, height: 16 }} />
                 Investigator
               </button>
 
@@ -389,12 +341,12 @@ export default function LoginPage() {
                   setSuccessMessage('');
                 }}
                 style={{
-                  padding: '10px 14px',
-                  borderRadius: 9,
-                  border: `1px solid ${selectedRole === 'EMPLOYEE' ? '#E8C66A' : 'rgba(255,255,255,0.1)'}`,
-                  background: selectedRole === 'EMPLOYEE' ? 'rgba(232,198,106,0.12)' : '#202020',
-                  color: selectedRole === 'EMPLOYEE' ? '#E8C66A' : '#B8B5AE',
-                  fontSize: 13,
+                  height: 44,
+                  borderRadius: 999,
+                  border: `1px solid ${selectedRole === 'EMPLOYEE' ? '#203234' : '#D7E2DA'}`,
+                  background: selectedRole === 'EMPLOYEE' ? '#203234' : '#FFFFFF',
+                  color: selectedRole === 'EMPLOYEE' ? '#FFFFFF' : '#1B2426',
+                  fontSize: 14,
                   fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
@@ -404,14 +356,14 @@ export default function LoginPage() {
                   transition: 'all 0.15s',
                 }}
               >
-                <UserCheck style={{ width: 15, height: 15 }} />
+                <UserCheck style={{ width: 16, height: 16 }} />
                 Employee
               </button>
             </div>
           </div>
 
-          {/* Mode Tabs (Sign In / Register / Activate) */}
-          <div style={{ display: 'flex', gap: 16, borderBottom: '1px solid rgba(255,255,255,0.08)', marginBottom: 24, paddingBottom: 8 }}>
+          {/* Mode Tabs */}
+          <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid #E4E8E7', marginBottom: 28, paddingBottom: 0 }}>
             <button
               type="button"
               onClick={() => {
@@ -420,13 +372,14 @@ export default function LoginPage() {
                 setSuccessMessage('');
               }}
               style={{
-                fontSize: 13,
-                fontWeight: formMode === 'SIGN_IN' ? 700 : 500,
-                color: formMode === 'SIGN_IN' ? '#E8C66A' : '#85827C',
-                borderBottom: formMode === 'SIGN_IN' ? '2px solid #E8C66A' : 'none',
-                paddingBottom: 6,
+                fontSize: 15,
+                fontWeight: formMode === 'SIGN_IN' ? 600 : 500,
+                color: formMode === 'SIGN_IN' ? '#1B2426' : 'rgba(27,36,38,0.55)',
+                borderBottom: formMode === 'SIGN_IN' ? '2px solid #203234' : '2px solid transparent',
+                paddingBottom: 12,
+                marginBottom: -1,
                 background: 'none',
-                border: 'none',
+                borderTop: 'none', borderLeft: 'none', borderRight: 'none',
                 cursor: 'pointer',
               }}
             >
@@ -441,13 +394,14 @@ export default function LoginPage() {
                 setSuccessMessage('');
               }}
               style={{
-                fontSize: 13,
-                fontWeight: formMode === 'REGISTER' ? 700 : 500,
-                color: formMode === 'REGISTER' ? '#E8C66A' : '#85827C',
-                borderBottom: formMode === 'REGISTER' ? '2px solid #E8C66A' : 'none',
-                paddingBottom: 6,
+                fontSize: 15,
+                fontWeight: formMode === 'REGISTER' ? 600 : 500,
+                color: formMode === 'REGISTER' ? '#1B2426' : 'rgba(27,36,38,0.55)',
+                borderBottom: formMode === 'REGISTER' ? '2px solid #203234' : '2px solid transparent',
+                paddingBottom: 12,
+                marginBottom: -1,
                 background: 'none',
-                border: 'none',
+                borderTop: 'none', borderLeft: 'none', borderRight: 'none',
                 cursor: 'pointer',
               }}
             >
@@ -463,13 +417,14 @@ export default function LoginPage() {
                   setSuccessMessage('');
                 }}
                 style={{
-                  fontSize: 13,
-                  fontWeight: formMode === 'ACTIVATE' ? 700 : 500,
-                  color: formMode === 'ACTIVATE' ? '#E8C66A' : '#85827C',
-                  borderBottom: formMode === 'ACTIVATE' ? '2px solid #E8C66A' : 'none',
-                  paddingBottom: 6,
+                  fontSize: 15,
+                  fontWeight: formMode === 'ACTIVATE' ? 600 : 500,
+                  color: formMode === 'ACTIVATE' ? '#1B2426' : 'rgba(27,36,38,0.55)',
+                  borderBottom: formMode === 'ACTIVATE' ? '2px solid #203234' : '2px solid transparent',
+                  paddingBottom: 12,
+                  marginBottom: -1,
                   background: 'none',
-                  border: 'none',
+                  borderTop: 'none', borderLeft: 'none', borderRight: 'none',
                   cursor: 'pointer',
                 }}
               >
@@ -478,55 +433,137 @@ export default function LoginPage() {
             )}
           </div>
 
+          {/* Demo Access Note */}
+          {process.env.NEXT_PUBLIC_DEMO_MODE === 'true' && (
+            <div style={{
+              background: '#F9FAFA',
+              border: '1px solid #E4E8E7',
+              borderRadius: 8,
+              padding: '16px',
+              marginBottom: 24,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#1B2426', fontWeight: 600, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <CheckCircle2 style={{ width: 16, height: 16 }} />
+                <span>Demo Access</span>
+              </div>
+              <p style={{ fontSize: 14, color: 'rgba(27,36,38,0.7)', margin: 0, lineHeight: 1.5 }}>
+                {selectedRole === 'EMPLOYEE' ? (
+                  <>
+                    <strong style={{ color: '#1B2426' }}>Employee ID:</strong> EMP-1001 <br />
+                    <strong style={{ color: '#1B2426' }}>Password:</strong> TL-Employee#2026
+                  </>
+                ) : (
+                  <>
+                    <strong style={{ color: '#1B2426' }}>Email:</strong> d.patel@apexbank.com <br />
+                    <strong style={{ color: '#1B2426' }}>Password:</strong> TL-Employee#2026
+                  </>
+                )}
+              </p>
+            </div>
+          )}
+
+          {/* Error Message */}
+          {errorMessage && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '12px 16px',
+                marginBottom: 24,
+                borderLeft: '3px solid #B8432F',
+                background: '#FFF5F5',
+                color: '#B8432F',
+                fontSize: 13,
+                fontWeight: 600,
+                borderRadius: '0 8px 8px 0'
+              }}
+            >
+              <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
+          {/* Success Message */}
+          {successMessage && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '12px 16px',
+                marginBottom: 24,
+                borderLeft: '3px solid #203234',
+                background: '#F0F5F4',
+                color: '#203234',
+                fontSize: 13,
+                fontWeight: 600,
+                borderRadius: '0 8px 8px 0'
+              }}
+            >
+              <CheckCircle2 style={{ width: 16, height: 16, flexShrink: 0 }} />
+              <span>{successMessage}</span>
+            </div>
+          )}
+
           {/* Form Content */}
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {/* Employee ID input (for Employee Sign In or Activation) */}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {/* Employee ID */}
             {selectedRole === 'EMPLOYEE' && (formMode === 'SIGN_IN' || formMode === 'ACTIVATE') && (
               <label style={{ display: 'block' }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Employee ID</span>
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1B2426' }}>Employee ID</span>
+                </div>
                 <div style={inputWrap('employeeCode')}>
                   <ShieldCheck style={iconStyle('employeeCode')} />
                   <input
+                    className="placeholder-[rgba(27,36,38,0.4)]"
                     style={inputStyle}
                     type="text"
                     value={employeeCode}
                     onChange={(e) => setEmployeeCode(e.target.value.toUpperCase())}
                     onFocus={() => setFocusedField('employeeCode')}
                     onBlur={() => setFocusedField(null)}
-                    placeholder="e.g. EMP-1001"
+                    placeholder="EMP-1001"
                     required
                   />
                 </div>
               </label>
             )}
 
-            {/* Name input (for Register or Request Access) */}
+            {/* Name */}
             {formMode === 'REGISTER' && (
               <label style={{ display: 'block' }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Full Name</span>
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1B2426' }}>Full Name</span>
+                </div>
                 <div style={inputWrap('name')}>
                   <UserPlus style={iconStyle('name')} />
                   <input
+                    className="placeholder-[rgba(27,36,38,0.4)]"
                     style={inputStyle}
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onFocus={() => setFocusedField('name')}
                     onBlur={() => setFocusedField(null)}
-                    placeholder="e.g. Ananya Sharma"
+                    placeholder="Ananya Sharma"
                     required
                   />
                 </div>
               </label>
             )}
 
-            {/* Email input (for Investigator Sign In, Registration, or Activation) */}
+            {/* Email */}
             {(selectedRole === 'INVESTIGATOR' || formMode === 'REGISTER' || formMode === 'ACTIVATE') && (
               <label style={{ display: 'block' }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Work Email</span>
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1B2426' }}>Work Email</span>
+                </div>
                 <div style={inputWrap('email')}>
                   <Mail style={iconStyle('email')} />
                   <input
+                    className="placeholder-[rgba(27,36,38,0.4)]"
                     style={inputStyle}
                     type="email"
                     value={email}
@@ -540,34 +577,40 @@ export default function LoginPage() {
               </label>
             )}
 
-            {/* Department input (for Registration or Access Request) */}
+            {/* Department */}
             {formMode === 'REGISTER' && (
               <label style={{ display: 'block' }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Department / Business Unit</span>
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1B2426' }}>Department / Business Unit</span>
+                </div>
                 <div style={inputWrap('department')}>
                   <Building2 style={iconStyle('department')} />
                   <input
+                    className="placeholder-[rgba(27,36,38,0.4)]"
                     style={inputStyle}
                     type="text"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                     onFocus={() => setFocusedField('department')}
                     onBlur={() => setFocusedField(null)}
-                    placeholder="e.g. Commercial Credit / AML Unit"
+                    placeholder="Commercial Credit / AML Unit"
                     required
                   />
                 </div>
               </label>
             )}
 
-            {/* Access Justification (for Investigator Request Access) */}
+            {/* Access Justification */}
             {selectedRole === 'INVESTIGATOR' && formMode === 'REGISTER' && (
               <label style={{ display: 'block' }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Investigation Access Justification</span>
-                <div style={{ ...inputWrap('accessJustification'), height: 80, alignItems: 'flex-start', paddingTop: 8 }}>
-                  <Briefcase style={{ ...iconStyle('accessJustification'), top: 18 }} />
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1B2426' }}>Investigation Access Justification</span>
+                </div>
+                <div style={{ ...inputWrap('accessJustification'), height: 100, alignItems: 'flex-start' }}>
+                  <Briefcase style={{ ...iconStyle('accessJustification'), top: 22 }} />
                   <textarea
-                    style={{ ...inputStyle, height: '100%', resize: 'none', paddingLeft: 44, paddingTop: 4 }}
+                    className="placeholder-[rgba(27,36,38,0.4)]"
+                    style={{ ...inputStyle, height: '100%', resize: 'none', paddingLeft: 44, paddingTop: 16 }}
                     value={accessJustification}
                     onChange={(e) => setAccessJustification(e.target.value)}
                     onFocus={() => setFocusedField('accessJustification')}
@@ -579,13 +622,16 @@ export default function LoginPage() {
               </label>
             )}
 
-            {/* Password input (except for Investigator Request Access) */}
+            {/* Password input */}
             {!(selectedRole === 'INVESTIGATOR' && formMode === 'REGISTER') && (
               <label style={{ display: 'block' }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#F5F2EA' }}>Password</span>
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: '#1B2426' }}>Password</span>
+                </div>
                 <div style={inputWrap('password')}>
                   <LockKeyhole style={iconStyle('password')} />
                   <input
+                    className="placeholder-[rgba(27,36,38,0.4)]"
                     style={{ ...inputStyle, paddingRight: 44 }}
                     type={showPassword ? 'text' : 'password'}
                     value={password}
@@ -607,95 +653,54 @@ export default function LoginPage() {
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      color: '#B8B5AE',
+                      color: 'rgba(27,36,38,0.55)',
                       padding: 0,
                       display: 'flex',
                       alignItems: 'center',
                     }}
                   >
-                    {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                    {showPassword ? <EyeOff style={{ width: 18, height: 18 }} /> : <Eye style={{ width: 18, height: 18 }} />}
                   </button>
                 </div>
               </label>
-            )}
-
-            {/* Error Message */}
-            {errorMessage && (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 12px',
-                  borderRadius: 8,
-                  background: 'rgba(255,141,141,0.1)',
-                  border: '1px solid rgba(255,141,141,0.3)',
-                  color: '#FF8D8D',
-                  fontSize: 12,
-                }}
-              >
-                <AlertCircle style={{ width: 16, height: 16, flexShrink: 0 }} />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            {/* Success Message */}
-            {successMessage && (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 4,
-                  padding: '10px 12px',
-                  borderRadius: 8,
-                  background: 'rgba(52,211,153,0.1)',
-                  border: '1px solid rgba(52,211,153,0.3)',
-                  color: '#34D399',
-                  fontSize: 12,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 700 }}>
-                  <CheckCircle2 style={{ width: 16, height: 16 }} />
-                  <span>Success</span>
-                </div>
-                <span>{successMessage}</span>
-              </div>
             )}
 
             {/* Submit Button */}
             <button
               disabled={isSubmitting}
               type="submit"
+              className="hover:bg-[#2D4044]"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 8,
+                gap: 10,
                 width: '100%',
-                padding: '12px 20px',
-                marginTop: 6,
-                borderRadius: 9,
-                background: isSubmitting ? 'rgba(232,198,106,0.5)' : '#E8C66A',
-                color: '#111111',
+                height: 54,
+                marginTop: 16,
+                background: '#203234',
+                color: '#FFFFFF',
+                opacity: isSubmitting ? 0.6 : 1,
                 border: 'none',
+                borderRadius: 999,
                 cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                fontSize: 14,
-                fontWeight: 700,
-                letterSpacing: '0.01em',
-                transition: 'background 0.15s',
+                fontSize: 16,
+                fontWeight: 600,
+                transition: 'all 0.15s',
               }}
             >
               {isSubmitting
                 ? 'Processing...'
                 : formMode === 'SIGN_IN'
-                ? `Sign In as ${selectedRole === 'INVESTIGATOR' ? 'Investigator' : 'Employee'}`
-                : formMode === 'REGISTER'
-                ? selectedRole === 'INVESTIGATOR'
-                  ? 'Submit Access Request'
-                  : 'Register Employee Account'
-                : 'Activate Account'}
-              {!isSubmitting && <ArrowRight style={{ width: 16, height: 16 }} />}
+                  ? `Sign In as ${selectedRole === 'INVESTIGATOR' ? 'Investigator' : 'Employee'}`
+                  : formMode === 'REGISTER'
+                    ? selectedRole === 'INVESTIGATOR'
+                      ? 'Submit Access Request'
+                      : 'Register Employee Account'
+                    : 'Activate Account'}
+              {!isSubmitting && <ArrowRight style={{ width: 18, height: 18 }} />}
             </button>
+
           </form>
         </section>
       </div>

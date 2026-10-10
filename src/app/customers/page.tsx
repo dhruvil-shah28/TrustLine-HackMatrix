@@ -59,7 +59,7 @@ export default function CustomersListPage() {
       </div>
 
       {loading ? (
-        <div className="p-12 text-center text-xs text-slate-400 ui-card font-mono">Loading customer accounts...</div>
+        <div className="p-12 text-center text-sm text-slate-400 ui-card">Loading customer accounts...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {filteredCustomers.map((cust) => {
@@ -74,7 +74,7 @@ export default function CustomersListPage() {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">
+                    <span className="font-mono technical-metadata text-xs text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">
                       {cust.customerCode}
                     </span>
                     <span className={`badge ${isHighRisk ? 'badge-critical' : 'badge-low'}`}>
@@ -86,7 +86,7 @@ export default function CustomersListPage() {
 
                 <div>
                   <h2 className="font-bold text-white text-base">{cust.name}</h2>
-                  <p className="text-xs text-slate-400 mt-0.5 font-mono">Risk Profile: <strong className={isHighRisk ? 'text-rose-400' : 'text-emerald-400'}>{cust.riskProfile}</strong></p>
+                  <p className="text-sm text-slate-400 mt-0.5">Risk Profile: <strong className={isHighRisk ? 'text-rose-400' : 'text-emerald-400'}>{cust.riskProfile}</strong></p>
                 </div>
 
                 {/* Linked Accounts List */}
@@ -95,10 +95,10 @@ export default function CustomersListPage() {
                   {cust.accounts?.map((acc: any) => (
                     <div
                       key={acc.id}
-                      className="p-3 rounded-xl bg-[#030712] border border-slate-800/90 flex items-center justify-between text-xs font-mono"
+                      className="p-3 rounded-xl bg-[#030712] border border-slate-800/90 flex items-center justify-between text-xs"
                     >
                       <div>
-                        <span className="text-slate-200 font-bold block">{acc.accountNumber}</span>
+                        <span className="technical-metadata text-slate-200 font-medium block">{acc.accountNumber}</span>
                         <span className="text-[10px] text-slate-500">{acc.accountType} Account</span>
                       </div>
                       <span className="text-emerald-400 font-bold text-xs">₹{(acc.balance / 100000).toFixed(2)} Lakhs</span>

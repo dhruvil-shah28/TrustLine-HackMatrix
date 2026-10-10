@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import LandingNavbar from '@/components/landing/Navbar';
+import styles from './page.module.css';
 import {
   Activity,
   AlertTriangle,
@@ -81,13 +82,15 @@ const shortAccount = (value: string) =>
 function Panel({
   children,
   className = '',
+  surface = 'white',
 }: {
   children: React.ReactNode;
   className?: string;
+  surface?: 'white' | 'sage' | 'mint';
 }) {
   return (
     <section
-      className={`rounded-2xl border border-white/[0.09] bg-[#151515] ${className}`}
+      className={`rounded-xl border shadow-[0_1px_3px_rgba(23,25,22,0.06)] ${styles.cardSurface} ${surface === 'sage' || surface === 'mint' ? 'border-[#D7E2DA]' : 'border-[#E2E1DA]'} ${className}`}
     >
       {children}
     </section>
@@ -105,12 +108,12 @@ function SectionTitle({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="mt-0.5 rounded-xl border border-amber-300/15 bg-amber-300/[0.07] p-2.5 text-amber-200">
+      <span className="mt-0.5 rounded-lg border border-[#E4E1D8] bg-[#F2F1EA] p-2.5 text-[#0A3D2E]">
         <Icon size={18} />
       </span>
       <div>
-        <h2 className="text-sm font-semibold text-white">{title}</h2>
-        <p className="mt-1 text-xs leading-5 text-neutral-400">{subtitle}</p>
+        <h2 className="text-sm font-semibold text-[#171916]">{title}</h2>
+        <p className="mt-1 text-xs leading-5 text-[#62645F]">{subtitle}</p>
       </div>
     </div>
   );
@@ -202,8 +205,8 @@ export default function EmployeePortalPage() {
   );
 
   const inputClass =
-    'mt-2 w-full rounded-xl border border-white/10 bg-[#101010] px-3.5 py-3 text-sm text-white outline-none transition placeholder:text-neutral-600 focus:border-amber-300/60';
-  const labelClass = 'text-xs font-medium text-neutral-300';
+    'mt-2 w-full rounded-lg border border-[#E4E1D8] bg-[#FFFFFF] px-3.5 py-3 text-sm text-[#171916] outline-none transition placeholder:text-[#858780] focus:border-[#0A3D2E] focus:ring-2 focus:ring-[#4CAF82]/20';
+  const labelClass = 'text-xs font-medium text-[#62645F]';
 
   async function performAction(
     action: 'access' | 'beneficiary' | 'transfer',
@@ -256,81 +259,86 @@ export default function EmployeePortalPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1450px] space-y-6 pb-12">
-      <header className="overflow-hidden rounded-2xl border border-white/[0.09] bg-[#151515]">
+    <div
+      className={`${styles.employeePortal} employee-portal-theme -m-4 min-h-screen bg-[#203234] px-4 pb-6 pt-28 text-[#FFFFFF] sm:-m-6 sm:px-6 lg:-m-8 lg:px-8`}
+      style={{ fontFamily: 'var(--font-plex-sans), sans-serif', colorScheme: 'dark' }}
+    >
+      <LandingNavbar clickDropdowns />
+      <div className="mx-auto max-w-[1450px] space-y-6 pb-12">
+      <header className="employeeWorkspaceHeader overflow-hidden rounded-xl border border-[#3A4949] bg-[#203234]">
         <div className="flex flex-col gap-6 p-5 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/[0.07] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Employee workspace
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#83E0C9]/25 bg-[#83E0C9]/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#83E0C9]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#83E0C9]" />
+                EMPLOYEE WORKSPACE
               </span>
             </div>
 
-            <h1 className="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <h1 className="mt-4 text-2xl font-semibold tracking-tight text-[#83E0C9] sm:text-3xl">
               Banking Operations
             </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-400">Manage customer profiles, service accounts, update beneficiaries, and initiate transfers.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#C4CECD]">Manage customer profiles, service accounts, update beneficiaries, and initiate transfers.</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="rounded-xl border border-white/[0.08] bg-black/20 px-4 py-3">
-              <p className="text-[10px] uppercase tracking-wider text-neutral-500">
+            <div className={`rounded-lg border border-[#E2E1DA] ${styles.cardSurface} px-4 py-3`}>
+              <p className="text-[10px] uppercase tracking-wider text-[#62645F]">
                 Signed in as
               </p>
-              <p className="mt-1 text-sm font-semibold text-white">
+              <p className="mt-1 text-sm font-semibold text-[#171916]">
                 {workspace?.employee.name || user.name}
               </p>
-              <p className="mt-1 text-xs text-neutral-400">
+              <p className="mt-1 text-xs text-[#62645F]">
                 {workspace?.employee.employeeCode || user.email}
               </p>
             </div>
             <button
               onClick={() => logout()}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-3.5 py-3 text-xs font-medium text-neutral-300 transition hover:bg-white/[0.05] hover:text-white"
+              className="inline-flex items-center gap-2 rounded-lg border border-[#3A4949] bg-transparent px-3.5 py-3 text-xs font-medium text-[#FFFFFF] transition hover:bg-white/10 focus-visible:outline-[#83E0C9]"
             >
               <LogOut size={14} /> Sign out
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 border-t border-white/[0.07] sm:grid-cols-3">
+        <div className="grid grid-cols-1 border-t border-[#3A4949] sm:grid-cols-3">
           <div className="flex items-center gap-3 px-5 py-4 sm:px-7">
-            <Users className="text-amber-200" size={18} />
+            <Users className="text-[#83E0C9]" size={18} />
             <div>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold text-[#83E0C9]">
                 {workspace?.customers.length ?? '—'}
               </p>
-              <p className="text-[11px] text-neutral-500">Customers</p>
+              <p className="text-[11px] text-[#C4CECD]">Customers</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 border-t border-white/[0.07] px-5 py-4 sm:border-l sm:border-t-0 sm:px-7">
-            <Wallet className="text-amber-200" size={18} />
+          <div className="flex items-center gap-3 border-t border-[#3A4949] px-5 py-4 sm:border-l sm:border-t-0 sm:px-7">
+            <Wallet className="text-[#83E0C9]" size={18} />
             <div>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold text-[#83E0C9]">
                 {workspace?.customers.reduce(
                   (sum, customer) => sum + customer.accounts.length,
                   0,
                 ) ?? '—'}
               </p>
-              <p className="text-[11px] text-neutral-500">Accounts</p>
+              <p className="text-[11px] text-[#C4CECD]">Accounts</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 border-t border-white/[0.07] px-5 py-4 sm:border-l sm:border-t-0 sm:px-7">
-            <Activity className="text-amber-200" size={18} />
+          <div className="flex items-center gap-3 border-t border-[#3A4949] px-5 py-4 sm:border-l sm:border-t-0 sm:px-7">
+            <Activity className="text-[#83E0C9]" size={18} />
             <div>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-lg font-semibold text-[#83E0C9]">
                 {workspace?.recentActions.length ?? '—'}
               </p>
-              <p className="text-[11px] text-neutral-500">Recent activity</p>
+              <p className="text-[11px] text-[#C4CECD]">Recent activity</p>
             </div>
           </div>
         </div>
       </header>
 
       {error && (
-        <div role="alert" className="flex items-start gap-2.5 rounded-xl border border-rose-400/20 bg-rose-400/[0.06] p-4 text-sm text-rose-200">
-          <AlertTriangle size={17} className="mt-0.5 shrink-0" />
+        <div role="alert" className="flex items-start gap-2.5 rounded-lg border border-[#B42318]/20 bg-[#FEF3F2] p-4 text-sm text-[#912018]">
+          <AlertTriangle size={17} className="mt-0.5 shrink-0 text-[#B42318]" />
           <span>{error}</span>
           <button
             className="ml-auto text-xs underline"
@@ -344,19 +352,19 @@ export default function EmployeePortalPage() {
       {result && (
         <div
           role="status"
-          className="rounded-xl border border-emerald-400/20 bg-emerald-400/[0.05] p-4"
+          className="rounded-lg border border-[#4CAF82]/30 bg-[#EAF5EE] p-4"
         >
           <div className="flex items-start gap-3">
             <CheckCircle2
               size={19}
-              className="mt-0.5 shrink-0 text-emerald-300"
+              className="mt-0.5 shrink-0 text-[#0A3D2E]"
             />
-            <p className="min-w-0 flex-1 text-sm font-semibold text-emerald-100">
+            <p className="min-w-0 flex-1 text-sm font-semibold text-[#171916]">
               {result.message}
             </p>
             <button
               onClick={() => setResult(null)}
-              className="text-xs text-neutral-500 hover:text-white"
+              className="text-xs text-[#62645F] hover:text-[#171916]"
             >
               Dismiss
             </button>
@@ -365,8 +373,8 @@ export default function EmployeePortalPage() {
       )}
 
       <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-[0.9fr_1.4fr]">
-        <Panel className="overflow-hidden">
-          <div className="border-b border-white/[0.07] p-5">
+        <Panel surface="sage" className="overflow-hidden">
+          <div className="border-b border-[#E4E1D8] p-5">
             <SectionTitle
               icon={Search}
               title="Customer directory"
@@ -375,7 +383,7 @@ export default function EmployeePortalPage() {
             <div className="relative mt-5">
               <Search
                 size={15}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#62645F]"
               />
               <input
                 value={search}
@@ -387,11 +395,11 @@ export default function EmployeePortalPage() {
           </div>
 
           {loading ? (
-            <div className="p-10 text-center text-sm text-neutral-400">
+            <div className="p-10 text-center text-sm text-[#62645F]">
               Loading customer records…
             </div>
           ) : (
-            <div className="max-h-[530px] divide-y divide-white/[0.06] overflow-y-auto">
+            <div className="max-h-[530px] divide-y divide-[#E4E1D8] overflow-y-auto">
               {visibleCustomers.map((customer) => (
                 <button
                   key={customer.id}
@@ -403,35 +411,35 @@ export default function EmployeePortalPage() {
                     setResult(null);
                     setError('');
                   }}
-                  className={`w-full p-4 text-left transition hover:bg-white/[0.035] ${
+                  className={`w-full border-l-[3px] p-4 text-left transition hover:bg-[#F2F1EA] ${
                     selectedCustomerCode === customer.customerCode
-                      ? 'bg-amber-300/[0.06] shadow-[inset_3px_0_0_#e8c66a]'
-                      : ''
+                      ? 'border-l-[#0A3D2E] bg-[#DDF6EF]'
+                      : 'border-l-transparent bg-[#FFFFFF]'
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="rounded-xl border border-white/10 bg-[#202020] p-2.5 text-neutral-300">
+                    <span className="rounded-lg border border-[#E4E1D8] bg-[#F2F1EA] p-2.5 text-[#0A3D2E]">
                       {customer.type === 'INDIVIDUAL'
                         ? <UserRound size={17} />
                         : <Building2 size={17} />}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="truncate text-sm font-semibold text-white">
+                        <span className="truncate text-sm font-semibold text-[#171916]">
                           {customer.name}
                         </span>
                       </div>
-                      <p className="mt-1 font-mono text-[11px] text-neutral-500">
+                      <p className="mt-1 font-mono technical-metadata text-[11px] text-[#62645F]">
                         {customer.customerCode}
                       </p>
-                      <p className="mt-2 text-[11px] text-neutral-400">
+                      <p className="mt-2 text-[11px] text-[#62645F]">
                         {customer.accounts.length} account(s) · {customer.kycStatus.replace('_', ' ')}
                       </p>
                     </div>
                     <ChevronDown
                       size={15}
-                      className={`mt-1 shrink-0 text-neutral-600 transition ${
-                        selectedCustomerCode === customer.customerCode ? 'rotate-180 text-amber-200' : ''
+                      className={`mt-1 shrink-0 text-[#62645F] transition ${
+                        selectedCustomerCode === customer.customerCode ? 'rotate-180 text-[#0A3D2E]' : ''
                       }`}
                     />
                   </div>
@@ -439,7 +447,7 @@ export default function EmployeePortalPage() {
               ))}
 
               {visibleCustomers.length === 0 && (
-                <div className="p-8 text-center text-sm text-neutral-500">
+                <div className="p-8 text-center text-sm text-[#62645F]">
                   No matching customers.
                 </div>
               )}
@@ -448,7 +456,7 @@ export default function EmployeePortalPage() {
         </Panel>
 
         <div className="space-y-5">
-          <Panel className="p-5 sm:p-6">
+          <Panel surface="mint" className="p-5 sm:p-6">
             <SectionTitle
               icon={Landmark}
               title="Customer account"
@@ -456,7 +464,7 @@ export default function EmployeePortalPage() {
             />
 
             {!selectedCustomer || !selectedAccount ? (
-              <div className="mt-6 rounded-xl border border-dashed border-white/10 p-8 text-center text-sm text-neutral-500">
+              <div className="mt-6 rounded-lg border border-dashed border-[#D7E2DA] bg-[#FFFFFF]/70 p-8 text-center text-sm text-[#596863]">
                 Select a customer with an available account.
               </div>
             ) : (
@@ -470,6 +478,7 @@ export default function EmployeePortalPage() {
                     value={selectedAccountNumber}
                     onChange={(event) => setSelectedAccountNumber(event.target.value)}
                     className={inputClass}
+                    style={{ color: '#171916', backgroundColor: '#FFFFFF' }}
                   >
                     {selectedCustomer.accounts.map((account) => (
                       <option key={account.id} value={account.accountNumber}>
@@ -479,52 +488,52 @@ export default function EmployeePortalPage() {
                   </select>
                 </div>
 
-                <div className="mt-5 rounded-2xl border border-white/[0.08] bg-[#101010] p-5">
+                <div className={`mt-5 rounded-lg border border-[#D7E2DA] ${styles.balancePanel} p-5`}>
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-500">
+                      <p className="text-[10px] uppercase tracking-[0.15em] text-[#62645F]">
                         Available balance
                       </p>
-                      <p className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                      <p className="metric-value mt-2 break-words tracking-tight text-[#171916]">
                         {money(selectedAccount.balance, selectedAccount.currency)}
                       </p>
                     </div>
-                    <span className="rounded-xl border border-amber-300/15 bg-amber-300/[0.06] p-3 text-amber-200">
+                    <span className="rounded-lg border border-[#E4E1D8] bg-[#FFFFFF] p-3 text-[#0A3D2E]">
                       <Wallet size={20} />
                     </span>
                   </div>
-                  <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/[0.07] pt-4">
+                  <div className="mt-5 grid grid-cols-2 gap-3 border-t border-[#D7E2DA] pt-4">
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-neutral-500">Account type</p>
-                      <p className="mt-1.5 text-xs font-semibold text-neutral-200">{selectedAccount.accountType}</p>
+                      <p className="text-[10px] uppercase tracking-wider text-[#62645F]">Account type</p>
+                      <p className="mt-1.5 text-xs font-semibold text-[#171916]">{selectedAccount.accountType}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-neutral-500">Account status</p>
-                      <p className="mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-emerald-200">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                      <p className="text-[10px] uppercase tracking-wider text-[#62645F]">Account status</p>
+                      <p className="mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-[#176B3A]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#4CAF82]" />
                         {selectedAccount.status}
                       </p>
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-neutral-500">Customer</p>
-                      <p className="mt-1.5 text-xs font-semibold text-neutral-200">{selectedCustomer.customerCode}</p>
+                      <p className="text-[10px] uppercase tracking-wider text-[#62645F]">Customer</p>
+                      <p className="mt-1.5 text-xs font-semibold text-[#171916]">{selectedCustomer.customerCode}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-neutral-500">Masked account</p>
-                      <p className="mt-1.5 font-mono text-xs text-neutral-200">{shortAccount(selectedAccount.accountNumber)}</p>
+                      <p className="text-[10px] uppercase tracking-wider text-[#62645F]">Masked account</p>
+                      <p className="mt-1.5 font-mono technical-metadata text-xs text-[#171916]">{shortAccount(selectedAccount.accountNumber)}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs text-neutral-400">
-                    <BadgeCheck size={15} className="text-emerald-300" />
+                  <div className="flex items-center gap-2 text-xs text-[#62645F]">
+                    <BadgeCheck size={15} className="text-[#0A3D2E]" />
                     KYC: {selectedCustomer.kycStatus.replace('_', ' ')}
                   </div>
                   <button
                     disabled={busyAction !== ''}
                     onClick={() => void performAction('access')}
-                    className="inline-flex items-center gap-2 rounded-xl bg-amber-200 px-4 py-2.5 text-xs font-bold text-[#17130a] transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#0A3D2E] px-4 py-2.5 text-xs font-semibold text-[#FFFFFF] transition hover:bg-[#083326] focus-visible:outline-[#0A3D2E] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <FileSearch size={14} />
                     {busyAction === 'access' ? 'Recording access…' : 'View customer profile'}
@@ -576,6 +585,7 @@ export default function EmployeePortalPage() {
                     value={beneficiaryAccountNumber}
                     onChange={(event) => setBeneficiaryAccountNumber(event.target.value)}
                     className={inputClass}
+                    style={{ color: '#171916', backgroundColor: '#FFFFFF' }}
                   >
                     <option value="">Select an active account</option>
                     {(workspace?.customers ?? [])
@@ -593,14 +603,14 @@ export default function EmployeePortalPage() {
                 </div>
                 <button
                   disabled={!selectedAccount || busyAction !== ''}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-amber-200/20 bg-amber-200/[0.07] px-4 py-3 text-xs font-semibold text-amber-100 transition hover:bg-amber-200/[0.12] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#E4E1D8] bg-[#FFFFFF] px-4 py-3 text-xs font-semibold text-[#171916] transition hover:bg-[#F2F1EA] focus-visible:outline-[#0A3D2E] disabled:cursor-not-allowed disabled:opacity-50"
                   type="submit"
                 >
                   <RefreshCw size={14} />
                   {busyAction === 'beneficiary' ? 'Recording change…' : 'Change beneficiary'}
                 </button>
               </form>
-              <p className="mt-3 text-[10px] leading-4 text-neutral-500">
+              <p className="mt-3 text-[10px] leading-4 text-[#62645F]">
                 Review the beneficiary details before saving your changes.
               </p>
             </Panel>
@@ -631,6 +641,7 @@ export default function EmployeePortalPage() {
                     value={beneficiaryAccountNumber}
                     onChange={(event) => setBeneficiaryAccountNumber(event.target.value)}
                     className={inputClass}
+                    style={{ color: '#171916', backgroundColor: '#FFFFFF' }}
                   >
                     <option value="">Select a beneficiary</option>
                     {(workspace?.customers ?? [])
@@ -645,7 +656,7 @@ export default function EmployeePortalPage() {
                         </option>
                       ))}
                   </select>
-                  <p className="mt-2 text-[10px] leading-4 text-neutral-500">
+                  <p className="mt-2 text-[10px] leading-4 text-[#62645F]">
                     Choose the payee for this transfer.
                   </p>
                 </div>
@@ -668,7 +679,7 @@ export default function EmployeePortalPage() {
                 <button
                   disabled={!selectedAccount || busyAction !== ''}
                   type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-rose-300 px-4 py-3 text-xs font-bold text-[#210d0d] transition hover:bg-rose-200 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#0A3D2E] px-4 py-3 text-xs font-semibold text-[#FFFFFF] transition hover:bg-[#083326] focus-visible:outline-[#0A3D2E] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <CircleDollarSign size={15} />
                   {busyAction === 'transfer' ? 'Processing transfer…' : 'Transfer money'}
@@ -680,7 +691,7 @@ export default function EmployeePortalPage() {
       </div>
 
       <Panel className="overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-white/[0.07] p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-b border-[#E4E1D8] p-5 sm:flex-row sm:items-center sm:justify-between">
           <SectionTitle
             icon={Activity}
             title="My recorded activity"
@@ -689,7 +700,7 @@ export default function EmployeePortalPage() {
           <button
             onClick={() => void loadWorkspace(false)}
             disabled={busyAction !== ''}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs text-neutral-300 transition hover:bg-white/[0.04] disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#E4E1D8] bg-[#FFFFFF] px-3 py-2 text-xs text-[#171916] transition hover:bg-[#F2F1EA] focus-visible:outline-[#0A3D2E] disabled:opacity-50"
           >
             <RefreshCw size={13} /> Refresh
           </button>
@@ -697,14 +708,14 @@ export default function EmployeePortalPage() {
 
         {!workspace?.recentActions.length ? (
           <div className="p-8 text-center">
-            <Clock3 className="mx-auto text-neutral-600" size={22} />
-            <p className="mt-3 text-sm font-medium text-neutral-300">No recorded actions yet</p>
-            <p className="mt-1 text-xs text-neutral-500">
+            <Clock3 className="mx-auto text-[#62645F]" size={22} />
+            <p className="mt-3 text-sm font-medium text-[#171916]">No recorded actions yet</p>
+            <p className="mt-1 text-xs text-[#62645F]">
               Open a customer record to create the first activity event.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-white/[0.06]">
+          <div className="divide-y divide-[#E4E1D8]">
             {workspace.recentActions.map((item) => {
               let details = '';
               try {
@@ -722,9 +733,9 @@ export default function EmployeePortalPage() {
               }
 
               return (
-                <div key={item.id} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <div key={item.id} className={`${styles.cardSurface} flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between`}>
                   <div className="flex min-w-0 items-start gap-3">
-                    <span className="mt-0.5 rounded-lg border border-white/[0.08] bg-[#101010] p-2 text-neutral-300">
+                    <span className="mt-0.5 rounded-lg border border-[#E4E1D8] bg-[#F2F1EA] p-2 text-[#0A3D2E]">
                       {item.actionType === 'BENEFICIARY_CHANGE'
                         ? <Users size={15} />
                         : item.actionType === 'SIMULATED_TRANSFER'
@@ -732,24 +743,24 @@ export default function EmployeePortalPage() {
                           : <Activity size={15} />}
                     </span>
                     <div className="min-w-0">
-                      <p className="break-words text-xs font-semibold text-neutral-100">
+                      <p className="break-words text-xs font-semibold text-[#171916]">
                         {item.actionType === 'BENEFICIARY_CHANGE'
                           ? 'Beneficiary updated'
                           : item.actionType === 'SIMULATED_TRANSFER'
                             ? 'Transfer initiated'
                             : item.actionType.replaceAll('_', ' ')}
                       </p>
-                      <p className="mt-1 break-words font-mono text-[10px] text-neutral-500">
+                      <p className="mt-1 break-words font-mono technical-metadata text-[10px] text-[#62645F]">
                         {item.targetType} · {item.targetId}
                       </p>
                       {details && (
-                        <p className="mt-1 break-words text-[11px] text-neutral-400">
+                        <p className="mt-1 break-words text-[11px] text-[#62645F]">
                           {details}
                         </p>
                       )}
                     </div>
                   </div>
-                  <time className="shrink-0 text-[10px] text-neutral-500">
+                  <time className="shrink-0 text-[10px] text-[#62645F]">
                     {new Date(item.timestamp).toLocaleString()}
                   </time>
                 </div>
@@ -758,6 +769,7 @@ export default function EmployeePortalPage() {
           </div>
         )}
       </Panel>
-</div>
+      </div>
+    </div>
   );
 }

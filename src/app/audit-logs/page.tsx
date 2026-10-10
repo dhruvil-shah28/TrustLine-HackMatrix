@@ -103,7 +103,7 @@ export default function AuditLogsPage() {
             ) : (
               filteredLogs.map((log) => (
                 <tr key={log.id}>
-                  <td className="font-mono text-[11px] text-slate-300 font-semibold whitespace-nowrap">
+                  <td className="font-mono technical-metadata text-[11px] text-slate-300 whitespace-nowrap">
                     {formatIST(log.timestamp)}
                   </td>
                   <td>
@@ -116,7 +116,7 @@ export default function AuditLogsPage() {
                     <span className="badge badge-medium">{log.action}</span>
                   </td>
                   <td className="font-mono text-[11px] text-slate-400">{log.targetType}</td>
-                  <td className="font-mono text-[11px] text-indigo-300 font-semibold">{log.targetId}</td>
+                  <td className="font-mono technical-metadata text-[11px] text-indigo-300">{log.targetId}</td>
                   <td className="text-xs text-slate-300 max-w-md leading-relaxed">{log.details}</td>
                 </tr>
               ))

@@ -1,0 +1,141 @@
+.employeePortal :global(header.employeeWorkspaceHeader) {
+  background: #203234 !important;
+  border-color: #3a4949 !important;
+}
+
+:global(html:has(.employee-portal-theme)),
+:global(body:has(.employee-portal-theme)) {
+  background-color: #203234 !important;
+}
+
+.employeePortal :global(header:not(.employeeWorkspaceHeader)) {
+  background: #f2f1eb !important;
+  border: 1px solid #e2e1da !important;
+  border-radius: 24px !important;
+  box-shadow: 0 8px 24px rgba(12, 34, 35, 0.16) !important;
+  color: #171916;
+}
+
+.employeePortal :global(header:not(.employeeWorkspaceHeader) > div) {
+  gap: 12px;
+}
+
+.employeePortal :global(header:not(.employeeWorkspaceHeader) nav > *) {
+  flex-shrink: 0;
+}
+
+.employeePortal :global(button:focus-visible),
+.employeePortal :global(input:focus-visible),
+.employeePortal :global(select:focus-visible) {
+  outline-color: var(--mint);
+}
+
+.employeePortal :global(select option) {
+  background-color: var(--bg-inset) !important;
+  color: var(--text-primary) !important;
+}
+
+.cardSurface,
+.sagePanel,
+.mintPanel,
+.balancePanel {
+  background-color: var(--bg-card);
+}
+
+.employeePortal :global([class*="text-[#171916]"]) {
+  color: var(--text-primary) !important;
+}
+
+.employeePortal :global([class*="text-[#62645F]"]),
+.employeePortal :global([class*="text-[#596863]"]),
+.employeePortal :global([class*="text-[#858780]"]) {
+  color: var(--text-secondary) !important;
+}
+
+.employeePortal :global([class*="text-[#0A3D2E]"]),
+.employeePortal :global([class*="text-[#187254]"]) {
+  color: var(--mint) !important;
+}
+
+.employeePortal :global([class*="bg-[#FFFFFF]"]) {
+  background-color: var(--bg-inset) !important;
+}
+
+.employeePortal :global([class*="bg-[#0A3D2E]"]) {
+  background-color: var(--mint) !important;
+  color: #172321 !important;
+}
+
+.employeePortal :global([class*="hover:bg-[#083326]"]:hover) {
+  background-color: #9AE8D4 !important;
+}
+
+.employeePortal :global([class*="border-[#E4E1D8]"]),
+.employeePortal :global([class*="border-[#E2E1DA]"]),
+.employeePortal :global([class*="border-[#D7E2DA]"]) {
+  border-color: var(--border-subtle) !important;
+}
+
+.employeePortal :global([class*="bg-[#F2F1EA]"]),
+.employeePortal :global([class*="bg-[#F7F5EE]"]) {
+  background-color: var(--bg-panel) !important;
+}
+
+.employeePortal :global([class*="bg-[#D9F1E8]"]),
+.employeePortal :global([class*="bg-[#DDF6EF]"]) {
+  background-color: var(--bg-selected) !important;
+}
+
+.employeePortal :global([class*="border-l-[#0A3D2E]"]) {
+  border-left-color: var(--mint) !important;
+}
+
+.employeePortal :global([role="alert"]) {
+  background-color: #482F34 !important;
+  border-color: rgba(255, 133, 133, 0.32) !important;
+  color: #FFB0B0 !important;
+}
+
+.employeePortal :global([role="alert"] svg),
+.employeePortal :global([role="alert"] [class*="text-[#B42318]"]) {
+  color: #FF8585 !important;
+}
+
+.employeePortal :global([role="status"]) {
+  background-color: #314644 !important;
+  border-color: rgba(114, 202, 160, 0.32) !important;
+}
+
+.employeePortal :global([role="status"] p) {
+  color: var(--text-primary) !important;
+}
+
+@media (max-width: 640px) {
+  .employeePortal :global(header:not(.employeeWorkspaceHeader) > div) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .employeePortal :global(header:not(.employeeWorkspaceHeader) nav) {
+    min-width: 0;
+    flex: 1;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-left: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .employeePortal :global(header:not(.employeeWorkspaceHeader) nav::-webkit-scrollbar) {
+    display: none;
+  }
+
+  .employeePortal :global(header:not(.employeeWorkspaceHeader) .employeeNavDropdown) {
+    position: fixed !important;
+    top: 84px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    z-index: 60;
+  }
+}

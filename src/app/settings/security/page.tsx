@@ -44,7 +44,7 @@ export default function SecurityPage() {
           <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-xs space-y-1">
             <div className="flex items-center justify-between text-emerald-300 font-bold">
               <span>● Active Workstation</span>
-              <span className="text-[10px] font-mono">192.168.1.104</span>
+              <span className="text-[10px] font-mono technical-metadata">192.168.1.104</span>
             </div>
             <p className="text-[11px] text-slate-300">Chrome on Windows 11 Enterprise</p>
             <p className="text-[10px] text-slate-400">Authenticated: Today at 09:15 IST</p>
@@ -102,7 +102,7 @@ export default function SecurityPage() {
               <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="font-semibold text-slate-200 block">Mumbai HQ Office Workstation</span>
-                  <span className="text-[10px] text-slate-400 font-mono">192.168.1.104 • Windows 11 Pro</span>
+                  <span className="text-[10px] text-slate-400 font-mono technical-metadata">192.168.1.104 • Windows 11 Pro</span>
                 </div>
                 <span className="text-emerald-400 text-[10px] font-bold">CURRENT DEVICE</span>
               </div>
@@ -110,7 +110,7 @@ export default function SecurityPage() {
               <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800 flex items-center justify-between">
                 <div>
                   <span className="font-semibold text-slate-200 block">Secure Mobile Investigator App</span>
-                  <span className="text-[10px] text-slate-400 font-mono">10.0.12.99 • iOS 18 Sentinel App</span>
+                  <span className="text-[10px] text-slate-400 font-mono technical-metadata">10.0.12.99 • iOS 18 Sentinel App</span>
                 </div>
                 <button className="text-rose-400 hover:underline text-[10px]">Revoke Access</button>
               </div>

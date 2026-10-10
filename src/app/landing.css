@@ -1,0 +1,72 @@
+.landing-root {
+  --bg-page: #FBFAF6;
+  --bg-card: #FFFFFF;
+  --bg-panel: #F2F1EB;
+  --bg-selected: #E8EEE7;
+  --bg-inset: #F8F7F1;
+  --text-primary: #171916;
+  --text-secondary: #62645F;
+  --text-tertiary: #858780;
+  --text-heading: #171916;
+  --text-body: #62645F;
+  --text-muted: #858780;
+  --gold: #C9A84C;
+  --gold-dim: rgba(201, 168, 76, 0.12);
+  --gold-border: rgba(201, 168, 76, 0.25);
+  --green-deep: #104D35;
+  --green-light: #4CAF82;
+  --status-critical: #C0392B;
+  --status-high: #D4863C;
+  --status-warning: #D4A844;
+  --status-medium: #D4A844;
+  --status-success: #187254;
+  --status-info: #126C7A;
+  --border-subtle: #E4E1D8;
+  --border-strong: #D5D1C5;
+  --brand-primary: var(--green-deep);
+  --brand-hover: var(--green-light);
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
+.lp-font-sans {
+  font-family: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif !important;
+}
+
+.lp-font-display {
+  font-family: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif !important;
+}
+
+.lp-font-mono {
+  font-family: var(--font-plex-mono), monospace !important;
+}
+
+.landing-root h1,
+.landing-root h2,
+.landing-root h3 {
+  color: #171916;
+}
+
+.landing-root p {
+  color: #62645F;
+}
+
+.landing-root section,
+.landing-root footer {
+  color: #171916;
+}
+
+.landing-root :focus-visible {
+  outline-color: #104D35;
+}
+
+@media (max-width: 767px) {
+  .landing-root .signal-wrapper {
+    opacity: 0.42;
+    right: -18%;
+    top: 63%;
+    width: 100vw;
+    height: 44vh;
+  }
+}

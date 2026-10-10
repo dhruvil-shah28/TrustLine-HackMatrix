@@ -1,30 +1,34 @@
 @import "tailwindcss";
 
 /* ============================================================
-   TRUSTLINE — DARK PREMIUM DESIGN SYSTEM
-   Charcoal + Warm White + Gold
+   TRUSTLINE — DEEP TEAL DESIGN SYSTEM
+   Deep Teal + Muted Teal + Mint
    ============================================================ */
 
 @layer base {
   :root {
     /* Surface hierarchy */
-    --bg-page: #111111;
-    --bg-card: #1B1B1B;
-    --bg-panel: #202020;
-    --bg-inset: #242424;
+    --bg-page: #203234;
+    --bg-card: #2B3D3C;
+    --bg-panel: #314644;
+    --bg-selected: #374C46;
+    --bg-inset: #253736;
 
     /* Text hierarchy */
-    --text-primary: #F5F2EA;
-    --text-secondary: #B8B5AE;
-    --text-tertiary: #85827C;
-    --text-heading: #F5F2EA;
-    --text-body: #B8B5AE;
-    --text-muted: #85827C;
+    --text-primary: #F2F4EF;
+    --text-secondary: #B7C6C0;
+    --text-tertiary: #9BAEA7;
+    --text-heading: #83E0C9;
+    --text-body: #C4CECD;
+    --text-muted: #9BAEA7;
 
-    /* Gold accent */
-    --gold: #E8C66A;
-    --gold-dim: rgba(232, 198, 106, 0.12);
-    --gold-border: rgba(232, 198, 106, 0.25);
+    /* Brand accents */
+    --mint: #83E0C9;
+    --mint-dim: rgba(131, 224, 201, 0.14);
+    --mint-border: rgba(131, 224, 201, 0.32);
+    --gold: #C9A84C;
+    --gold-dim: rgba(201, 168, 76, 0.12);
+    --gold-border: rgba(201, 168, 76, 0.25);
 
     /* Semantic risk */
     --status-critical: #E05252;
@@ -35,12 +39,12 @@
     --status-info: #6B9FD4;
 
     /* Borders */
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.14);
+    --border-subtle: #405652;
+    --border-strong: #526963;
 
     /* Brand kept for compatibility */
-    --brand-primary: var(--gold);
-    --brand-hover: #D4B05A;
+    --brand-primary: #203234;
+    --brand-hover: #29484A;
   }
 
   * {
@@ -50,13 +54,13 @@
 
   html {
     background: var(--bg-page);
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
     background: var(--bg-page);
     color: var(--text-body);
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
     font-size: 14px;
     line-height: 1.55;
     overflow-x: hidden;
@@ -71,9 +75,25 @@
     font: inherit;
   }
 
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, sans-serif;
+    letter-spacing: -0.015em;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, sans-serif;
+  }
+
   ::selection {
-    background: rgba(232, 198, 106, 0.25);
-    color: #F5F2EA;
+    background: rgba(131, 224, 201, 0.35);
+    color: #172321;
   }
 }
 
@@ -84,6 +104,115 @@
 .app-shell {
   background: var(--bg-page);
   color: var(--text-body);
+}
+
+.investigator-portal,
+.investigator-portal :where(*) {
+  font-family: var(--font-source-sans-3), "Source Sans 3", ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.investigator-portal .font-mono:not(.technical-metadata) {
+  font-family: var(--font-source-sans-3), "Source Sans 3", ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.investigator-portal .technical-metadata,
+.investigator-portal .font-mono.technical-metadata {
+  font-family: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace !important;
+  font-variant-numeric: tabular-nums;
+  font-size: max(0.75rem, 1em) !important;
+  font-weight: 500;
+}
+
+.investigator-portal .heading-page,
+.investigator-portal h1 {
+  font-size: clamp(2rem, 2.8vw, 2.5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.investigator-portal .heading-card,
+.investigator-portal h2 {
+  font-size: clamp(1.1875rem, 1.5vw, 1.375rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.investigator-portal .heading-section {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.015em;
+  text-transform: none !important;
+  text-transform: none;
+}
+
+.investigator-portal h3 {
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3;
+}
+
+.investigator-portal p:not(.technical-metadata):not(.font-mono):not([class*="text-[10px]"]):not([class*="text-[11px]"]) {
+  font-size: max(0.875rem, 1em) !important;
+  line-height: 1.5;
+}
+
+.investigator-portal label {
+  font-size: max(0.8125rem, 1em);
+  font-weight: 600;
+}
+
+.investigator-portal .metric-value {
+  font-size: clamp(2rem, 2.6vw, 2.375rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.investigator-portal .btn {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.investigator-portal .badge {
+  font-size: 0.75rem !important;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.investigator-portal .ui-table th {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.investigator-portal .ui-table td {
+  font-size: 0.875rem;
+}
+
+.investigator-portal button,
+.investigator-portal input,
+.investigator-portal select,
+.investigator-portal textarea {
+  font-size: max(0.875rem, 1em);
+}
+
+.investigator-portal header.app-command-header nav a,
+.investigator-portal header.app-command-header nav button {
+  font-size: 0.875rem !important;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .investigator-portal .heading-page,
+  .investigator-portal h1 {
+    font-size: 1.875rem !important;
+  }
+
+  .investigator-portal .metric-value {
+    font-size: clamp(1.875rem, 8vw, 2.25rem) !important;
+  }
 }
 
 .app-container {
@@ -97,16 +226,17 @@
 .ui-card,
 .glass-panel {
   background: var(--bg-card) !important;
+  color: var(--text-primary);
   border: 1px solid var(--border-subtle) !important;
   border-radius: 14px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: none !important;
   transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
 }
 
 .ui-card:hover,
 .glass-panel-hover:hover {
   border-color: var(--border-strong) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 /* Semantic left-border accent — replace old colorful backgrounds */
@@ -126,7 +256,7 @@
   border-left: 2px solid var(--status-info) !important;
 }
 
-/* Text inside cards: ensure warm white contrast */
+/* Text inside dark card surfaces */
 .ui-card .text-white,
 .ui-card .text-slate-100,
 .glass-panel .text-white,
@@ -149,6 +279,13 @@
 .glass-panel .text-slate-400,
 .glass-panel .text-slate-500 {
   color: var(--text-secondary) !important;
+}
+
+.ui-card .heading-card,
+.ui-card .heading-section,
+.glass-panel .heading-card,
+.glass-panel .heading-section {
+  color: var(--text-primary) !important;
 }
 
 /* ============================================================
@@ -174,7 +311,7 @@
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--mint);
   outline-offset: 2px;
 }
 
@@ -183,30 +320,30 @@
   opacity: 0.45;
 }
 
-/* PRIMARY — Gold CTA */
+/* PRIMARY — Mint CTA */
 .btn-primary {
-  background: var(--gold);
-  color: #1A1500;
-  border-color: var(--gold);
+  background: var(--mint);
+  color: #172321;
+  border-color: var(--mint);
   font-weight: 700;
 }
 
 .btn-primary:hover {
-  background: #D4B05A;
-  border-color: #D4B05A;
-  box-shadow: 0 2px 8px rgba(232, 198, 106, 0.2);
+  background: #9AE8D4;
+  border-color: #9AE8D4;
+  box-shadow: none;
 }
 
-/* SECONDARY — Dark surface */
+/* SECONDARY — Nested teal surface */
 .btn-secondary {
   background: var(--bg-panel);
   color: var(--text-primary);
-  border-color: var(--border-strong);
+  border-color: var(--border-subtle);
 }
 
 .btn-secondary:hover {
-  background: var(--bg-inset);
-  border-color: rgba(255, 255, 255, 0.22);
+  background: var(--bg-selected);
+  border-color: var(--border-strong);
 }
 
 /* GHOST */
@@ -217,8 +354,8 @@
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
+  background: rgba(131, 224, 201, 0.16);
+  color: var(--mint);
 }
 
 /* DANGER */
@@ -303,8 +440,8 @@
 }
 
 .ui-input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(232, 198, 106, 0.12);
+  border-color: var(--mint);
+  box-shadow: 0 0 0 3px rgba(131, 224, 201, 0.16);
   outline: 0;
 }
 
@@ -324,7 +461,7 @@
 }
 
 .ui-table th {
-  background: var(--bg-inset);
+  background: var(--bg-panel);
   color: var(--text-tertiary);
   font-size: 0.6875rem;
   font-weight: 700;
@@ -346,7 +483,7 @@
 }
 
 .ui-table tr:hover td {
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(131, 224, 201, 0.06);
 }
 
 /* ============================================================
@@ -357,8 +494,8 @@
   color: var(--text-heading);
   font-size: clamp(1.6rem, 2.5vw, 2.25rem);
   line-height: 1.08;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .heading-section {
@@ -372,7 +509,7 @@
 .heading-card {
   color: var(--text-heading);
   font-size: 0.9375rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.01em;
 }
@@ -400,13 +537,23 @@
 }
 
 /* ============================================================
-   NAVBAR — DARK COMMAND BAR
+   NAVBAR — WARM-WHITE COMMAND BAR
    ============================================================ */
 
-.app-shell header {
-  background: #111111 !important;
+.app-shell header:not(.app-command-header) {
+  background: #F2F1EB !important;
   border-bottom: 1px solid var(--border-subtle) !important;
-  backdrop-filter: none !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.app-shell header.app-command-header {
+  width: calc(100% - 24px);
+  background: rgba(248, 247, 241, 0.84) !important;
+  border: 1px solid rgba(215, 226, 218, 0.84) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 24px rgba(10, 28, 28, 0.12) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
 }
 
 .app-shell header>div {
@@ -417,41 +564,46 @@
 .app-shell header .text-white,
 .app-shell header .text-slate-100,
 .app-shell header .text-slate-200 {
-  color: var(--text-primary) !important;
+  color: #172321 !important;
 }
 
 .app-shell header .text-slate-300,
 .app-shell header .text-slate-400 {
-  color: var(--text-secondary) !important;
+  color: #596863 !important;
 }
 
 .app-shell header .text-slate-500,
 .app-shell header .text-slate-600 {
-  color: var(--text-tertiary) !important;
+  color: #71807A !important;
+}
+
+.app-shell header [style*="color: rgb(245, 242, 234)"],
+.app-shell header [style*="color: rgb(184, 181, 174)"] {
+  color: #172321 !important;
 }
 
 /* Brand logo accent */
 .app-shell header .bg-indigo-600 {
-  background: var(--gold) !important;
-  color: #1A1500 !important;
+  background: var(--mint) !important;
+  color: #172321 !important;
 }
 
-/* Active nav item — gold instead of indigo */
+/* Active nav item */
 .app-shell header a[class*="bg-indigo-600"],
 .app-shell header .bg-indigo-600 {
-  background: var(--gold) !important;
-  color: #1A1500 !important;
+  background: rgba(131, 224, 201, 0.18) !important;
+  color: #172321 !important;
 }
 
 /* Inactive nav hover */
 .app-shell header .hover\:bg-slate-800:hover,
 .app-shell header [class*="hover:bg-slate-800"]:hover {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(32, 50, 52, 0.06) !important;
 }
 
 /* Nav link inactive text */
 .app-shell header .text-slate-300 {
-  color: var(--text-secondary) !important;
+  color: #596863 !important;
 }
 
 /* Search bar in nav */
@@ -461,7 +613,49 @@
 }
 
 .app-shell header .bg-slate-950 {
-  background: var(--bg-panel) !important;
+  background: var(--bg-inset) !important;
+}
+
+.app-shell header.app-command-header .text-white,
+.app-shell header.app-command-header .text-slate-100,
+.app-shell header.app-command-header .text-slate-200 {
+  color: #172321 !important;
+}
+
+.app-shell header.app-command-header .text-slate-300,
+.app-shell header.app-command-header .text-slate-400 {
+  color: #596863 !important;
+}
+
+.app-shell header.app-command-header .text-slate-500,
+.app-shell header.app-command-header .text-slate-600 {
+  color: #71807A !important;
+}
+
+.app-shell header.app-command-header [style*="var(--text-secondary)"],
+.app-shell header.app-command-header [style*="var(--text-tertiary)"],
+.app-shell header.app-command-header [style*="#F2F4EF"],
+.app-shell header.app-command-header [style*="#B7C6C0"],
+.app-shell header.app-command-header [style*="#9BAEA7"],
+.app-shell header.app-command-header [style*="#83E0C9"],
+.app-shell header.app-command-header [style*="color: rgb(242, 244, 239)"],
+.app-shell header.app-command-header [style*="color: rgb(183, 198, 192)"],
+.app-shell header.app-command-header [style*="color: rgb(155, 174, 167)"] {
+  color: #172321 !important;
+}
+
+.app-shell header.app-command-header [style*="var(--bg-card)"],
+.app-shell header.app-command-header [style*="var(--bg-inset)"],
+.app-shell header.app-command-header [style*="var(--bg-panel)"] {
+  background: #F2F1EB !important;
+}
+
+.app-shell header.app-command-header [style*="var(--border-subtle)"] {
+  border-color: #D7E2DA !important;
+}
+
+.app-shell header.app-command-header [class*="border-slate-"] {
+  border-color: #D7E2DA !important;
 }
 
 /* Notification badge stays red */
@@ -469,17 +663,21 @@
   background: var(--status-critical) !important;
 }
 
-/* User avatar disc — use gold */
+/* User avatar disc — use mint */
 .app-shell header .bg-indigo-600.rounded-full {
-  background: var(--gold) !important;
-  color: #1A1500 !important;
+  background: var(--mint) !important;
+  color: #172321 !important;
 }
 
 /* Dropdown panels */
 .app-shell header [class*="bg-slate-900"],
 .app-shell header [class*="bg-slate-950"] {
-  background: var(--bg-card) !important;
+  background: var(--bg-inset) !important;
   border-color: var(--border-subtle) !important;
+}
+
+.app-shell header [class*="border-slate-"] {
+  border-color: #D7E2DA !important;
 }
 
 /* ============================================================
@@ -487,26 +685,102 @@
    Convert all Tailwind dark-slate utility colors → design tokens
    ============================================================ */
 
-/* Dark page backgrounds → our layered surfaces */
+/* Legacy dark Tailwind surfaces → the page and card palette */
 .app-shell [class*="bg-slate-950"] {
-  background-color: var(--bg-page) !important;
+  background-color: var(--bg-panel) !important;
+  color: var(--text-primary);
 }
 
 .app-shell [class*="bg-slate-900"] {
-  background-color: var(--bg-inset) !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary);
 }
 
 .app-shell [class*="bg-slate-800"] {
   background-color: var(--bg-panel) !important;
+  color: var(--text-primary);
+}
+
+.app-shell [class*="bg-slate-700"] {
+  background-color: var(--bg-selected) !important;
+  color: var(--text-primary);
+}
+
+.app-shell [class*="bg-gray-950"],
+.app-shell [class*="bg-gray-900"],
+.app-shell [class*="bg-neutral-950"],
+.app-shell [class*="bg-neutral-900"],
+.app-shell [class*="bg-zinc-950"],
+.app-shell [class*="bg-zinc-900"],
+.app-shell [class*="bg-black"] {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary);
+}
+
+.app-shell [class*="bg-gray-800"],
+.app-shell [class*="bg-neutral-800"],
+.app-shell [class*="bg-zinc-800"] {
+  background-color: var(--bg-panel) !important;
+  color: var(--text-primary);
+}
+
+.app-shell [class*="bg-indigo-"],
+.app-shell [class*="bg-blue-"],
+.app-shell [class*="bg-violet-"],
+.app-shell [class*="bg-purple-"] {
+  background-color: var(--mint-dim) !important;
+}
+
+.app-shell [class*="border-blue-"],
+.app-shell [class*="border-violet-"],
+.app-shell [class*="border-purple-"] {
+  border-color: var(--mint-border) !important;
 }
 
 /* BUT: exclude elements that are already handled by .ui-card / .glass-panel,
    and exclude the Navbar (handled separately above) */
 
-/* Black inset backgrounds (from page.tsx bg-[#030712], etc.) */
+/* Legacy inset surfaces map to the darker nested teal level. */
 .app-shell [class*="bg-[#030712]"],
 .app-shell [class*="bg-[#090d16]"] {
   background-color: var(--bg-inset) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* Legacy inline dark surfaces used by the Money Flow canvas and its controls */
+.app-shell [style*="background: rgb(31, 31, 31)"],
+.app-shell [style*="background: rgb(32, 42, 37)"],
+.app-shell [style*="background: rgb(36, 27, 27)"],
+.app-shell [style*="background: rgb(34, 31, 40)"],
+.app-shell [style*="background: rgb(26, 26, 26)"],
+.app-shell [style*="background: rgb(42, 24, 32)"],
+.app-shell [style*="background: rgb(17, 17, 17)"],
+.app-shell [style*="background: rgb(41, 41, 41)"],
+.app-shell [style*="background: rgb(36, 36, 36)"],
+.app-shell [style*="background: rgb(27, 27, 27)"],
+.app-shell [style*="background: rgb(20, 20, 20)"],
+.app-shell [style*="background: rgb(21, 21, 21)"],
+.app-shell [style*="background:#1F1F1F"],
+.app-shell [style*="background:#202A25"],
+.app-shell [style*="background:#241B1B"],
+.app-shell [style*="background:#221F28"],
+.app-shell [style*="background:#1A1A1A"],
+.app-shell [style*="background:#2A1820"],
+.app-shell [style*="background:#111111"],
+.app-shell [style*="background:#292929"],
+.app-shell [style*="background:#242424"],
+.app-shell [style*="background:#1B1B1B"],
+.app-shell [style*="background:#141414"],
+.app-shell [style*="background:#151515"] {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+
+.app-shell [style*="linear-gradient(135deg, rgba(27,27,27"],
+.app-shell [style*="linear-gradient(135deg, rgba(20,20,20"] {
+  background-image: none !important;
+  background-color: var(--bg-card) !important;
   border-color: var(--border-subtle) !important;
 }
 
@@ -549,34 +823,40 @@
 /* Emerald / green → success green */
 .app-shell .text-emerald-400,
 .app-shell .text-emerald-300 {
-  color: #6ECBA0 !important;
+  color: #72CAA0 !important;
 }
 
 /* Amber/yellow → our gold-adjacent warning */
 .app-shell .text-amber-400,
 .app-shell .text-amber-300 {
-  color: #E8C66A !important;
+  color: #F0BE69 !important;
 }
 
 /* Rose/red → critical */
 .app-shell .text-rose-400,
 .app-shell .text-rose-300 {
-  color: #F08080 !important;
+  color: #FF8585 !important;
 }
 
 .app-shell .text-rose-500 {
-  color: #E05252 !important;
+  color: #FF7777 !important;
 }
 
-/* Indigo → gold replacement */
+/* Brand-color replacements */
 .app-shell .text-indigo-400,
 .app-shell .text-indigo-300 {
-  color: var(--gold) !important;
+  color: var(--mint) !important;
+}
+
+.app-shell [class*="text-blue-"],
+.app-shell [class*="text-violet-"],
+.app-shell [class*="text-purple-"] {
+  color: var(--mint) !important;
 }
 
 /* Cyan */
 .app-shell .text-cyan-400 {
-  color: #6B9FD4 !important;
+  color: #78C8D4 !important;
 }
 
 /* ============================================================
@@ -586,23 +866,23 @@
 /* Active nav pill */
 .app-shell a.bg-indigo-600,
 .app-shell .bg-indigo-600 {
-  background-color: var(--gold) !important;
-  color: #1A1500 !important;
+  background-color: var(--mint) !important;
+  color: #172321 !important;
 }
 
 .app-shell .bg-indigo-500 {
-  background-color: var(--gold) !important;
-  color: #1A1500 !important;
+  background-color: var(--mint) !important;
+  color: #172321 !important;
 }
 
 /* Indigo-tinted backgrounds (dropdown badges etc.) */
 .app-shell [class*="bg-indigo-950"] {
-  background-color: var(--gold-dim) !important;
+  background-color: var(--mint-dim) !important;
 }
 
 .app-shell [class*="bg-indigo-500/10"],
 .app-shell [class*="bg-indigo-600/20"] {
-  background-color: var(--gold-dim) !important;
+  background-color: var(--mint-dim) !important;
 }
 
 /* Indigo borders */
@@ -611,25 +891,25 @@
 .app-shell .border-indigo-800,
 .app-shell [class*="border-indigo-500/30"],
 .app-shell [class*="border-indigo-800/40"] {
-  border-color: var(--gold-border) !important;
+  border-color: var(--mint-border) !important;
 }
 
-/* Inline indigo investigate button in alerts */
+/* Inline primary actions */
 .app-shell a.bg-indigo-600,
 .app-shell button.bg-indigo-600 {
-  background: var(--gold) !important;
-  color: #1A1500 !important;
-  border-color: var(--gold) !important;
+  background: var(--mint) !important;
+  color: #172321 !important;
+  border-color: var(--mint) !important;
 }
 
 .app-shell a.hover\:bg-indigo-500:hover,
 .app-shell button.hover\:bg-indigo-500:hover {
-  background: #D4B05A !important;
+  background: #9AE8D4 !important;
 }
 
 /* shadow-indigo-600/20 → muted gold shadow */
 .app-shell [class*="shadow-indigo-600"] {
-  box-shadow: 0 4px 12px rgba(232, 198, 106, 0.15) !important;
+  box-shadow: none !important;
 }
 
 /* ============================================================
@@ -652,7 +932,7 @@
 .app-shell .bg-slate-900\/60,
 .app-shell .bg-slate-950\/70,
 .app-shell .bg-slate-900\/50 {
-  background-color: rgba(36, 36, 36, 0.85) !important;
+  background-color: var(--bg-inset) !important;
 }
 
 /* ============================================================
@@ -756,7 +1036,7 @@
    ============================================================ */
 
 .app-shell .ui-table th {
-  color: var(--text-tertiary);
+  color: var(--mint);
   background: var(--bg-inset);
   border-color: var(--border-subtle);
 }
@@ -813,13 +1093,27 @@
 }
 
 /* ============================================================
-   LOADING STATE (ClientProviders)
+   LIGHT CONTENT SURFACES
    ============================================================ */
 
 .app-shell .bg-slate-50,
-.app-shell .bg-gray-50,
-.app-shell .bg-white {
-  background-color: var(--bg-page) !important;
+.app-shell .bg-gray-50 {
+  background-color: var(--bg-panel) !important;
+}
+
+.app-shell main .bg-white {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary);
+}
+
+.app-shell main input.bg-white,
+.app-shell main select.bg-white,
+.app-shell main textarea.bg-white {
+  background-color: var(--bg-inset) !important;
+}
+
+.app-shell [class*="border-slate-"] {
+  border-color: var(--border-subtle) !important;
 }
 
 .app-shell .text-slate-500 {
@@ -831,12 +1125,12 @@
    ============================================================ */
 
 .app-shell select {
-  background: transparent;
+  background-color: var(--bg-inset);
   color: var(--text-primary);
 }
 
 .app-shell select option {
-  background: var(--bg-card);
+  background: var(--bg-inset);
   color: var(--text-primary);
 }
 
@@ -845,21 +1139,33 @@
    ============================================================ */
 
 .app-shell *:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--mint);
   outline-offset: 2px;
+}
+
+.app-shell h1.text-white,
+.app-shell h2.text-white {
+  color: var(--text-heading) !important;
+}
+
+.app-shell .ui-card h1.text-white,
+.app-shell .ui-card h2.text-white,
+.app-shell .glass-panel h1.text-white,
+.app-shell .glass-panel h2.text-white {
+  color: var(--text-primary) !important;
 }
 
 /* Override blue focus from Tailwind */
 .app-shell .focus\:border-indigo-500:focus {
-  border-color: var(--gold) !important;
-  box-shadow: 0 0 0 3px rgba(232, 198, 106, 0.12) !important;
+  border-color: var(--mint) !important;
+  box-shadow: 0 0 0 3px rgba(131, 224, 201, 0.16) !important;
 }
 
 /* ============================================================
    MONO FONT code- and data-heavy areas look professional
    ============================================================ */
 .app-shell .font-mono {
-  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 /* ============================================================
@@ -870,8 +1176,10 @@
 .react-flow__controls-zoomout,
 .react-flow__controls-fitview,
 .react-flow__controls-interactive {
-  color: #000000 !important;
-  fill: #000000 !important;
+  background: #FFFFFF !important;
+  color: #172321 !important;
+  fill: #172321 !important;
+  border-color: #D7E2DA !important;
 }
 
 .react-flow__controls-button svg,
@@ -884,7 +1192,7 @@
 .react-flow__controls-zoomout path,
 .react-flow__controls-fitview path,
 .react-flow__controls-interactive path {
-  fill: #000000 !important;
-  color: #000000 !important;
+  fill: #172321 !important;
+  color: #172321 !important;
 }
-
+

@@ -1,6 +1,16 @@
 import { PrismaClient } from '@prisma/client';
+import { scrypt as scryptCallback, randomBytes } from 'node:crypto';
+import { promisify } from 'node:util';
+
+const scrypt = promisify(scryptCallback);
 
 const prisma = new PrismaClient();
+
+async function hashPassword(password: string): Promise<string> {
+  const salt = randomBytes(16).toString('hex');
+  const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
+  return `scrypt:${salt}:${derivedKey.toString('hex')}`;
+}
 
 async function main() {
   console.log('--- Cleaning existing database ---');
@@ -130,8 +140,15 @@ async function main() {
   ];
 
   const createdEmployees: Record<string, any> = {};
+  const defaultPasswordHash = await hashPassword('TL-Employee#2026');
+
   for (const emp of employeesData) {
-    const created = await prisma.employee.create({ data: emp });
+    const created = await prisma.employee.create({
+      data: {
+        ...emp,
+        passwordHash: defaultPasswordHash
+      }
+    });
     createdEmployees[emp.employeeCode] = created;
   }
 

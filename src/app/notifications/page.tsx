@@ -75,7 +75,7 @@ export default function NotificationsPage() {
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
                     {n.type}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-mono">{n.timestamp}</span>
+                  <span className="text-[10px] text-slate-500 font-mono technical-metadata">{n.timestamp}</span>
                 </div>
                 <p className="text-xs text-slate-300">{n.description}</p>
               </div>

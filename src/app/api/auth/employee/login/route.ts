@@ -6,6 +6,23 @@ import { createEmployeeSession } from '@/lib/employee-session';
 
 const scrypt = promisify(scryptCallback);
 
+// Basic in-memory rate limiter: 5 attempts per minute per IP
+const rateLimiter = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimiter.get(ip);
+  if (!record || now > record.resetTime) {
+    rateLimiter.set(ip, { count: 1, resetTime: now + 60 * 1000 });
+    return true;
+  }
+  if (record.count >= 5) {
+    return false;
+  }
+  record.count++;
+  return true;
+}
+
 async function verifyPassword(password: string, storedHash: string) {
   const [algorithm, salt, expectedHex] = storedHash.split(':');
 
@@ -21,6 +38,14 @@ async function verifyPassword(password: string, storedHash: string) {
 
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again later.' },
+        { status: 429 },
+      );
+    }
+
     const body = await request.json();
     const employeeCode =
       typeof body.employeeCode === 'string' ? body.employeeCode.trim() : '';

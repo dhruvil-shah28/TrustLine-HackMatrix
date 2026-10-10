@@ -223,19 +223,19 @@ export default function AlertsListPage() {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/60 px-2.5 py-0.5 rounded border border-indigo-800/40">
+                      <span className="font-mono technical-metadata text-xs text-indigo-300 bg-indigo-950/60 px-2.5 py-0.5 rounded border border-indigo-800/40">
                         {alert.alertCode}
                       </span>
                       <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold tracking-wider uppercase border ${severityBadgeBg}`}>
                         {alert.severity} RISK
                       </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-950 text-slate-300 border border-slate-800">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-950 text-slate-300 border border-slate-800">
                         Confidence: {alert.confidence}
                       </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono text-indigo-400 bg-slate-950 border border-slate-800">
+                      <span className="px-2 py-0.5 rounded text-[10px] text-indigo-400 bg-slate-950 border border-slate-800">
                         Status: {alert.status}
                       </span>
-                      <span className="px-2.5 py-0.5 rounded text-[10px] font-mono text-amber-300 bg-slate-950 border border-amber-500/30 flex items-center gap-1">
+                      <span className="px-2.5 py-0.5 rounded text-[10px] text-amber-300 bg-slate-950 border border-amber-500/30 flex items-center gap-1">
                         <Clock className="h-3 w-3 text-amber-400" />
                         Trigger Event: {formatIST((alert as any).createdAt)}
                       </span>
@@ -248,8 +248,8 @@ export default function AlertsListPage() {
 
                   <div className="flex items-center gap-4 shrink-0">
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-400 font-mono block">FINANCIAL EXPOSURE</span>
-                      <span className="text-sm font-mono font-extrabold text-white">
+                      <span className="text-xs text-slate-400 block font-semibold">FINANCIAL EXPOSURE</span>
+                      <span className="text-xl font-bold text-white">
                         ₹{(alert.financialExposure || 0).toLocaleString('en-IN')}
                       </span>
                     </div>
@@ -270,7 +270,7 @@ export default function AlertsListPage() {
 
                 {/* Key Metadata & Evidence Signals Bar */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/70 text-xs">
-                  <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-slate-400">
+                  <div className="flex flex-wrap items-center gap-2 text-sm text-slate-400">
                     <span>Target: <strong className="text-slate-200">{primaryEntityLabel}</strong></span>
                     <span>•</span>
                     <span>Method: <strong className="text-indigo-300">{alert.detectionMethod}</strong></span>

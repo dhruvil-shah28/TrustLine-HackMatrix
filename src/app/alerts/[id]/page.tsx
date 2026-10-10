@@ -397,7 +397,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Alerts Queue
           </Link>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-rose-400 bg-rose-950/60 px-2.5 py-0.5 rounded border border-rose-800/50">
+            <span className="font-mono technical-metadata text-xs text-rose-400 bg-rose-950/60 px-2.5 py-0.5 rounded border border-rose-800/50">
               {alert.alertCode}
             </span>
             <span className="px-2.5 py-0.5 rounded text-xs font-extrabold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/30">
@@ -415,7 +415,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
           <button
             onClick={handleReconstructAttack}
             disabled={attackDnaLoading}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 via-indigo-600 to-cyan-600 hover:opacity-90 text-white font-bold text-xs shadow-lg shadow-indigo-600/25 flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-[#83E0C9] hover:bg-[#9AE8D4] text-[#172321] font-semibold text-xs flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
           >
             {attackDnaLoading ? (
               <RefreshCw className="h-3.5 w-3.5 animate-spin" />
@@ -464,10 +464,10 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
       <div className="glass-panel p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-r from-rose-950/30 via-slate-900 to-slate-900 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div className="space-y-1.5 max-w-3xl">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-extrabold bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/40">
+            <span className="text-xs uppercase tracking-wider text-rose-400 font-semibold bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/40">
               WHY FLAGGED NARRATIVE
             </span>
-            <span className="text-xs font-mono text-slate-400">Confidence: {alert.confidence}</span>
+            <span className="text-sm text-slate-400">Confidence: {alert.confidence}</span>
           </div>
           <p className="text-xs text-slate-200 leading-relaxed font-medium">
             {alert.riskExplanation}
@@ -475,13 +475,13 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
         </div>
 
         <div className="glass-panel p-4 rounded-xl border border-slate-800 bg-slate-950/80 text-center min-w-[200px] shrink-0 shadow-lg">
-          <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block">
+          <span className="text-xs text-slate-400 uppercase tracking-wider block font-semibold">
             FINANCIAL EXPOSURE
           </span>
-          <span className="text-2xl font-extrabold text-rose-400 font-mono mt-0.5 block">
+          <span className="metric-value text-rose-400 mt-0.5 block">
             ₹{(alert.financialExposure || 4455000).toLocaleString('en-IN')}
           </span>
-          <span className="text-[10px] text-slate-500 font-mono mt-0.5 block">
+          <span className="text-xs text-slate-500 mt-0.5 block">
             Primary: {primaryEntityCode}
           </span>
         </div>
@@ -561,7 +561,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
                 proOptions={{ hideAttribution: true }}
               >
                 <Background color="#1e293b" gap={16} size={1} />
-                <Controls className="bg-slate-900 border border-slate-800 text-black fill-black rounded-lg p-1" />
+                <Controls className="bg-slate-900 border border-slate-800 text-slate-100 fill-slate-100 rounded-lg p-1" />
               </ReactFlow>
             </div>
 
@@ -772,7 +772,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
                         </div>
                         <div>
                           <span className="text-emerald-400 font-semibold">Event occurred: </span>
-                          <span className="text-white font-bold">{formatIST(ev.timestamp)}</span>
+                          <time className="technical-metadata text-white font-medium">{formatIST(ev.timestamp)}</time>
                         </div>
                       </div>
 
@@ -780,7 +780,9 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
                         <div>
                           <span className="text-slate-500">Ingestion/Arrival: </span>
                           <span className="text-slate-300">
-                            {ev.metadata?.arrivalTimestamp ? formatIST(ev.metadata.arrivalTimestamp) : 'Recorded synchronously at occurrence'}
+                            {ev.metadata?.arrivalTimestamp
+                              ? <time className="technical-metadata">{formatIST(ev.metadata.arrivalTimestamp)}</time>
+                              : 'Recorded synchronously at occurrence'}
                           </span>
                         </div>
                         {ev.metadata?.isLateArrival && (
@@ -837,7 +839,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
                       </div>
                       <p className="text-[11px] text-slate-200">{rev.reason}</p>
                       <div className="pt-1.5 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 flex flex-wrap items-center justify-between gap-1">
-                        <span>Revision Persisted: {formatIST(rev.createdAt)}</span>
+                        <span>Revision Persisted: <time className="technical-metadata">{formatIST(rev.createdAt)}</time></span>
                         <span className="text-emerald-400 font-semibold">+{rev.addedEvidence?.length || 1} evidence item(s)</span>
                       </div>
                     </div>

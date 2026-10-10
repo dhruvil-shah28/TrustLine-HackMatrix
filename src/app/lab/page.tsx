@@ -374,7 +374,7 @@ export default function DetectionLabPage() {
               <span className="text-[10px] font-mono text-indigo-300 font-bold uppercase block">
                 Evaluated Population
               </span>
-              <p className="text-3xl font-black text-white mt-1">
+              <p className="metric-value text-white mt-1">
                 {radarData?.summary.totalEntitiesEvaluated || 10}
               </p>
               <p className="text-[11px] text-indigo-400 mt-1">Personnel & Accounts Monitored</p>
@@ -384,7 +384,7 @@ export default function DetectionLabPage() {
               <span className="text-[10px] font-mono text-rose-300 font-bold uppercase block">
                 Candidate Deviations
               </span>
-              <p className="text-3xl font-black text-rose-400 mt-1">
+              <p className="metric-value text-rose-400 mt-1">
                 {radarData?.summary.candidateDeviations || 2}
               </p>
               <p className="text-[11px] text-rose-400 mt-1">Exceeding Learned Prioritisation Cutoff</p>
@@ -394,7 +394,7 @@ export default function DetectionLabPage() {
               <span className="text-[10px] font-mono text-amber-300 font-bold uppercase block">
                 Data-Limited Baselines
               </span>
-              <p className="text-3xl font-black text-amber-300 mt-1">
+              <p className="metric-value text-amber-300 mt-1">
                 {radarData?.summary.dataLimitedCount || 8}
               </p>
               <p className="text-[11px] text-amber-400 mt-1">Marked Preliminary (Zero Manufactured Profiles)</p>
@@ -535,7 +535,7 @@ export default function DetectionLabPage() {
                           <span className="font-mono text-xs">{selectedRadarEntity.ruleBaseline.signalsCount} signals</span>
                         </div>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black font-mono text-slate-200">
+                          <span className="metric-value text-slate-200">
                             {selectedRadarEntity.ruleBaseline.score}
                           </span>
                           <span className="text-xs text-slate-500">/ 98</span>
@@ -557,7 +557,7 @@ export default function DetectionLabPage() {
                           </span>
                         </div>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black font-mono text-amber-300">
+                          <span className="metric-value text-amber-300">
                             {selectedRadarEntity.prediction.prioritisationScore}
                           </span>
                           <span className="text-xs text-amber-500/70">/ 99</span>
@@ -717,7 +717,7 @@ export default function DetectionLabPage() {
                 </div>
                 <div className="text-right pl-3 border-l border-slate-800">
                   <span className="text-[10px] font-mono uppercase text-slate-400 block">Baseline Score</span>
-                  <span className="text-2xl font-black font-mono text-white">
+                  <span className="metric-value text-white">
                     {baselineData?.baselineEval?.score ?? '--'}
                     <span className="text-xs text-slate-400 font-normal">/98</span>
                   </span>
@@ -975,7 +975,7 @@ export default function DetectionLabPage() {
                   type="button"
                   onClick={handleRunSimulation}
                   disabled={simulationRunning || !selectedRecordId}
-                  className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-black text-xs shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="flex-1 py-3 px-4 rounded-xl bg-[#83E0C9] hover:bg-[#9AE8D4] text-[#172321] font-semibold text-xs transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   <Sparkles className={`h-4 w-4 ${simulationRunning ? 'animate-spin' : ''}`} />
                   {simulationRunning ? 'Simulating Isolated Engine...' : 'Run Counterfactual Simulation'}
@@ -1151,7 +1151,7 @@ export default function DetectionLabPage() {
             <button
               onClick={runLabEvaluation}
               disabled={matrixRunning}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white text-xs font-extrabold shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2"
+              className="px-4 py-2.5 rounded-xl bg-[#83E0C9] hover:bg-[#9AE8D4] text-[#172321] text-xs font-semibold transition-all flex items-center gap-2"
             >
               <Play className={`h-4 w-4 ${matrixRunning ? 'animate-spin' : ''}`} />
               {matrixRunning ? 'Running Detection Suite...' : 'Re-Run Evaluation Suite'}
@@ -1179,15 +1179,15 @@ export default function DetectionLabPage() {
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
                       <span className="text-[10px] text-slate-500 uppercase block">F1 Score</span>
-                      <p className="text-2xl font-bold text-white mt-0.5">{ruleMetrics?.f1Score || 100}%</p>
+                      <p className="metric-value text-white mt-0.5">{ruleMetrics?.f1Score || 100}%</p>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
                       <span className="text-[10px] text-slate-500 uppercase block">Precision</span>
-                      <p className="text-2xl font-bold text-white mt-0.5">{ruleMetrics?.precision || 100}%</p>
+                      <p className="metric-value text-white mt-0.5">{ruleMetrics?.precision || 100}%</p>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
                       <span className="text-[10px] text-slate-500 uppercase block">Recall</span>
-                      <p className="text-2xl font-bold text-white mt-0.5">{ruleMetrics?.recall || 100}%</p>
+                      <p className="metric-value text-white mt-0.5">{ruleMetrics?.recall || 100}%</p>
                     </div>
                   </div>
                 </div>
@@ -1206,15 +1206,15 @@ export default function DetectionLabPage() {
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="p-3 rounded-xl bg-slate-950 border border-amber-500/30">
                       <span className="text-[10px] text-amber-400 uppercase block">F1 Score</span>
-                      <p className="text-2xl font-bold text-white mt-0.5">{modelMetrics?.f1Score || 100}%</p>
+                      <p className="metric-value text-white mt-0.5">{modelMetrics?.f1Score || 100}%</p>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-950 border border-amber-500/30">
                       <span className="text-[10px] text-amber-400 uppercase block">Precision</span>
-                      <p className="text-2xl font-bold text-white mt-0.5">{modelMetrics?.precision || 100}%</p>
+                      <p className="metric-value text-white mt-0.5">{modelMetrics?.precision || 100}%</p>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-950 border border-amber-500/30">
                       <span className="text-[10px] text-amber-400 uppercase block">Recall</span>
-                      <p className="text-2xl font-bold text-white mt-0.5">{modelMetrics?.recall || 100}%</p>
+                      <p className="metric-value text-white mt-0.5">{modelMetrics?.recall || 100}%</p>
                     </div>
                   </div>
                 </div>
@@ -1231,25 +1231,25 @@ export default function DetectionLabPage() {
                   <div className="grid grid-cols-2 gap-3 text-center pt-2">
                     <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 space-y-1">
                       <span className="text-[10px] font-mono uppercase text-emerald-300 block">True Positive</span>
-                      <span className="text-2xl font-bold text-emerald-400 font-mono">{metrics.tp}</span>
+                      <span className="metric-value text-emerald-400">{metrics.tp}</span>
                       <p className="text-[10px] text-slate-400">Suspicious Flagged</p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-500/40 space-y-1">
                       <span className="text-[10px] font-mono uppercase text-rose-300 block">False Positive</span>
-                      <span className="text-2xl font-bold text-rose-400 font-mono">{metrics.fp}</span>
+                      <span className="metric-value text-rose-400">{metrics.fp}</span>
                       <p className="text-[10px] text-slate-400">Legitimate Flagged</p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 space-y-1">
                       <span className="text-[10px] font-mono uppercase text-amber-300 block">False Negative</span>
-                      <span className="text-2xl font-bold text-amber-400 font-mono">{metrics.fn}</span>
+                      <span className="metric-value text-amber-400">{metrics.fn}</span>
                       <p className="text-[10px] text-slate-400">Suspicious Missed</p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/40 space-y-1">
                       <span className="text-[10px] font-mono uppercase text-indigo-300 block">True Negative</span>
-                      <span className="text-2xl font-bold text-indigo-400 font-mono">{metrics.tn}</span>
+                      <span className="metric-value text-indigo-400">{metrics.tn}</span>
                       <p className="text-[10px] text-slate-400">Legitimate Cleared</p>
                     </div>
                   </div>

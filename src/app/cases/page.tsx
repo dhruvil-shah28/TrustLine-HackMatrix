@@ -31,7 +31,7 @@ export default function CasesListPage() {
       </div>
 
       {loading ? (
-        <div className="p-12 text-center text-xs text-slate-400 ui-card font-mono">Loading case management files...</div>
+        <div className="p-12 text-center text-sm text-slate-400 ui-card">Loading case management files...</div>
       ) : cases.length === 0 ? (
         <div className="p-12 text-center text-xs text-slate-400 ui-card space-y-2">
           <Briefcase className="h-8 w-8 text-amber-400/50 mx-auto" />
@@ -43,7 +43,7 @@ export default function CasesListPage() {
           {cases.map((cs) => (
             <div key={cs.id} className="ui-card ui-card-warning p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-amber-400">{cs.caseCode}</span>
+                <span className="font-mono technical-metadata text-xs text-amber-400">{cs.caseCode}</span>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
                   {cs.status}
                 </span>

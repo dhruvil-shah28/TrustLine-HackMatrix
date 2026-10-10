@@ -65,7 +65,7 @@ export default function ScenarioReplayPage() {
       {/* Progressive Alert Detection Status Card */}
       <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-rose-500 space-y-3">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-xs text-slate-400">SIMULATED DATASET: SCEN-SIM-01</span>
+          <span className="font-mono technical-metadata text-xs text-slate-400">SIMULATED DATASET: SCEN-SIM-01</span>
           <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30 animate-pulse">
             LIVE ACCUMULATION
           </span>
