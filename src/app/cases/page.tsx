@@ -31,7 +31,13 @@ export default function CasesListPage() {
       </div>
 
       {loading ? (
-        <div className="p-12 text-center text-xs text-slate-400 ui-card">Loading case management files...</div>
+        <div className="p-12 text-center text-xs text-slate-400 ui-card font-mono">Loading case management files...</div>
+      ) : cases.length === 0 ? (
+        <div className="p-12 text-center text-xs text-slate-400 ui-card space-y-2">
+          <Briefcase className="h-8 w-8 text-amber-400/50 mx-auto" />
+          <p className="font-bold text-slate-200">No active case files found.</p>
+          <p className="text-[11px] text-slate-500">Escalate an alert from the risk queue to open a new case file.</p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {cases.map((cs) => (
