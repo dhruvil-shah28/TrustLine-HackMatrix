@@ -1,8 +1,50 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { runHybridDetectionEngine } from '@/lib/detection-engine';
+import { getCurrentEmployee, resolveApplicationRole } from '@/lib/employee-auth';
+import type { UserRole } from '@/lib/types';
+
+// Least privilege policy:
+// - GET /api/alerts: INVESTIGATOR, COMPLIANCE, RISK_ANALYST, ADMIN
+// - POST /api/alerts: INVESTIGATOR, ADMIN
+export async function requireAlertAccess(
+  allowedRoles: UserRole[],
+  operation: 'list' | 'create',
+  currentEmployeeFetcher: typeof getCurrentEmployee = getCurrentEmployee,
+) {
+  const employee = await currentEmployeeFetcher();
+
+  if (!employee) {
+    return {
+      employee: null,
+      response: NextResponse.json(
+        { error: 'Authentication required.' },
+        { status: 401 },
+      ),
+    };
+  }
+
+  const role = resolveApplicationRole(employee);
+  if (!allowedRoles.includes(role)) {
+    return {
+      employee: null,
+      response: NextResponse.json(
+        { error: `Forbidden: ${operation} requires an investigator role.` },
+        { status: 403 },
+      ),
+    };
+  }
+
+  return { employee, response: null };
+}
 
 export async function GET(request: Request) {
+  const auth = await requireAlertAccess(
+    ['INVESTIGATOR', 'COMPLIANCE', 'RISK_ANALYST', 'ADMIN'],
+    'list',
+  );
+  if (!auth.employee) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || '';
@@ -65,6 +107,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const auth = await requireAlertAccess(['INVESTIGATOR', 'ADMIN'], 'create');
+  if (!auth.employee) return auth.response;
+
   try {
     const body = await request.json();
     const { entityType, entityId } = body;
