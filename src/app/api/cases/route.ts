@@ -1,7 +1,48 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getCurrentEmployee, resolveApplicationRole } from '@/lib/employee-auth';
+import type { UserRole } from '@/lib/types';
+
+// Least privilege policy:
+// - GET /api/cases: INVESTIGATOR, COMPLIANCE, RISK_ANALYST, ADMIN
+export async function requireCaseAccess(
+  allowedRoles: UserRole[],
+  operation: 'list',
+  currentEmployeeFetcher: typeof getCurrentEmployee = getCurrentEmployee,
+) {
+  const employee = await currentEmployeeFetcher();
+
+  if (!employee) {
+    return {
+      employee: null,
+      response: NextResponse.json(
+        { error: 'Authentication required.' },
+        { status: 401 },
+      ),
+    };
+  }
+
+  const role = resolveApplicationRole(employee);
+  if (!allowedRoles.includes(role)) {
+    return {
+      employee: null,
+      response: NextResponse.json(
+        { error: `Forbidden: ${operation} requires an investigator role.` },
+        { status: 403 },
+      ),
+    };
+  }
+
+  return { employee, response: null };
+}
 
 export async function GET() {
+  const auth = await requireCaseAccess(
+    ['INVESTIGATOR', 'COMPLIANCE', 'RISK_ANALYST', 'ADMIN'],
+    'list',
+  );
+  if (!auth.employee) return auth.response;
+
   try {
     const cases = await prisma.case.findMany({
       include: {
