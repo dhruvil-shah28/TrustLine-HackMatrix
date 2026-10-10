@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Clock, Shield, Search, FileText, CheckCircle2, User, RefreshCw } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { formatIST } from '@/lib/date-utils';
 
 export default function AuditLogsPage() {
   const { auditLogs } = useAuth();
@@ -102,8 +103,8 @@ export default function AuditLogsPage() {
             ) : (
               filteredLogs.map((log) => (
                 <tr key={log.id}>
-                  <td className="font-mono text-[11px] text-slate-400 whitespace-nowrap">
-                    {new Date(log.timestamp).toLocaleString()}
+                  <td className="font-mono text-[11px] text-slate-300 font-semibold whitespace-nowrap">
+                    {formatIST(log.timestamp)}
                   </td>
                   <td>
                     <div className="flex items-center gap-1.5 font-bold text-slate-200 text-xs">

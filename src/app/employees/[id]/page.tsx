@@ -27,6 +27,7 @@ import {
   PlusCircle,
   Network,
 } from 'lucide-react';
+import { formatIST } from '@/lib/date-utils';
 
 export default function EmployeeProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -434,11 +435,8 @@ export default function EmployeeProfilePage({ params }: { params: Promise<{ id: 
                     </div>
 
                     <div className="text-right shrink-0">
-                      <span className="font-mono text-[11px] text-slate-400 block">
-                        {new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                      <span className="text-[10px] text-slate-500 block font-mono">
-                        {new Date(ev.timestamp).toLocaleDateString()}
+                      <span className="font-mono text-[11px] text-slate-300 font-semibold block">
+                        {formatIST(ev.timestamp)}
                       </span>
                     </div>
                   </div>
@@ -612,8 +610,8 @@ export default function EmployeeProfilePage({ params }: { params: Promise<{ id: 
                       <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800/80 hover:border-indigo-500/40 transition space-y-1">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-xs text-slate-200">{item.title}</span>
-                          <span className="text-[10px] font-mono text-slate-400">
-                            {new Date(item.timestamp).toLocaleString()}
+                          <span className="text-[10px] font-mono text-slate-300 font-semibold">
+                            {formatIST(item.timestamp)}
                           </span>
                         </div>
 

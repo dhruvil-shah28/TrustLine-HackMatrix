@@ -23,6 +23,7 @@ import {
   Check,
 } from 'lucide-react';
 import { exportCaseReportPDF, exportCaseJSON } from '@/lib/export';
+import { formatIST } from '@/lib/date-utils';
 
 export default function CaseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -376,7 +377,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                     </span>
                   </div>
                   <span className="font-mono text-[10px] opacity-75">
-                    {new Date(verificationResult.verifiedAt).toLocaleTimeString()}
+                    {formatIST(verificationResult.verifiedAt)}
                   </span>
                 </div>
 
@@ -504,7 +505,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                           Parent: {lock.previousLockHash.substring(0, 16)}...
                         </span>
                       )}
-                      <span>Sealed: {new Date(lock.sealedAt).toLocaleString()}</span>
+                      <span>Sealed: {formatIST(lock.sealedAt)}</span>
                     </div>
                   </div>
                 ))}
@@ -547,7 +548,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                     <p className="text-slate-200 text-[11px]">{rev.reason}</p>
                     <div className="pt-1.5 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 flex items-center justify-between">
                       <span>Trigger: {rev.triggerEventId || 'Manual/Reconstruction'}</span>
-                      <span>Recorded: {new Date(rev.createdAt).toLocaleString()}</span>
+                      <span>Revision Persisted: {formatIST(rev.createdAt)}</span>
                     </div>
                   </div>
                 ))}
@@ -586,7 +587,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                 <div key={log.id} className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 space-y-1 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-slate-200">{log.actorName}</span>
-                    <span className="text-[10px] font-mono text-slate-400">{new Date(log.timestamp).toLocaleTimeString()}</span>
+                    <span className="text-[10px] font-mono text-slate-300 font-semibold">{formatIST(log.timestamp)}</span>
                   </div>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-slate-800 text-indigo-400 inline-block font-semibold">
                     {log.action}
@@ -673,7 +674,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                 </div>
                 <div>
                   <span className="text-slate-400">Sealed At:</span>{' '}
-                  <span className="text-slate-200">{new Date(manifestModalData.sealedAt).toLocaleString()}</span>
+                  <span className="text-slate-200 font-bold">{formatIST(manifestModalData.sealedAt)}</span>
                 </div>
                 <div>
                   <span className="text-slate-400">Investigator:</span>{' '}
@@ -710,7 +711,7 @@ export default function CaseDetailPage({ params }: { params: Promise<{ id: strin
                         {r.recordType}
                       </span>
                       <span className="text-slate-300 truncate flex-1">{r.summary}</span>
-                      <span className="text-slate-500 shrink-0">{new Date(r.timestamp).toLocaleDateString()}</span>
+                      <span className="text-amber-300 shrink-0 font-semibold">{formatIST(r.timestamp)}</span>
                     </div>
                   ))}
                 </div>

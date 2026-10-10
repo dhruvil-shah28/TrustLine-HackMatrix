@@ -36,6 +36,8 @@ import {
   AlertTriangle,
   Layers,
 } from 'lucide-react';
+import { AlertDTO } from '@/lib/types';
+import { formatIST } from '@/lib/date-utils';
 import {
   ReactFlow,
   Background,
@@ -762,14 +764,30 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
 
                     <p className="text-[11px] text-slate-300">{ev.description}</p>
 
-                    <div className="pt-1.5 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[10px] font-mono text-slate-400">
-                      <div>
-                        <span className="text-slate-500">Record ID: </span>
-                        <span className="text-indigo-300">{ev.recordId}</span>
+                    <div className="pt-2 border-t border-slate-800/80 space-y-1 text-[10px] font-mono text-slate-400">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <span className="text-slate-500">Record ID: </span>
+                          <span className="text-indigo-300 font-bold">{ev.recordId}</span>
+                        </div>
+                        <div>
+                          <span className="text-emerald-400 font-semibold">Event occurred: </span>
+                          <span className="text-white font-bold">{formatIST(ev.timestamp)}</span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-slate-500">Time: </span>
-                        <span className="text-slate-200">{new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
+                        <div>
+                          <span className="text-slate-500">Ingestion/Arrival: </span>
+                          <span className="text-slate-300">
+                            {ev.metadata?.arrivalTimestamp ? formatIST(ev.metadata.arrivalTimestamp) : 'Recorded synchronously at occurrence'}
+                          </span>
+                        </div>
+                        {ev.metadata?.isLateArrival && (
+                          <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-bold">
+                            LATE-ARRIVING EVENT
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="text-[10px] text-slate-400 italic bg-slate-900/60 p-1.5 rounded">
@@ -818,9 +836,9 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
                         </div>
                       </div>
                       <p className="text-[11px] text-slate-200">{rev.reason}</p>
-                      <div className="pt-1.5 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 flex items-center justify-between">
-                        <span>Created: {new Date(rev.createdAt).toLocaleTimeString()}</span>
-                        <span className="text-emerald-400">+{rev.addedEvidence?.length || 1} evidence item(s)</span>
+                      <div className="pt-1.5 border-t border-slate-800/80 text-[10px] font-mono text-slate-400 flex flex-wrap items-center justify-between gap-1">
+                        <span>Revision Persisted: {formatIST(rev.createdAt)}</span>
+                        <span className="text-emerald-400 font-semibold">+{rev.addedEvidence?.length || 1} evidence item(s)</span>
                       </div>
                     </div>
                   ))}

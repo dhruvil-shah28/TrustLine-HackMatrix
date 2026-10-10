@@ -199,13 +199,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (cancelled || !result.authenticated || !result.employee) return;
 
         const employee = result.employee;
-        const employeeRole = String(employee.role || '').toUpperCase();
-        const mappedRole: UserRole =
-          employee.privilegeLevel === 'ADMIN'
-            ? 'ADMIN'
-            : ['INVESTIGATOR', 'COMPLIANCE', 'RISK_ANALYST'].includes(employeeRole)
-              ? (employeeRole as UserRole)
-              : 'EMPLOYEE';
+        const mappedRole: UserRole = (employee.mappedRole as UserRole) || 'EMPLOYEE';
 
         setUser((current) => ({
           ...current,

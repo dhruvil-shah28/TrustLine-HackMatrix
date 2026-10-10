@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { verifyEmployeeSession } from '@/lib/employee-session';
+import { resolveApplicationRole } from '@/lib/employee-auth';
 
 export async function GET() {
   try {
@@ -40,6 +41,8 @@ export async function GET() {
       return response;
     }
 
+    const mappedRole = resolveApplicationRole(employee);
+
     return NextResponse.json({
       authenticated: true,
       employee: {
@@ -49,6 +52,7 @@ export async function GET() {
         role: employee.role,
         department: employee.department,
         privilegeLevel: employee.privilegeLevel,
+        mappedRole,
       },
     });
   } catch (error) {

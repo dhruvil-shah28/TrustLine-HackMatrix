@@ -18,6 +18,7 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { AlertDTO } from '@/lib/types';
+import { formatIST } from '@/lib/date-utils';
 
 export default function AlertsListPage() {
   const [alerts, setAlerts] = useState<AlertDTO[]>([]);
@@ -221,7 +222,7 @@ export default function AlertsListPage() {
                 {/* Top Row: Code, Risk Tag, Status, Exposure, Action Button */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-mono text-xs font-bold text-indigo-300 bg-indigo-950/60 px-2.5 py-0.5 rounded border border-indigo-800/40">
                         {alert.alertCode}
                       </span>
@@ -233,6 +234,10 @@ export default function AlertsListPage() {
                       </span>
                       <span className="px-2 py-0.5 rounded text-[10px] font-mono text-indigo-400 bg-slate-950 border border-slate-800">
                         Status: {alert.status}
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded text-[10px] font-mono text-amber-300 bg-slate-950 border border-amber-500/30 flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-amber-400" />
+                        Trigger Event: {formatIST((alert as any).createdAt)}
                       </span>
                     </div>
 

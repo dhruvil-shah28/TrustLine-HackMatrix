@@ -21,16 +21,7 @@ async function authorizeEmployee() {
     };
   }
 
-  if (resolveApplicationRole(employee) !== 'EMPLOYEE') {
-    return {
-      employee: null,
-      response: NextResponse.json(
-        { error: 'This endpoint is reserved for employee-portal accounts.' },
-        { status: 403 },
-      ),
-    };
-  }
-
+  // Allow active employee accounts to access their banking portal workspace
   return { employee, response: null };
 }
 

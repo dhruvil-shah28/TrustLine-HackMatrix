@@ -33,16 +33,28 @@ export function resolveApplicationRole(employee: {
   role: string;
   privilegeLevel: string;
 }): UserRole {
-  if (employee.privilegeLevel === 'ADMIN') return 'ADMIN';
+  if (employee.privilegeLevel === 'ADMIN') return 'INVESTIGATOR';
 
-  const role = employee.role.toUpperCase();
-  const applicationRoles: UserRole[] = [
+  const roleUpper = employee.role.toUpperCase();
+  const investigatorRoles: UserRole[] = [
     'INVESTIGATOR',
     'COMPLIANCE',
     'RISK_ANALYST',
   ];
 
-  return applicationRoles.includes(role as UserRole)
-    ? (role as UserRole)
-    : 'EMPLOYEE';
+  if (investigatorRoles.includes(roleUpper as UserRole)) {
+    return roleUpper as UserRole;
+  }
+
+  // Check if explicit role indicates an investigator or compliance analyst
+  if (
+    roleUpper.includes('INVESTIGATOR') ||
+    roleUpper.includes('COMPLIANCE') ||
+    roleUpper.includes('AML ANALYST') ||
+    roleUpper.includes('RISK ANALYST')
+  ) {
+    return 'INVESTIGATOR';
+  }
+
+  return 'EMPLOYEE';
 }

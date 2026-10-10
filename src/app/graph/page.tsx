@@ -48,6 +48,7 @@ import {
 import { MoneyFlowNode, MoneyFlowEdge } from '@/lib/types';
 import { DiscoveredRelationship, HiddenLinkHunterResult, EntityType } from '@/lib/hidden-link-hunter';
 import { useAuth } from '@/context/AuthContext';
+import { formatIST } from '@/lib/date-utils';
 
 // ─── Design tokens ───────────────────────────────────────────────────
 const T = {
@@ -1655,8 +1656,8 @@ function MoneyFlowGraphCanvas() {
                             <span style={{ fontWeight: 700, color: T.primary, fontFamily: 'monospace' }}>
                               {rec.identifier}
                             </span>
-                            <span style={{ fontSize: 9, fontFamily: 'monospace', color: T.muted }}>
-                              {new Date(rec.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            <span style={{ fontSize: 9, fontFamily: 'monospace', color: T.gold }}>
+                              {formatIST(rec.timestamp)}
                             </span>
                           </div>
                           <p style={{ fontSize: 10, color: T.secondary }}>{rec.details}</p>
