@@ -18,6 +18,7 @@ RUN npm ci --omit=dev=false
 
 COPY prisma ./prisma
 COPY src ./src
+COPY scripts ./scripts
 COPY public ./public
 COPY next.config.mjs .
 COPY postcss.config.mjs .
@@ -42,4 +43,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start -- --hostname 0.0.0.0 -p ${PORT:-3000}"]
+CMD ["sh", "-c", "npx prisma migrate deploy || exit $?; if [ x$ENABLE_DEMO_BOOTSTRAP = xtrue ]; then npx tsx scripts/bootstrap-demo-accounts.ts || exit $?; fi; npm run start -- --hostname 0.0.0.0 -p ${PORT:-3000}"]
