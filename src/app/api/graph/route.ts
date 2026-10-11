@@ -138,6 +138,7 @@ export async function GET() {
           target: `ACC-${tx.sourceAccountId}`,
           label: 'INITIATED',
           isSuspicious,
+          timestamp: tx.timestamp.toISOString(),
         });
       }
 
@@ -148,6 +149,7 @@ export async function GET() {
           target: `ACC-${tx.destinationAccountId}`,
           label: 'APPROVED',
           isSuspicious,
+          timestamp: tx.timestamp.toISOString(),
         });
       }
     });
@@ -162,6 +164,7 @@ export async function GET() {
         target: `${targetPrefix}${ev.entityId}`,
         label: 'ACCESSED',
         isSuspicious: true,
+        timestamp: ev.timestamp.toISOString(),
       });
     });
 
@@ -172,6 +175,7 @@ export async function GET() {
         target: `ACC-${act.targetId}`,
         label: 'MODIFIED',
         isSuspicious: true,
+        timestamp: act.timestamp.toISOString(),
       });
     });
 

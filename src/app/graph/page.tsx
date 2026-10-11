@@ -46,6 +46,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { MoneyFlowNode, MoneyFlowEdge } from '@/lib/types';
+import { GlassMoneyFlowEdge } from '@/components/graph/GlassMoneyFlowEdge';
 import { DiscoveredRelationship, HiddenLinkHunterResult, EntityType } from '@/lib/hidden-link-hunter';
 import { useAuth } from '@/context/AuthContext';
 import { formatIST } from '@/lib/date-utils';
@@ -53,9 +54,9 @@ import { formatIST } from '@/lib/date-utils';
 // ─── Design tokens ───────────────────────────────────────────────────
 const T = {
   // surfaces
-  nodeBg: '#FFFFFF',
-  nodeSubBg: '#F0F4ED',
-  suspBg: '#FBEDEC',
+  nodeBg: 'rgba(12, 29, 36, 0.88)',
+  nodeSubBg: 'rgba(19, 51, 46, 0.88)',
+  suspBg: 'rgba(86, 24, 41, 0.90)',
   hunterBg: '#314644',
   border: '#405652',
   greenBorder: 'rgba(114,202,160,0.45)',
@@ -83,10 +84,10 @@ const CustomGraphNode = ({ data, selected }: any) => {
 
   // Derive surface / border
   let bg = T.nodeBg;
-  let border = '#D7E2DA';
+  let border = 'rgba(183, 198, 192, 0.38)';
   if (isDimmed) {
-    bg = '#F7F5EE';
-    border = '#D7E2DA';
+    bg = 'rgba(20, 36, 40, 0.65)';
+    border = 'rgba(183, 198, 192, 0.38)';
   } else if (isSuspicious) {
     bg = T.suspBg;
     border = T.redBorder;
@@ -112,12 +113,14 @@ const CustomGraphNode = ({ data, selected }: any) => {
   };
   const badge = typeBadge[nodeType] || { icon: Info, clr: T.muted };
   const BadgeIcon = badge.icon;
-  const dividerColor = isSuspicious ? 'rgba(224,82,82,0.2)' : '#D7E2DA';
+  const dividerColor = isSuspicious ? 'rgba(251,113,133,0.35)' : 'rgba(183,198,192,0.24)';
 
   return (
     <div
       style={{
         background: bg,
+        backdropFilter: 'blur(16px) saturate(145%)',
+        WebkitBackdropFilter: 'blur(16px) saturate(145%)',
         border: `1.5px solid ${border}`,
         borderRadius: 12,
         padding: '12px 14px',
@@ -127,7 +130,7 @@ const CustomGraphNode = ({ data, selected }: any) => {
           : '0 2px 8px rgba(10,28,28,0.18)',
         cursor: 'pointer',
         transition: 'all 0.15s ease',
-        color: '#000000',
+        color: selected ? '#F4FFF9' : T.primary,
       }}
     >
       <Handle
@@ -155,9 +158,9 @@ const CustomGraphNode = ({ data, selected }: any) => {
             fontSize: 9,
             fontWeight: 700,
             letterSpacing: '0.06em',
-            color: '#000000',
+            color: selected ? '#F4FFF9' : T.primary,
             fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
-            background: '#FFFFFF',
+            background: 'rgba(255,255,255,0.08)',
             border: `1px solid ${dividerColor}`,
             borderRadius: 5,
             padding: '2px 6px',
@@ -177,7 +180,7 @@ const CustomGraphNode = ({ data, selected }: any) => {
               fontWeight: 700,
               letterSpacing: '0.05em',
               background: '#FBEDEC',
-              color: '#000000',
+              color: selected ? '#F4FFF9' : T.primary,
               border: '1px solid rgba(224,82,82,0.45)',
               borderRadius: 5,
               padding: '2px 6px',
@@ -195,7 +198,7 @@ const CustomGraphNode = ({ data, selected }: any) => {
         style={{
           fontSize: 13,
           fontWeight: 700,
-          color: '#000000',
+          color: selected ? '#F4FFF9' : T.primary,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -211,7 +214,7 @@ const CustomGraphNode = ({ data, selected }: any) => {
           className={nodeType === 'ACCOUNT' ? 'technical-metadata' : undefined}
           style={{
             fontSize: 10,
-            color: '#000000',
+            color: selected ? '#F4FFF9' : T.primary,
             marginTop: 3,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -240,7 +243,7 @@ const CustomGraphNode = ({ data, selected }: any) => {
             style={{
               fontFamily: 'var(--font-plex-mono), ui-monospace, monospace',
               fontWeight: 700,
-              color: '#000000',
+              color: selected ? '#F4FFF9' : T.primary,
             }}
           >
             {data.details.riskScore} / 100
@@ -258,6 +261,7 @@ const CustomGraphNode = ({ data, selected }: any) => {
 };
 
 const nodeTypes = { customNode: CustomGraphNode };
+const edgeTypes = { glassMoneyFlow: GlassMoneyFlowEdge };
 
 // ─── Main Canvas Component ────────────────────────────────────────────
 function MoneyFlowGraphCanvas() {
@@ -373,12 +377,92 @@ function MoneyFlowGraphCanvas() {
 
       const formattedNodes: Node[] = [];
 
+      const customerPositionByNodeId = new Map<string, { x: number; y: number }>();
+      customers.forEach((cust, i) => {
+        const columns = 4;
+        const columnWidth = 330;
+        const row = Math.floor(i / columns);
+        customerPositionByNodeId.set(cust.id, {
+          x: (i % columns) * columnWidth + 40 + (row % 2) * 32,
+          y: 420 + row * 520,
+        });
+      });
+
+      // Ownership edges are the source of truth for customer-account grouping.
+      const accountByNodeId = new Map(accounts.map((account) => [account.id, account]));
+      const accountGroupsByCustomer = new Map<string, MoneyFlowNode[]>();
+
+      filteredRawEdges
+        .filter((edge) => edge.label === 'OWNS')
+        .forEach((edge) => {
+          const account = accountByNodeId.get(edge.target);
+          if (!account) return;
+          const group = accountGroupsByCustomer.get(edge.source) ?? [];
+          group.push(account);
+          accountGroupsByCustomer.set(edge.source, group);
+        });
+
+      const accountPositionByNodeId = new Map<string, { x: number; y: number }>();
+      accounts.forEach((acc, i) => {
+        const ownerEdge = filteredRawEdges.find(
+          (edge) => edge.label === 'OWNS' && edge.target === acc.id,
+        );
+        const ownerId = ownerEdge?.source;
+        const ownerPosition = ownerId
+          ? customerPositionByNodeId.get(ownerId)
+          : undefined;
+        const siblings = ownerId ? accountGroupsByCustomer.get(ownerId) ?? [] : [];
+        const siblingIndex = Math.max(
+          0,
+          siblings.findIndex((sibling) => sibling.id === acc.id),
+        );
+
+        accountPositionByNodeId.set(acc.id, {
+          x: (ownerPosition?.x ?? (i % 4) * 330 + 40)
+            + (siblingIndex - (siblings.length - 1) / 2) * 260,
+          y: (ownerPosition?.y ?? 420) + 155 + siblingIndex * 130,
+        });
+      });
+
+      const employeePositionByNodeId = new Map<string, { x: number; y: number }>();
+      const employeeClusterCounts = new Map<number, number>();
+      employees.forEach((emp, i) => {
+        const nodeId = emp.id;
+        const relatedPositions = filteredRawEdges
+          .filter((edge) => edge.source === nodeId)
+          .map((edge) =>
+            accountPositionByNodeId.get(edge.target) ??
+            customerPositionByNodeId.get(edge.target),
+          )
+          .filter(
+            (position): position is { x: number; y: number } => Boolean(position),
+          );
+
+        if (relatedPositions.length) {
+          const anchorX =
+            relatedPositions.reduce((total, position) => total + position.x, 0) /
+            relatedPositions.length;
+          const clusterKey = Math.round(anchorX / 120);
+          const clusterIndex = employeeClusterCounts.get(clusterKey) ?? 0;
+          employeeClusterCounts.set(clusterKey, clusterIndex + 1);
+          employeePositionByNodeId.set(nodeId, {
+            x: anchorX + (clusterIndex % 2 === 0 ? -285 : 285),
+            y: 45 + Math.floor(clusterIndex / 2) * 135,
+          });
+        } else {
+          employeePositionByNodeId.set(nodeId, {
+            x: (i % 4) * 330 + 40 + (Math.floor(i / 4) % 2) * 32,
+            y: 45 + Math.floor(i / 4) * 145,
+          });
+        }
+      });
+
       employees.forEach((emp, i) => {
         const isDimmed = filterSuspiciousOnly && !emp.isSuspicious;
         formattedNodes.push({
           id: emp.id,
           type: 'customNode',
-          position: { x: i * 300 + 40, y: 40 },
+          position: employeePositionByNodeId.get(emp.id) ?? { x: (i % 4) * 330 + 40, y: 45 },
           data: {
             label: emp.label,
             type: emp.type,
@@ -395,7 +479,7 @@ function MoneyFlowGraphCanvas() {
         formattedNodes.push({
           id: cust.id,
           type: 'customNode',
-          position: { x: i * 300 + 40, y: 240 },
+          position: customerPositionByNodeId.get(cust.id) ?? { x: (i % 4) * 330 + 40, y: 420 },
           data: {
             label: cust.label,
             type: cust.type,
@@ -412,7 +496,7 @@ function MoneyFlowGraphCanvas() {
         formattedNodes.push({
           id: acc.id,
           type: 'customNode',
-          position: { x: i * 280 + 40, y: 450 },
+          position: accountPositionByNodeId.get(acc.id) ?? { x: (i % 4) * 330 + 40, y: 575 },
           data: {
             label: acc.label,
             type: acc.type,
@@ -431,6 +515,7 @@ function MoneyFlowGraphCanvas() {
           id: e.id,
           source: e.source,
           target: e.target,
+          type: 'glassMoneyFlow',
           label: e.label + (e.amount ? ` (₹${(e.amount / 100000).toFixed(1)}L)` : ''),
           animated: isSusp,
           style: { stroke: strokeColor, strokeWidth: isSusp ? 2.5 : 1.5 },
@@ -457,8 +542,8 @@ function MoneyFlowGraphCanvas() {
           id: n.id,
           type: 'customNode',
           position: {
-            x: (idx % 4) * 300 + 40,
-            y: Math.floor(idx / 4) * 180 + 60,
+            x: (idx % 3) * 360 + 40 + (Math.floor(idx / 3) % 2) * 140,
+            y: Math.floor(idx / 3) * 220 + (idx % 2) * 28 + 50,
           },
           data: {
             label: n.label,
@@ -483,7 +568,8 @@ function MoneyFlowGraphCanvas() {
           id: e.id,
           source: e.source,
           target: e.target,
-          label: `${e.label} (${e.linkageStrength}%)`,
+          type: 'glassMoneyFlow',
+          label: e.label,
           animated: isSusp,
           style: {
             stroke: strokeColor,
@@ -995,8 +1081,9 @@ function MoneyFlowGraphCanvas() {
             onNodeClick={onNodeClick}
             onEdgeClick={onEdgeClick}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             fitView
-            fitViewOptions={{ padding: 0.15 }}
+            fitViewOptions={{ padding: 0.22 }}
             proOptions={{ hideAttribution: true }}
           >
             {/* Subtle dot grid */}

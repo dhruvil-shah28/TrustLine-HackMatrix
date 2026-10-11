@@ -49,6 +49,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useAuth } from '@/context/AuthContext';
+import { GlassMoneyFlowEdge } from '@/components/graph/GlassMoneyFlowEdge';
 
 // Custom Subgraph Node Component
 const CustomSubgraphNode = ({ data }: any) => {
@@ -56,15 +57,16 @@ const CustomSubgraphNode = ({ data }: any) => {
 
   return (
     <div
-      className={`px-3.5 py-2.5 rounded-xl text-slate-100 shadow-xl transition-all border w-64 ${
+      className={`px-3.5 py-3 rounded-xl text-slate-100 shadow-[0_12px_34px_rgba(0,0,0,0.35)] transition-all border w-64 backdrop-blur-xl ${
         isSuspicious
-          ? 'bg-rose-950/90 border-rose-500/80 shadow-rose-900/40 ring-2 ring-rose-500/50'
+          ? 'bg-rose-950/55 border-rose-300/70 shadow-rose-900/25 ring-1 ring-rose-300/20'
           : data.type === 'EMPLOYEE'
-          ? 'bg-indigo-950/90 border-indigo-500/60'
+          ? 'bg-emerald-950/55 border-emerald-300/55'
           : data.type === 'CUSTOMER'
-          ? 'bg-slate-900/90 border-cyan-500/60'
-          : 'bg-slate-900/90 border-slate-700'
+          ? 'bg-cyan-950/55 border-cyan-300/55'
+          : 'bg-slate-950/60 border-white/15'
       }`}
+      style={{ backdropFilter: 'blur(16px) saturate(145%)', WebkitBackdropFilter: 'blur(16px) saturate(145%)' }}
     >
       <Handle type="target" position={Position.Top} className="!bg-indigo-500 !w-2.5 !h-2.5" />
       
@@ -90,6 +92,7 @@ const CustomSubgraphNode = ({ data }: any) => {
 const nodeTypes = {
   customNode: CustomSubgraphNode,
 };
+const edgeTypes = { glassMoneyFlow: GlassMoneyFlowEdge };
 
 export default function AlertInvestigationPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -266,7 +269,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     {
       id: '1',
       type: 'customNode',
-      position: { x: 0, y: 40 },
+      position: { x: 0, y: 180 },
       data: {
         label: 'Vikram Malhotra',
         subText: 'EMP-1001 • Senior RM',
@@ -277,7 +280,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     {
       id: '2',
       type: 'customNode',
-      position: { x: 300, y: 0 },
+      position: { x: 340, y: 10 },
       data: {
         label: 'Karan Enterprise Ltd',
         subText: 'ACC-1001-INR • Corporate',
@@ -288,7 +291,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     {
       id: '3',
       type: 'customNode',
-      position: { x: 600, y: 40 },
+      position: { x: 680, y: 180 },
       data: {
         label: 'Zenith Global Holdings',
         subText: 'ACC-1002-INR • HNW Investment',
@@ -299,7 +302,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     {
       id: '4',
       type: 'customNode',
-      position: { x: 300, y: 150 },
+      position: { x: 340, y: 360 },
       data: {
         label: 'Trident FinTech Consulting',
         subText: 'ACC-1006-INR • Beneficiary',
@@ -312,6 +315,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
   const initialEdges: Edge[] = [
     {
       id: 'e1',
+      type: 'glassMoneyFlow',
       source: '1',
       target: '2',
       label: 'ACCESSED PROFILE (15:10)',
@@ -321,6 +325,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     },
     {
       id: 'e2',
+      type: 'glassMoneyFlow',
       source: '2',
       target: '3',
       label: 'TRANSFERRED ₹15.0L (15:17)',
@@ -330,6 +335,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     },
     {
       id: 'e3',
+      type: 'glassMoneyFlow',
       source: '3',
       target: '4',
       label: 'PASS-THROUGH ₹14.85L (15:20)',
@@ -339,6 +345,7 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
     },
     {
       id: 'e4',
+      type: 'glassMoneyFlow',
       source: '4',
       target: '2',
       label: 'CIRCULAR RETURN ₹14.7L (15:23)',
@@ -354,8 +361,8 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
         id: n.id,
         type: 'customNode',
         position: {
-          x: (idx % 3) * 280,
-          y: Math.floor(idx / 3) * 120,
+          x: (idx % 3) * 360 + (Math.floor(idx / 3) % 2) * 130,
+          y: Math.floor(idx / 3) * 210 + (idx % 2) * 28,
         },
         data: {
           label: n.label,
@@ -370,9 +377,18 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
   const displayEdges: Edge[] = attackDna?.graph?.edges
     ? attackDna.graph.edges.map((e: any) => ({
         id: e.id,
+        type: 'glassMoneyFlow',
         source: e.source,
         target: e.target,
         label: e.label + (e.amount ? ` ₹${(e.amount / 100000).toFixed(2)}L` : ''),
+        data: {
+          label: e.label,
+          amount: e.amount,
+          timestamp: e.timestamp,
+          isSuspicious: e.isSuspicious,
+          isDirectEvidence: e.isDirectEvidence,
+          linkageStrength: e.linkageStrength,
+        },
         animated: e.isSuspicious,
         style: {
           stroke: e.isSuspicious ? '#f43f5e' : e.isDirectEvidence ? '#6366f1' : '#f59e0b',
@@ -543,11 +559,12 @@ export default function AlertInvestigationPage({ params }: { params: Promise<{ i
             </div>
 
             {/* React Flow Canvas */}
-            <div className="h-[400px] w-full rounded-xl bg-[#090d16] border border-slate-800 overflow-hidden relative">
+            <div className="h-[430px] w-full rounded-xl bg-slate-950/80 border border-white/10 shadow-inner overflow-hidden relative">
               <ReactFlow
                 nodes={displayNodes}
                 edges={displayEdges}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 onNodeClick={(_, node) => {
                   setSelectedEntity(node.data);
                   setSelectedRelationship(null);
