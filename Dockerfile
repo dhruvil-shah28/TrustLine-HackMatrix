@@ -20,6 +20,7 @@ COPY prisma ./prisma
 COPY src ./src
 COPY public ./public
 COPY next.config.mjs .
+COPY postcss.config.mjs .
 COPY tsconfig.json .
 COPY next-env.d.ts .
 COPY .env.example ./.env.example
