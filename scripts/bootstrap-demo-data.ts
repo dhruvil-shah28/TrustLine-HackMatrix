@@ -339,7 +339,14 @@ async function main() {
     });
     if (!found) {
       await prisma.employeeAction.create({
-        data:{...a,employeeId:employees[a.employeeCode].id,timestamp:new Date(Date.now()-40*60_000)},
+        data:{
+          actionType:a.actionType,
+          targetType:a.targetType,
+          targetId:a.targetId,
+          detailsJson:a.detailsJson,
+          employeeId:employees[a.employeeCode].id,
+          timestamp:new Date(Date.now()-40*60_000),
+        },
       });
     }
   }
