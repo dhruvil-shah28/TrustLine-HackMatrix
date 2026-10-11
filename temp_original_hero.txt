@@ -1,0 +1,146 @@
+'use client';
+
+import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
+import SignalSculpture from './SignalSculpture';
+
+export default function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const giantWordmarkRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const navWordmark = document.getElementById('nav-wordmark');
+      if (!navWordmark || !giantWordmarkRef.current || !containerRef.current) return;
+
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        ScrollTrigger.create({
+          id: "wordmark-dock",
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=120%",
+          scrub: 1,
+          animation: gsap.to(giantWordmarkRef.current, {
+            scale: () => {
+              const rect = navWordmark.getBoundingClientRect();
+              const giantRect = giantWordmarkRef.current!.getBoundingClientRect();
+              const baseScale = gsap.getProperty(giantWordmarkRef.current, 'scaleX') as number;
+              return Math.max(0.1, (rect.width / (giantRect.width / baseScale)));
+            },
+            x: () => {
+              const navRect = navWordmark.getBoundingClientRect();
+              const giantRect = giantWordmarkRef.current!.getBoundingClientRect();
+              const baseScale = gsap.getProperty(giantWordmarkRef.current, 'scaleX') as number;
+
+              const navCenter = navRect.left + (navRect.width / 2);
+              const giantCenter = (giantRect.left - (gsap.getProperty(giantWordmarkRef.current, 'x') as number)) + (giantRect.width / 2);
+              return navCenter - giantCenter;
+            },
+            y: () => {
+              const navRect = navWordmark.getBoundingClientRect();
+              const giantRect = giantWordmarkRef.current!.getBoundingClientRect();
+              const navCenter = navRect.top + (navRect.height / 2);
+              const giantCenter = (giantRect.top - (gsap.getProperty(giantWordmarkRef.current, 'y') as number)) + (giantRect.height / 2);
+              return navCenter - giantCenter;
+            },
+            opacity: 0,
+            ease: "none",
+          }),
+          invalidateOnRefresh: true,
+          pin: true,
+          pinSpacing: true,
+        });
+      });
+
+    }, containerRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative w-full h-[100vh] flex flex-col justify-center overflow-hidden bg-[#F8F7F1]">
+
+      {/* Layer 2: Subtle cursor-reactive dotted grid */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          backgroundImage: 'radial-gradient(rgba(17,17,17,0.06) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+
+      {/* Layer 3: Transparent fluid sculpture — native transparency, no blend mode artifacts */}
+      <div
+        className="absolute pointer-events-none select-none z-[2] right-[0%] md:right-[5%] top-[57%] -translate-y-1/2 -rotate-12 w-[100vw] h-[55vh] md:w-[42vw] md:h-[65vh] max-w-[620px]"
+        style={{
+          transformOrigin: '50% 50%',
+        }}
+      >
+        <SignalSculpture />
+      </div>
+
+      {/* Layer 4: Giant Wordmark — ABOVE the ribbon */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-[3]">
+        <div
+          ref={giantWordmarkRef}
+          className="text-center font-bold relative w-[95vw]"
+          style={{
+            fontFamily: 'Archivo, sans-serif',
+            fontSize: 'max(15vw, 60px)',
+            fontWeight: 800,
+            whiteSpace: 'nowrap',
+            letterSpacing: '0.01em',
+            transformOrigin: '50% 50%',
+            lineHeight: 1,
+            color: 'rgba(14, 74, 45, 0.12)', // V3: Much stronger visibility without crushing readability
+          }}
+        >
+          <div className="flex justify-center w-full">
+            <span>TRUST</span>
+            <span>LINE</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Foreground Hero Content (2 columns) */}
+      <div className="relative z-[4] max-w-[1280px] mx-auto px-4 lg:px-8 w-full h-full flex flex-col md:flex-row items-center pt-24 md:pt-0">
+
+        {/* Left Side (55% width) - Text Content */}
+        <div className="w-full md:w-[50%] flex flex-col justify-center shrink-0 pr-8">
+          <p className="text-xs uppercase tracking-[0.1em] font-sans font-bold mb-6 flex items-center gap-2 text-[#0e4a2d]">
+            <span className="w-4 h-px bg-[#0e4a2d]" />
+            FINANCIAL CRIME & INSIDER RISK INTELLIGENCE
+          </p>
+          <h1 className="text-5xl lg:text-[4.75rem] font-bold leading-[1.05] tracking-tight mb-8 max-w-[14ch] font-space text-[#171916]">
+            Every transaction<br />leaves a trail.
+          </h1>
+          <p className="text-lg lg:text-xl max-w-md mb-12 leading-relaxed text-[#62645F] font-sans">
+            Connect financial transactions, employee activity, and suspicious money flows in one intelligence workspace.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+            <Link
+              href="/login"
+              className="flex items-center justify-center h-[52px] px-8 font-semibold rounded-sm transition-all hover:opacity-90 shadow-lg shrink-0 text-[#F8F7F1]"
+              style={{ background: '#0e4a2d' }}
+            >
+              ENTER DEMO WORKSPACE &rarr;
+            </Link>
+            <a
+              href="#problem"
+              className="flex items-center justify-center h-[52px] px-8 font-semibold rounded-sm transition-all hover:bg-[#111111]/5 shrink-0 text-[#111111]"
+            >
+              EXPLORE THE PLATFORM
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}

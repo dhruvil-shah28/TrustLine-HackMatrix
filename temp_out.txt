@@ -1,0 +1,71 @@
+### git branch --show-current
+ui-landing
+
+### git log --oneline -3
+92bc99b Merge remote-tracking branch 'team/main'
+a4cf792 Fix demo authentication and timestamp handling
+77e1ccd security: protect investigator API routes
+
+### git status -sb
+## ui-landing
+ M next-env.d.ts
+ M package-lock.json
+ M package.json
+ M prisma/seed.ts
+A  public/trustline-logo.png
+ M src/app/api/auth/employee/login/route.ts
+ M src/app/api/auth/investigator/route.ts
+A  src/app/dashboard/page.tsx
+ M src/app/layout.tsx
+ M src/app/login/page.tsx
+MM src/app/page.tsx
+ M src/components/ClientProviders.tsx
+ M src/components/Navbar.tsx
+AM src/components/landing/Footer.tsx
+AM src/components/landing/Hero.tsx
+A  src/components/landing/Navbar.tsx
+AM src/components/landing/Sections.tsx
+A  src/components/landing/SignalGrid.tsx
+A  src/components/landing/SignalSculpture.tsx
+A  src/lib/gsap.ts
+?? 1.out
+?? 10.out
+?? 11.out
+?? 2.out
+?? 3.out
+?? 4.out
+?? 5.out
+?? 6.out
+?? 7.out
+?? 8.out
+?? 9.out
+?? diff_login.txt
+?? diff_login_utf8.txt
+?? diff_page.txt
+?? diff_page_utf8.txt
+?? get_status.js
+?? scripts/test-login.ts
+?? src/app/landing.css
+?? src/app/landing_temp.css
+?? temp_out.txt
+
+### git --no-pager diff --stat
+ next-env.d.ts                            |  4 +--
+ package-lock.json                        |  7 ++++
+ package.json                             |  1 +
+ prisma/seed.ts                           | 19 ++++++++++-
+ src/app/api/auth/employee/login/route.ts | 25 +++++++++++++++
+ src/app/api/auth/investigator/route.ts   | 27 +++++++++++++++-
+ src/app/layout.tsx                       |  9 ++++--
+ src/app/login/page.tsx                   | 55 ++++++++++++++++++++++++--------
+ src/app/page.tsx                         |  3 +-
+ src/components/ClientProviders.tsx       | 15 +++++----
+ src/components/Navbar.tsx                | 10 +++---
+ src/components/landing/Footer.tsx        |  6 ++--
+ src/components/landing/Hero.tsx          |  6 ++--
+ src/components/landing/Sections.tsx      | 20 ++++++------
+ 14 files changed, 159 insertions(+), 48 deletions(-)
+
+### powershell -Command "Get-ChildItem public\\brand -ErrorAction SilentlyContinue | Out-String"
+
+

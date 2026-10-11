@@ -1,0 +1,74 @@
+### git status -sb
+## ui-landing
+ M next-env.d.ts
+ M package-lock.json
+ M package.json
+ M prisma/seed.ts
+A  public/trustline-logo.png
+ M src/app/api/auth/employee/login/route.ts
+ M src/app/api/auth/investigator/route.ts
+A  src/app/dashboard/page.tsx
+ M src/app/layout.tsx
+ M src/app/login/page.tsx
+MM src/app/page.tsx
+ M src/components/ClientProviders.tsx
+ M src/components/Navbar.tsx
+AM src/components/landing/Footer.tsx
+AM src/components/landing/Hero.tsx
+AM src/components/landing/Navbar.tsx
+AM src/components/landing/Sections.tsx
+A  src/components/landing/SignalGrid.tsx
+AM src/components/landing/SignalSculpture.tsx
+A  src/lib/gsap.ts
+?? 1.out
+?? 10.out
+?? 11.out
+?? 2.out
+?? 3.out
+?? 4.out
+?? 5.out
+?? 6.out
+?? 7.out
+?? 8.out
+?? 9.out
+?? diff_login.txt
+?? diff_login_utf8.txt
+?? diff_page.txt
+?? diff_page_utf8.txt
+?? final-run.txt
+?? final-run2.txt
+?? final-run3.txt
+?? final-run4.txt
+?? final-run5.txt
+?? get_navbar.js
+?? get_status.js
+?? get_str.js
+?? globals_grep.txt
+?? public/brand/
+?? scripts/test-login.ts
+?? src/app/landing.css
+?? src/app/landing_temp.css
+?? src/components/landing/TraceDemo.tsx
+?? temp_out.txt
+?? temp_out3.txt
+?? temp_query.txt
+?? temp_query2.txt
+
+### git diff --stat
+ next-env.d.ts                              |  4 +-
+ package-lock.json                          |  7 +++
+ package.json                               |  1 +
+ prisma/seed.ts                             | 19 ++++++-
+ src/app/api/auth/employee/login/route.ts   | 25 +++++++++
+ src/app/api/auth/investigator/route.ts     | 27 +++++++++-
+ src/app/layout.tsx                         |  9 +++-
+ src/app/login/page.tsx                     | 55 ++++++++++++++-----
+ src/app/page.tsx                           |  7 ++-
+ src/components/ClientProviders.tsx         | 15 +++---
+ src/components/Navbar.tsx                  | 17 +++---
+ src/components/landing/Footer.tsx          |  6 +--
+ src/components/landing/Hero.tsx            | 70 ++++++++++++++++++++++---
+ src/components/landing/Navbar.tsx          | 84 ++++++++++++++++++------------
+ src/components/landing/Sections.tsx        | 20 +++----
+ src/components/landing/SignalSculpture.tsx | 58 +++++++++++++++------
+ 16 files changed, 321 insertions(+), 103 deletions(-)

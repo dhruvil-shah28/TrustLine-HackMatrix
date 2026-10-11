@@ -1,0 +1,17 @@
+﻿diff --git a/src/app/page.tsx b/src/app/page.tsx
+index 9f2589f..f4cdf72 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -5,10 +5,11 @@ import LandingNavbar from '@/components/landing/Navbar';
+ import SignalGrid from '@/components/landing/SignalGrid';
+ import Hero from '@/components/landing/Hero';
+ import Sections from '@/components/landing/Sections';
++import './landing.css';
+ 
+ export default function LandingPage() {
+   return (
+-    <div className="relative min-h-screen text-[#111111] overflow-x-hidden" style={{ background: '#F8F7F1' }}>
++    <div className="landing-root relative min-h-screen text-[#111111] overflow-x-hidden" style={{ background: '#F8F7F1' }}>
+ 
+       {/* 1. Canvas Interactive Layer (Grid Dots) */}
+       <SignalGrid />

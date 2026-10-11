@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ============================================================
+   TRUSTLINE — LIGHT PREMIUM DESIGN SYSTEM
+   Warm Ivory + Forest Green + Muted Gold
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* Surface hierarchy */
+    --bg-page: #F8F7F1;
+    --bg-card: #FFFFFF;
+    --bg-panel: #F2F4EE;
+    --bg-inset: #F8F7F1;
+
+    /* Text hierarchy */
+    --text-primary: #171916;
+    --text-secondary: #62645F;
+    --text-tertiary: #9A9790;
+    --text-heading: #171916;
+    --text-body: #62645F;
+    --text-muted: #9A9790;
+
+    /* Gold accent */
+    --gold: #C9A84C;
+    --gold-dim: rgba(201, 168, 76, 0.12);
+    --gold-border: rgba(201, 168, 76, 0.25);
+
+    /* Green brand */
+    --green-deep: #104D35;
+    --green-light: #4CAF82;
+
+    /* Semantic risk */
+    --status-critical: #C0392B;
+    --status-high: #D4863C;
+    --status-warning: #D4A844;
+    --status-medium: #D4A844;
+    --status-success: #104D35;
+    --status-info: #3498DB;
+
+    /* Borders */
+    --border-subtle: #E4E1D8;
+    --border-strong: #D5D1C5;
+
+    /* Brand kept for compatibility */
+    --brand-primary: var(--green-deep);
+    --brand-hover: var(--green-light);
+  }
+
+  * {
+    border-color: var(--border-subtle);
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--bg-page);
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--bg-page);
+    color: var(--text-body);
+    font-family: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  }
+
+  ::selection {
+    background: rgba(16, 77, 53, 0.2);
+    color: var(--text-primary);
+  }
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+.font-sans {
+  font-family: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif !important;
+}
+
+.font-space {
+  font-family: var(--font-space), system-ui, sans-serif !important;
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace !important;
+}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+
+.app-shell {
+  background: var(--bg-page);
+  color: var(--text-body);
+}
+
+.app-container {
+  max-width: none;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,181 @@
+
+src\components\landing\Footer.tsx:10
+:      <section id="footer-band" 
+className="py-24 px-4 flex flex-col 
+items-center text-center" style={{ 
+background: '#0e4a2d', color: 
+'#F5F2EA' }}>
+src\components\landing\Footer.tsx:16
+:          href="/login"
+src\components\landing\Footer.tsx:22
+:        <a href="#detection" 
+className="font-semibold underline 
+opacity-80 hover:opacity-100 
+transition-opacity">
+src\components\landing\Footer.tsx:64
+:            <a href="#detection" 
+className="hover:text-[#4CAF82] 
+transition-colors">METHODOLOGY</a>
+src\components\landing\Footer.tsx:65
+:            <Link href="/help" 
+className="hover:text-[#4CAF82] tran
+sition-colors">DOCUMENTATION</Link>
+src\components\landing\Footer.tsx:66
+:            <Link href="/login" 
+className="hover:text-[#4CAF82] 
+transition-colors">SIGN IN</Link>
+src\components\landing\Hero.tsx:14: 
+     const navWordmark = document.ge
+tElementById('nav-wordmark');
+src\components\landing\Hero.tsx:66: 
+   <div ref={containerRef} 
+className="relative w-full 
+h-[100vh] flex flex-col 
+justify-center overflow-hidden 
+bg-[#F8F7F1]">
+src\components\landing\Hero.tsx:90: 
+         ref={giantWordmarkRef}
+src\components\landing\Hero.tsx:128:
+              href="/login"
+src\components\landing\Hero.tsx:135:
+              href="#problem"
+src\components\landing\Navbar.tsx:54
+:        <Link href="/" 
+className="flex items-center gap-3 
+group" style={{ textDecoration: 
+'none' }}>
+src\components\landing\Navbar.tsx:69
+:            id="nav-wordmark"
+src\components\landing\Navbar.tsx:70
+:            ref={wordmarkRef}
+src\components\landing\Navbar.tsx:11
+9:                  <Link 
+href="/dashboard" className="block 
+py-1 hover:text-[#4CAF82] 
+transition-colors 
+mb-4">Dashboard</Link>
+src\components\landing\Navbar.tsx:12
+2:                  <Link 
+href="/alerts" className="block 
+py-1 hover:text-[#4CAF82] 
+transition-colors">Alerts</Link>
+src\components\landing\Navbar.tsx:12
+3:                  <Link 
+href="/graph" className="block py-1 
+hover:text-[#4CAF82] 
+transition-colors">Money Flow</Link>
+src\components\landing\Navbar.tsx:12
+4:                  <Link 
+href="/cases" className="block py-1 
+hover:text-[#4CAF82] 
+transition-colors">Cases</Link>
+src\components\landing\Navbar.tsx:12
+9:                  <Link 
+href="/employees" className="block 
+py-1 hover:text-[#4CAF82] 
+transition-colors">Employees</Link>
+src\components\landing\Navbar.tsx:13
+0:                  <Link 
+href="/customers" className="block 
+py-1 hover:text-[#4CAF82] 
+transition-colors 
+mb-4">Customers</Link>
+src\components\landing\Navbar.tsx:13
+3:                  <Link 
+href="/lab" className="block py-1 
+hover:text-[#4CAF82] 
+transition-colors">Detection 
+Lab</Link>
+src\components\landing\Navbar.tsx:13
+4:                  <Link 
+href="/copilot" className="block 
+py-1 hover:text-[#4CAF82] 
+transition-colors">AI Copilot</Link>
+src\components\landing\Navbar.tsx:13
+5:                  <Link 
+href="/scenario-replay" 
+className="block py-1 
+hover:text-[#4CAF82] 
+transition-colors">Scenario 
+Replay</Link>
+src\components\landing\Navbar.tsx:14
+0:                  <Link 
+href="/audit-log" 
+className="hover:text-[#4CAF82] 
+transition-colors text-sm">Audit 
+Log</Link>
+src\components\landing\Navbar.tsx:14
+1:                  <Link 
+href="/notifications" 
+className="hover:text-[#4CAF82] 
+transition-colors 
+text-sm">Notifications</Link>
+src\components\landing\Navbar.tsx:14
+2:                  <Link 
+href="/settings" 
+className="hover:text-[#4CAF82] 
+transition-colors 
+text-sm">Settings</Link>
+src\components\landing\Navbar.tsx:14
+8:          <a href="#detection" 
+className="hidden md:block 
+hover:text-[#0e4a2d] 
+transition-colors 
+py-2">Methodology</a>
+src\components\landing\Navbar.tsx:14
+9:          <Link href="/help" 
+className="hidden md:block 
+hover:text-[#0e4a2d] 
+transition-colors 
+py-2">Documentation</Link>
+src\components\landing\Navbar.tsx:15
+1:          <Link href="/login" 
+className="hidden sm:block 
+hover:text-[#0e4a2d] 
+transition-colors py-2">Sign 
+In</Link>
+src\components\landing\Navbar.tsx:15
+2:          <Link href="/login" 
+className="px-5 py-2.5 rounded-sm 
+text-[#F8F7F1] transition-all 
+hover:opacity-90 shadow-[0_2px_10px_
+rgba(14,74,45,0.15)] flex 
+items-center gap-2 text-xs 
+uppercase tracking-wider" style={{ 
+background: '#0e4a2d' }}>
+src\components\landing\Sections.tsx:
+54:    <div ref={containerRef} 
+className="relative z-10 w-full" 
+style={{ color: '#111111', 
+fontFamily: 'IBM Plex Sans, 
+sans-serif' }}>
+src\components\landing\Sections.tsx:
+57:      <section id="problem" 
+className="reveal-section 
+max-w-[1280px] mx-auto px-4 lg:px-8 
+py-24 md:py-32">
+src\components\landing\Sections.tsx:
+186:              href="/login"
+src\components\landing\Sections.tsx:
+193:              href="#detection"
+src\components\landing\Sections.tsx:
+213:              <a 
+href="#problem" 
+className="hover:text-white 
+transition-colors">Methodology</a>
+src\components\landing\Sections.tsx:
+214:              <Link 
+href="/help" 
+className="hover:text-white transiti
+on-colors">Documentation</Link>
+src\components\landing\Sections.tsx:
+215:              <Link 
+href="/login" 
+className="hover:text-white 
+transition-colors">Sign In</Link>
+src\components\landing\SignalGrid.ts
+x:96:      ref={canvasRef}
+src\components\landing\SignalSculptu
+re.tsx:162:        ref={canvasRef}
+
+

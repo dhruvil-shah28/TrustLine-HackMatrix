@@ -1,0 +1,164 @@
+52: background: var(--bg-page);
+57: background: var(--bg-page);
+75: background: rgba(232, 198, 106, 0.25);
+85: background: var(--bg-page);
+99: background: var(--bg-card) !important;
+100: border: 1px solid var(--border-subtle) !important;
+101: border-radius: 14px !important;
+102: box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+103: transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+108: border-color: var(--border-strong) !important;
+109: box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+112: /* Semantic left-border accent — replace old colorful backgrounds */
+114: border-left: 2px solid var(--status-critical) !important;
+118: border-left: 2px solid var(--status-warning) !important;
+122: border-left: 2px solid var(--status-success) !important;
+126: border-left: 2px solid var(--status-info) !important;
+134: color: var(--text-primary) !important;
+139: color: var(--text-primary) !important;
+144: color: var(--text-secondary) !important;
+151: color: var(--text-secondary) !important;
+173: transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+188: background: var(--gold);
+195: background: #D4B05A;
+202: background: var(--bg-panel);
+208: background: var(--bg-inset);
+214: background: transparent;
+220: background: rgba(255, 255, 255, 0.06);
+226: background: rgba(224, 82, 82, 0.1);
+232: background: rgba(224, 82, 82, 0.18);
+237: background: rgba(76, 175, 130, 0.1);
+260: background: rgba(224, 82, 82, 0.12);
+266: background: rgba(212, 134, 60, 0.12);
+272: background: rgba(212, 168, 68, 0.12);
+278: background: rgba(76, 175, 130, 0.12);
+284: background: rgba(255, 255, 255, 0.06);
+299: background: var(--bg-inset);
+327: background: var(--bg-inset);
+349: background: rgba(255, 255, 255, 0.025);
+390: background: var(--bg-page);
+394: background: rgba(255, 255, 255, 0.12);
+399: background: rgba(255, 255, 255, 0.2);
+406: .app-shell header {
+407: background: #111111 !important;
+408: border-bottom: 1px solid var(--border-subtle) !important;
+409: backdrop-filter: none !important;
+412: .app-shell header>div {
+413: max-width: none !important;
+416: /* All text in the header */
+417: .app-shell header .text-white,
+418: .app-shell header .text-slate-100,
+419: .app-shell header .text-slate-200 {
+420: color: var(--text-primary) !important;
+423: .app-shell header .text-slate-300,
+424: .app-shell header .text-slate-400 {
+425: color: var(--text-secondary) !important;
+428: .app-shell header .text-slate-500,
+429: .app-shell header .text-slate-600 {
+430: color: var(--text-tertiary) !important;
+434: .app-shell header .bg-indigo-600 {
+435: background: var(--gold) !important;
+436: color: #1A1500 !important;
+440: .app-shell header a[class*="bg-indigo-600"],
+441: .app-shell header .bg-indigo-600 {
+442: background: var(--gold) !important;
+443: color: #1A1500 !important;
+447: .app-shell header .hover\:bg-slate-800:hover,
+448: .app-shell header [class*="hover:bg-slate-800"]:hover {
+449: background: rgba(255, 255, 255, 0.06) !important;
+453: .app-shell header .text-slate-300 {
+454: color: var(--text-secondary) !important;
+458: .app-shell header .bg-slate-900 {
+459: background: var(--bg-inset) !important;
+460: border-color: var(--border-subtle) !important;
+463: .app-shell header .bg-slate-950 {
+464: background: var(--bg-panel) !important;
+468: .app-shell header .bg-rose-500 {
+469: background: var(--status-critical) !important;
+473: .app-shell header .bg-indigo-600.rounded-full {
+474: background: var(--gold) !important;
+475: color: #1A1500 !important;
+479: .app-shell header [class*="bg-slate-900"],
+480: .app-shell header [class*="bg-slate-950"] {
+481: background: var(--bg-card) !important;
+482: border-color: var(--border-subtle) !important;
+490: /* Dark page backgrounds → our layered surfaces */
+492: background-color: var(--bg-page) !important;
+496: background-color: var(--bg-inset) !important;
+500: background-color: var(--bg-panel) !important;
+506: /* Black inset backgrounds (from page.tsx bg-[#030712], etc.) */
+509: background-color: var(--bg-inset) !important;
+510: border-color: var(--border-subtle) !important;
+518: color: var(--text-primary) !important;
+522: color: var(--text-primary) !important;
+526: color: var(--text-primary) !important;
+530: color: var(--text-secondary) !important;
+534: color: var(--text-secondary) !important;
+538: color: var(--text-tertiary) !important;
+542: color: var(--text-tertiary) !important;
+552: color: #6ECBA0 !important;
+558: color: #E8C66A !important;
+564: color: #F08080 !important;
+568: color: #E05252 !important;
+574: color: var(--gold) !important;
+579: color: #6B9FD4 !important;
+589: background-color: var(--gold) !important;
+590: color: #1A1500 !important;
+594: background-color: var(--gold) !important;
+595: color: #1A1500 !important;
+598: /* Indigo-tinted backgrounds (dropdown badges etc.) */
+600: background-color: var(--gold-dim) !important;
+605: background-color: var(--gold-dim) !important;
+614: border-color: var(--gold-border) !important;
+620: background: var(--gold) !important;
+621: color: #1A1500 !important;
+622: border-color: var(--gold) !important;
+627: background: #D4B05A !important;
+632: box-shadow: 0 4px 12px rgba(232, 198, 106, 0.15) !important;
+640: border-color: var(--border-subtle) !important;
+644: border-color: var(--border-strong) !important;
+648: BACKGROUNDS FOR INLINE PANEL INSETS
+655: background-color: rgba(36, 36, 36, 0.85) !important;
+664: background-color: rgba(224, 82, 82, 0.12) !important;
+668: border-color: rgba(224, 82, 82, 0.28) !important;
+672: border-left-color: var(--status-critical) !important;
+676: border-top-color: rgba(224, 82, 82, 0.15) !important;
+680: border-right-color: rgba(224, 82, 82, 0.08) !important;
+684: border-bottom-color: rgba(224, 82, 82, 0.08) !important;
+689: background-color: rgba(212, 134, 60, 0.12) !important;
+693: border-color: rgba(212, 134, 60, 0.28) !important;
+697: border-left-color: var(--status-high) !important;
+701: border-top-color: rgba(212, 134, 60, 0.15) !important;
+706: border-left-color: var(--status-success) !important;
+710: background-color: rgba(76, 175, 130, 0.12) !important;
+714: border-color: rgba(76, 175, 130, 0.28) !important;
+719: background-color: var(--status-success) !important;
+727: border-radius: 14px !important;
+731: border-radius: 12px !important;
+735: border-radius: 10px !important;
+739: border-radius: 8px !important;
+746: background: var(--bg-inset);
+760: background: var(--bg-inset);
+774: font-size: 0.6875rem !important;
+775: line-height: 1.45 !important;
+779: font-size: 0.75rem !important;
+780: line-height: 1.45 !important;
+784: font-size: 0.6875rem !important;
+785: line-height: 1.4 !important;
+796: background-image: none !important;
+800: .app-shell .backdrop-blur,
+801: .app-shell .backdrop-blur-xs,
+802: .app-shell .backdrop-blur-sm {
+803: backdrop-filter: none !important;
+812: transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+822: background-color: var(--bg-page) !important;
+826: color: var(--text-tertiary) !important;
+834: background: transparent;
+839: background: var(--bg-card);
+854: border-color: var(--gold) !important;
+855: box-shadow: 0 0 0 3px rgba(232, 198, 106, 0.12) !important;
+866: REACT FLOW GRAPH CONTROLS (Black Icons Override)
+873: color: #000000 !important;
+874: fill: #000000 !important;
+887: fill: #000000 !important;
+888: color: #000000 !important;
