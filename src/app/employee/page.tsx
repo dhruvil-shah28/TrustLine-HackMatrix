@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import LandingNavbar from '@/components/landing/Navbar';
 import styles from './page.module.css';
 import {
   Activity,
@@ -263,7 +262,7 @@ export default function EmployeePortalPage() {
       className={`${styles.employeePortal} employee-portal-theme -m-4 min-h-screen bg-[#203234] px-4 pb-6 pt-28 text-[#FFFFFF] sm:-m-6 sm:px-6 lg:-m-8 lg:px-8`}
       style={{ fontFamily: 'var(--font-plex-sans), sans-serif', colorScheme: 'dark' }}
     >
-      <LandingNavbar clickDropdowns />
+
       <div className="mx-auto max-w-[1450px] space-y-6 pb-12">
       <header className="employeeWorkspaceHeader overflow-hidden rounded-xl border border-[#3A4949] bg-[#203234]">
         <div className="flex flex-col gap-6 p-5 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
