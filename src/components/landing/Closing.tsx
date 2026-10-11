@@ -27,17 +27,17 @@ export default function Closing() {
               TRUSTLINE gives AML and insider-risk teams one place to trace suspicious money flows and check them against who accessed what, and when.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-[28px] items-start sm:items-center">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center">
               <Link
                 href="/login"
                 className="lp-font-display flex items-center justify-center font-[800] uppercase tracking-[0.04em] text-[15px] px-[30px] py-[18px] rounded-[4px] shrink-0"
                 style={{ background: '#104D35', color: '#FBFAF6' }}
               >
-                ENTER DEMO WORKSPACE &rarr;
+                ENTER WORKSPACE &rarr;
               </Link>
               <Link
                 href="/login"
-                className="lp-font-display flex items-center justify-center font-[800] uppercase tracking-[0.04em] text-[15px] shrink-0"
+                className="lp-font-display flex items-center justify-center font-[800] uppercase tracking-[0.04em] text-[15px] shrink-0 sm:ml-[28px]"
                 style={{ color: '#171916' }}
               >
                 EXPLORE THE PLATFORM
@@ -77,7 +77,7 @@ export default function Closing() {
                 ROLES: INVESTIGATOR / COMPLIANCE / RISK ANALYST / ADMIN
               </p>
               <p className="lp-font-mono text-[11px] m-0 mt-[8px]"               style={{ color: '#858780' }}>
-                The demo workspace runs on seeded sample data.
+                The workspace runs on seeded sample data.
               </p>
             </div>
           </div>

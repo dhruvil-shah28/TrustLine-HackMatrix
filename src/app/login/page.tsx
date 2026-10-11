@@ -1,10 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import LandingNavbar from '@/components/landing/Navbar';
 import { useAuth } from '@/context/AuthContext';
 import {
   ArrowRight,
@@ -219,30 +217,54 @@ export default function LoginPage() {
       className="w-full"
       style={{
         minHeight: '100vh',
-        background: '#203234',
+        background: '#355F5A',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: 120,
+        paddingTop: 56,
         paddingBottom: 56,
         paddingLeft: 20,
         paddingRight: 20,
         fontFamily: 'var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif'
       }}
     >
-      <LandingNavbar logoVariant="image" />
-
       <div
         style={{
           width: '100%',
           maxWidth: 1180,
           display: 'flex',
-          justifyContent: 'space-between',
-          gap: 40,
-          margin: 'auto 0',
+          flexDirection: 'column',
+          gap: 18,
+          margin: '0 auto',
         }}
-        className="flex-col min-[900px]:flex-row"
       >
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+          <Image
+            src="/brand/trustline-full.png"
+            alt="TRUSTLINE"
+            width={260}
+            height={70}
+            priority
+            style={{
+              width: 240,
+              height: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.18))',
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 40,
+            margin: 0,
+          }}
+          className="flex-col min-[900px]:flex-row"
+        >
         {/* ── Left Block ── */}
         <section
           style={{
@@ -263,7 +285,7 @@ export default function LoginPage() {
                 fontWeight: 600,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: '#83E0C9',
+                color: '#C3F0E5',
                 marginBottom: 16,
               }}
             >
@@ -271,14 +293,14 @@ export default function LoginPage() {
             </p>
 
             {/* HEADLINE */}
-            <h1 style={{ fontSize: 'clamp(38px, 4.6vw, 72px)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-0.02em', color: '#83E0C9', marginBottom: 24, textWrap: 'balance', maxWidth: 640 }}>
+            <h1 style={{ fontSize: 'clamp(38px, 4.6vw, 72px)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-0.02em', color: '#D7F9F0', marginBottom: 24, textWrap: 'balance', maxWidth: 640 }}>
               {selectedRole === 'INVESTIGATOR'
                 ? 'Authorized Risk & Financial Crime Investigation Workspace.'
                 : 'Employee Banking Operations & Account Workspace.'}
             </h1>
 
             {/* PARAGRAPH */}
-            <p style={{ fontSize: 16, fontWeight: 500, lineHeight: 1.7, color: '#FFFFFF', opacity: 0.78, marginBottom: 32, maxWidth: 520 }}>
+            <p style={{ fontSize: 16, fontWeight: 500, lineHeight: 1.7, color: '#F0F8F6', opacity: 0.9, marginBottom: 32, maxWidth: 520 }}>
               {selectedRole === 'INVESTIGATOR'
                 ? 'Access Attack DNA, Hidden Link Hunter, Behavioural Drift Radar, Counterfactual Simulations, and Cryptographic Evidence Seals.'
                 : 'Access customer accounts, limit overrides, transaction processing, and internal banking workflows.'}
@@ -290,7 +312,7 @@ export default function LoginPage() {
         <section
           style={{
             flex: '1 1 44%',
-            background: '#FFFFFF',
+            background: '#F8F7F3',
             borderRadius: 14,
             padding: 40,
             boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
@@ -705,5 +727,6 @@ export default function LoginPage() {
         </section>
       </div>
     </div>
+  </div>
   );
 }

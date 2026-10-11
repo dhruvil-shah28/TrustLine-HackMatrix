@@ -76,19 +76,45 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (searchQuery.length >= 2) {
+    const trimmed = searchQuery.trim();
+
+    if (!showSearchModal) {
+      return;
+    }
+
+    if (trimmed.length >= 2) {
       setIsSearching(true);
-      fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setSearchResults(data.results || []);
-          setIsSearching(false);
+      fetch(`/api/search?q=${encodeURIComponent(trimmed)}`)
+        .then(async (res) => {
+          const payload = await res.json();
+          if (!res.ok) {
+            throw new Error(payload?.error || 'Search failed');
+          }
+          setSearchResults(payload.results || []);
         })
-        .catch(() => setIsSearching(false));
+        .catch(() => {
+          setSearchResults([]);
+        })
+        .finally(() => setIsSearching(false));
     } else {
+      setIsSearching(false);
       setSearchResults([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery, showSearchModal]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowSearchModal(false);
+        setShowToolsDropdown(false);
+        setShowUserPopover(false);
+        setShowNotificationPopover(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   // Don't render full navbar on login / forgot-password / reset-password pages
   const isAuthPage = ['/login', '/forgot-password', '/reset-password'].includes(pathname);
@@ -172,7 +198,7 @@ export default function Navbar() {
         </div>
 
         {/* Primary Navigation - Desktop */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1 flex-1 min-w-0 justify-start ml-2">
           {currentNav.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
@@ -182,11 +208,12 @@ export default function Navbar() {
                 href={item.href}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors"
                 style={isActive
-                  ? { background: 'rgba(131,224,201,0.14)', color: '#83E0C9' }
-                  : { color: 'var(--text-secondary)' }
+                  ? { background: '#174B3F', color: '#F7FBF8', border: '1px solid rgba(165, 235, 217, 0.2)' }
+                  : { color: '#334D49' }
                 }
-                onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLElement).style.color = '#F2F4EF'; (e.currentTarget as HTMLElement).style.background = 'rgba(131,224,201,0.08)'; } }}
-                onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLElement).style.color = '#B7C6C0'; (e.currentTarget as HTMLElement).style.background = 'transparent'; } }}
+                onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLElement).style.color = '#183F37'; (e.currentTarget as HTMLElement).style.background = 'rgba(23, 75, 63, 0.06)'; } }}
+                onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLElement).style.color = '#334D49'; (e.currentTarget as HTMLElement).style.background = 'transparent'; } }}
+                aria-current={isActive ? 'page' : undefined}
               >
                 <Icon className="h-3.5 w-3.5" />
                 {item.label}
@@ -219,10 +246,10 @@ export default function Navbar() {
                       onClick={() => setShowToolsDropdown(false)}
                       className="flex items-start gap-2.5 p-2 rounded-lg text-xs transition-colors"
                       style={isActive
-                        ? { background: 'rgba(131,224,201,0.14)', borderColor: 'rgba(131,224,201,0.32)', border: '1px solid rgba(131,224,201,0.32)' }
+                        ? { background: 'rgba(23, 75, 63, 0.14)', borderColor: 'rgba(165, 235, 217, 0.22)', border: '1px solid rgba(165, 235, 217, 0.22)' }
                         : {}
                       }
-                      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; }}
+                      onMouseEnter={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(23, 75, 63, 0.06)'; }}
                       onMouseLeave={e => { if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                     >
                       <Icon className="h-4 w-4 mt-0.5 shrink-0" style={{ color: isActive ? '#83E0C9' : '#9BAEA7' }} />
@@ -239,18 +266,19 @@ export default function Navbar() {
         </nav>
 
         {/* Right Action Area */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center justify-end gap-2.5 shrink-0 ml-2">
           {/* Global Search Trigger */}
-          <div className="relative">
+          <div className="relative shrink-0">
             <button
+              type="button"
               onClick={() => setShowSearchModal(true)}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs w-36 lg:w-48 transition-colors"
-              style={{ background: 'var(--bg-inset)', border: '1px solid var(--border-subtle)', color: '#9BAEA7' }}
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs h-9 transition-colors"
+              style={{ background: 'var(--bg-inset)', border: '1px solid var(--border-subtle)', color: '#9BAEA7', width: '190px' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(131,224,201,0.32)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-subtle)'; }}
             >
               <Search className="h-3.5 w-3.5 shrink-0" style={{ color: '#9BAEA7' }} />
-              <span className="truncate">Search entity...</span>
+              <span className="truncate text-left">Search entity...</span>
               <kbd className="hidden sm:inline-block ml-auto text-[9px] font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.06)', color: '#9BAEA7' }}>⌘K</kbd>
             </button>
 
@@ -258,7 +286,14 @@ export default function Navbar() {
             {showSearchModal && (
               <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
                 <div className="w-full max-w-lg rounded-xl shadow-2xl p-3 space-y-2" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'var(--bg-inset)', border: '1px solid var(--border-subtle)' }}>
+                  <form
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      setShowSearchModal(true);
+                    }}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                    style={{ background: 'var(--bg-inset)', border: '1px solid var(--border-subtle)' }}
+                  >
                     <Search className="h-4 w-4 shrink-0" style={{ color: '#9BAEA7' }} />
                     <input
                       type="text"
@@ -268,11 +303,21 @@ export default function Navbar() {
                       className="bg-transparent text-xs outline-none w-full"
                       style={{ color: '#F2F4EF' }}
                       autoFocus
+                      aria-label="Search entities"
                     />
-                    <button onClick={() => setShowSearchModal(false)} className="text-xs" style={{ color: '#9BAEA7' }}>✕</button>
-                  </div>
+                    {searchQuery.trim() && (
+                      <button type="button" onClick={() => setSearchQuery('')} className="text-xs" style={{ color: '#9BAEA7' }}>Clear</button>
+                    )}
+                    <button type="button" onClick={() => setShowSearchModal(false)} className="text-xs" style={{ color: '#9BAEA7' }}>✕</button>
+                  </form>
 
                   {isSearching && <p className="text-xs p-2 font-mono" style={{ color: '#9BAEA7' }}>Searching entity graph...</p>}
+
+                  {!isSearching && searchQuery.trim().length >= 2 && searchResults.length === 0 && (
+                    <div className="p-3 rounded-lg text-xs" style={{ background: 'rgba(255,255,255,0.03)', color: '#B7C6C0', border: '1px solid var(--border-subtle)' }}>
+                      No matching entities found for “{searchQuery.trim()}”.
+                    </div>
+                  )}
 
                   {searchResults.length > 0 && (
                     <div className="space-y-1 max-h-72 overflow-y-auto">
@@ -361,22 +406,24 @@ export default function Navbar() {
           <div className="relative" ref={userRef}>
             <button
               onClick={() => setShowUserPopover(!showUserPopover)}
-              className="flex items-center gap-2 p-1.5 rounded-lg transition-colors"
-              style={{ background: 'var(--bg-inset)', border: '1px solid var(--border-subtle)', color: '#F2F4EF' }}
+              className="flex items-center gap-2.5 p-1.5 pr-2 rounded-lg transition-colors shrink-0"
+              style={{ background: 'var(--bg-inset)', border: '1px solid var(--border-subtle)', color: '#F2F4EF', minWidth: '170px' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.14)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
             >
-              <div className="h-6 w-6 rounded-full font-bold text-[10px] flex items-center justify-center shrink-0" style={{ background: '#83E0C9', color: '#172321' }}>
+              <div className="h-7 w-7 rounded-full font-bold text-[10px] flex items-center justify-center shrink-0" style={{ background: '#83E0C9', color: '#172321' }}>
                 {user.avatar}
               </div>
-              <div className="hidden lg:block text-left text-[11px] leading-tight">
-                <div className="font-bold flex items-center gap-1" style={{ color: '#F2F4EF' }}>
-                  <span>{user.name}</span>
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#4CAF82' }} />
+              <div className="hidden lg:flex min-w-0 flex-1 items-center justify-between gap-2 text-left text-[11px] leading-tight">
+                <div className="min-w-0">
+                  <div className="font-bold flex items-center gap-1.5" style={{ color: '#F2F4EF' }}>
+                    <span className="truncate">{user.name}</span>
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#4CAF82' }} />
+                  </div>
+                  <div className="text-[10px] uppercase tracking-[0.08em]" style={{ color: '#9BAEA7' }}>{user.role.replace('_', ' ')}</div>
                 </div>
-                <div className="text-[10px]" style={{ color: '#9BAEA7' }}>{user.role.replace('_', ' ')}</div>
               </div>
-              <ChevronDown className="h-3 w-3" style={{ color: '#9BAEA7' }} />
+              <ChevronDown className="h-3.5 w-3.5 shrink-0" style={{ color: '#9BAEA7' }} />
             </button>
 
             {/* Custom Popover Content */}

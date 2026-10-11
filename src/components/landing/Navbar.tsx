@@ -251,7 +251,6 @@ export default function LandingNavbar({
             )}
           </div>}
 
-          <Link href="/login" className={`${publicLanding ? 'text-xs sm:text-sm' : 'hidden sm:block'} hover:text-[#104D35] transition-colors py-2 whitespace-nowrap`}>Sign In</Link>
           <Link href="/login" className={`${publicLanding ? 'px-1 gap-1 text-[9px] min-[440px]:px-2 min-[440px]:gap-2 min-[440px]:text-[10px] sm:px-5 sm:text-xs' : 'px-3 sm:px-5 text-xs'} py-2.5 rounded-sm text-[#FBFAF6] transition-all hover:opacity-90 flex items-center uppercase tracking-wider whitespace-nowrap`} style={{ background: '#104D35' }}>
             Enter Workspace <span aria-hidden="true">&rarr;</span>
           </Link>

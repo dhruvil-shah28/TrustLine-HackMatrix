@@ -21,20 +21,13 @@ export default function Footer() {
             Connect the transactions, activity, and evidence that isolated systems miss.
           </p>
 
-          <div className="flex flex-row items-center justify-center gap-[28px] mt-[36px]">
+          <div className="flex flex-row items-center justify-center mt-[36px]">
             <Link
               href="/login"
               className="lp-font-display flex items-center justify-center font-[800] uppercase tracking-[0.04em] text-[15px] px-[30px] py-[18px] rounded-[4px] shrink-0 transition-opacity hover:opacity-90"
               style={{ background: '#104D35', color: '#FBFAF6' }}
             >
-              ENTER DEMO WORKSPACE &rarr;
-            </Link>
-            <Link
-              href="/login"
-              className="lp-font-display flex items-center justify-center font-[800] uppercase tracking-[0.04em] text-[15px] shrink-0 transition-opacity hover:opacity-90"
-              style={{ color: '#171916', textDecoration: 'underline', textDecorationThickness: '2px', textUnderlineOffset: '6px', textDecorationColor: '#62645F' }}
-            >
-              SIGN IN
+              ENTER WORKSPACE &rarr;
             </Link>
           </div>
         </div>
@@ -67,18 +60,11 @@ export default function Footer() {
             >
               DOCUMENTATION
             </Link>
-            <Link
-              href="/login"
-              className="lp-font-display font-[700] text-[13px] uppercase tracking-[0.08em] transition-opacity hover:opacity-100"
-              style={{ color: '#62645F' }}
-            >
-              SIGN IN
-            </Link>
           </div>
 
           {/* Right */}
           <div className="flex flex-col items-center min-[900px]:items-end min-[900px]:text-right text-center lp-font-mono text-[12px] shrink-0" style={{ color: '#858780' }}>
-            <p className="m-0 mb-1">Demo data only. Built for HackMatrix 5.0.</p>
+            <p className="m-0 mb-1">Sample data environment. Built for HackMatrix 5.0.</p>
             <p className="m-0">&copy; 2026 TRUSTLINE</p>
           </div>
 

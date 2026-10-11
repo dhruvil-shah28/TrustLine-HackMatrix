@@ -5,6 +5,7 @@ import {
   predictPrioritisation,
   DEFAULT_TRAINED_MODEL_ARTIFACT,
 } from '@/lib/behavioural-drift-radar';
+import { buildFcirpFeatureVectorFromBehaviouralFeatures, inferFcirpPriority } from '@/lib/fcirp-integration';
 
 export async function GET(request: Request) {
   try {
@@ -14,10 +15,12 @@ export async function GET(request: Request) {
     if (employeeId) {
       const features = await computeEmployeeBehaviourFeatures(employeeId);
       const prediction = predictPrioritisation(features);
+      const fcirpPrediction = await inferFcirpPriority(buildFcirpFeatureVectorFromBehaviouralFeatures(features));
 
       return NextResponse.json({
         features,
         prediction,
+        fcirpPrediction,
         modelMetadata: DEFAULT_TRAINED_MODEL_ARTIFACT,
       });
     }
@@ -53,10 +56,12 @@ export async function POST(request: Request) {
     }
 
     const prediction = predictPrioritisation(features);
+    const fcirpPrediction = await inferFcirpPriority(buildFcirpFeatureVectorFromBehaviouralFeatures(features));
 
     return NextResponse.json({
       features,
       prediction,
+      fcirpPrediction,
       modelMetadata: DEFAULT_TRAINED_MODEL_ARTIFACT,
     });
   } catch (error: any) {

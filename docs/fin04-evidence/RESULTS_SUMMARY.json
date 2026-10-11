@@ -1,0 +1,32 @@
+{
+  "branch": "ml-integration",
+  "artifacts": {
+    "model_path": "$FCIRP_ROOT/models/case_priority.pkl",
+    "runtime": "$TRUSTLINE_ROOT/.venv-fcirp/bin/python",
+    "feature_count": 37,
+    "model_name": "FCIRP_CASE_PRIORITY_V1"
+  },
+  "runtime_checks": {
+    "npx_prisma_generate": "PASS",
+    "npx_tsc_noEmit": "PASS",
+    "npx_tsx_scripts_test_attack_dna": "PASS",
+    "npx_tsx_scripts_test_behavioural_drift": "PASS",
+    "npx_tsx_scripts_test_hidden_link_hunter": "PASS",
+    "npx_tsx_scripts_test_fcirp_integration": "PASS"
+  },
+  "external_metrics": {
+    "raw_rule": {"precision": 0.652, "recall": 1.0, "f1": 0.789, "fpr": 1.0, "pr_auc": 0.652},
+    "rule_plus_mitigation": {"precision": 0.86, "recall": 0.956, "f1": 0.905, "fpr": 0.2917, "pr_auc": 0.851},
+    "learned_priority": {"precision": 1.0, "recall": 0.978, "f1": 0.989, "fpr": 0.0, "pr_auc": 1.0}
+  },
+  "fcirp_inference": {
+    "ts_result": {"priorityScore": 0.9995, "riskBand": "CRITICAL", "featureCount": 37},
+    "python_result": {"score": 0.9995321475417952, "riskBand": "CRITICAL"}
+  },
+  "status": {
+    "addition_1": "PASS",
+    "addition_2": "PARTIAL",
+    "faithful_feature_provenance": "PARTIAL",
+    "final_evidence_pack": "CREATED"
+  }
+}

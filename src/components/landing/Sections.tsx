@@ -181,13 +181,13 @@ export default function Sections() {
             Connect the transactions, activity, and evidence that isolated systems miss.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center">
             <Link
               href="/login"
               className="flex items-center justify-center h-[56px] px-10 font-bold rounded-sm tracking-wide transition-all hover:scale-[1.02] text-[#172321]"
               style={{ background: '#83E0C9', fontFamily: 'var(--font-plex-sans), "IBM Plex Sans", sans-serif' }}
             >
-              ENTER DEMO WORKSPACE &rarr;
+              ENTER WORKSPACE &rarr;
             </Link>
             <a
               href="#detection"
@@ -212,11 +212,10 @@ export default function Sections() {
             <div className="flex flex-wrap justify-center gap-8 text-xs font-bold tracking-wider uppercase opacity-80">
               <a href="#problem" className="hover:text-white transition-colors">Methodology</a>
               <Link href="/help" className="hover:text-white transition-colors">Documentation</Link>
-              <Link href="/login" className="hover:text-white transition-colors">Sign In</Link>
             </div>
 
             <div className="text-right text-[10px] lp-font-mono opacity-50">
-              <p className="mb-1">Demo data only. Built for HackMatrix 5.0.</p>
+              <p className="mb-1">Sample data environment. Built for HackMatrix 5.0.</p>
               <p>&copy; 2026 TRUSTLINE</p>
             </div>
           </div>

@@ -183,7 +183,7 @@ export default function Hero() {
               className="flex items-center justify-center h-[58px] px-9 text-base font-semibold rounded-sm transition-all hover:opacity-90 shrink-0 text-[#172321]"
               style={{ background: '#104D35', color: '#FBFAF6' }}
             >
-              ENTER DEMO WORKSPACE &rarr;
+              ENTER WORKSPACE &rarr;
             </Link>
           </div>
         </div>

@@ -73,34 +73,40 @@ export default function RiskDashboardPage() {
 
       {/* 2. Standardized KPI Metric Cards Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="ui-card ui-card-critical p-4 space-y-2">
+        <div className="ui-card ui-card-critical p-4 space-y-2 bg-[#304A44]">
           <div className="flex items-center justify-between">
-            <span className="heading-section text-rose-400">ACTIVE RISK ALERTS</span>
-            <AlertTriangle className="h-4 w-4 text-rose-400" />
+            <span className="heading-section text-rose-300">ACTIVE RISK ALERTS</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/10">
+              <AlertTriangle className="h-4 w-4 text-rose-300" />
+            </div>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="metric-value text-white">{loading ? '...' : activeAlertsCount}</span>
             <span className="badge badge-critical">{criticalCount} CRITICAL</span>
           </div>
-          <p className="text-[11px] text-slate-400">Connected anomaly triggers in queue</p>
+          <p className="text-[11px] text-slate-300">Connected anomaly triggers in queue</p>
         </div>
 
-        <div className="ui-card ui-card-warning p-4 space-y-2">
+        <div className="ui-card ui-card-warning p-4 space-y-2 bg-[#304A44]">
           <div className="flex items-center justify-between">
-            <span className="heading-section text-amber-400">HIGH-RISK CASES</span>
-            <Briefcase className="h-4 w-4 text-amber-400" />
+            <span className="heading-section text-amber-300">HIGH-RISK CASES</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-amber-500/20 bg-amber-500/10">
+              <Briefcase className="h-4 w-4 text-amber-300" />
+            </div>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="metric-value text-white">{loading ? '...' : highRiskCasesCount}</span>
             <span className="badge badge-high">{openInvestigations} ACTIVE</span>
           </div>
-          <p className="text-[11px] text-slate-400">Assigned investigator case files</p>
+          <p className="text-[11px] text-slate-300">Assigned investigator case files</p>
         </div>
 
-        <div className="ui-card ui-card-info p-4 space-y-2">
+        <div className="ui-card ui-card-info p-4 space-y-2 bg-[#304A44]">
           <div className="flex items-center justify-between">
-            <span className="heading-section text-indigo-400">FLAGGED FINANCIAL EXPOSURE</span>
-            <TrendingUp className="h-4 w-4 text-indigo-400" />
+            <span className="heading-section text-sky-300">FLAGGED FINANCIAL EXPOSURE</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-sky-400/20 bg-sky-400/10">
+              <TrendingUp className="h-4 w-4 text-sky-300" />
+            </div>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="metric-value text-white">
@@ -108,19 +114,21 @@ export default function RiskDashboardPage() {
             </span>
             <span className="badge badge-medium">4 SCENARIOS</span>
           </div>
-          <p className="text-[11px] text-slate-400">Total suspicious financial volume</p>
+          <p className="text-[11px] text-slate-300">Total suspicious financial volume</p>
         </div>
 
-        <div className="ui-card ui-card-success p-4 space-y-2">
+        <div className="ui-card ui-card-success p-4 space-y-2 bg-[#304A44]">
           <div className="flex items-center justify-between">
-            <span className="heading-section text-emerald-400">DETECTION PRECISION</span>
-            <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            <span className="heading-section text-emerald-300">DETECTION PRECISION</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/10">
+              <ShieldCheck className="h-4 w-4 text-emerald-300" />
+            </div>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="metric-value text-white">91.6%</span>
             <span className="badge badge-low">FPR 8.3%</span>
           </div>
-          <p className="text-[11px] text-slate-400">Benchmarked on 11 rule controls</p>
+          <p className="text-[11px] text-slate-300">Benchmarked on 11 rule controls</p>
         </div>
       </div>
 
@@ -145,17 +153,17 @@ export default function RiskDashboardPage() {
               <div className="p-8 text-center text-xs text-slate-400 ui-card">No active alerts found.</div>
             ) : (
               alerts.slice(0, 4).map((alert) => (
-                <div key={alert.id} className="ui-card ui-card-critical p-5 space-y-3 transition">
+                <div key={alert.id} className="ui-card ui-card-critical p-5 space-y-3 transition bg-[#2E4743]">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono technical-metadata text-xs text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-mono technical-metadata text-xs text-sky-200 bg-[#1B2E30] px-2 py-0.5 rounded border border-sky-400/15">
                           {alert.alertCode}
                         </span>
                         <span className={`badge ${alert.severity === 'CRITICAL' ? 'badge-critical' : 'badge-high'}`}>
                           {alert.severity} RISK
                         </span>
-                        <span className="text-xs text-slate-400 font-medium">Confidence: {alert.confidence}</span>
+                        <span className="text-xs text-slate-300 font-medium">Confidence: {alert.confidence}</span>
                       </div>
                       <h3 className="font-bold text-white text-sm">{alert.title}</h3>
                     </div>
@@ -165,19 +173,19 @@ export default function RiskDashboardPage() {
                     </Link>
                   </div>
 
-                  <p className="text-xs text-slate-300 bg-[#030712] p-3 rounded-lg border border-slate-800 leading-relaxed font-medium">
+                  <p className="text-xs text-slate-200 bg-[#263F3A] p-3 rounded-lg border border-slate-700/80 leading-relaxed font-medium">
                     {alert.summary}
                   </p>
 
                   {/* Signals List */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-800">
-                    <span className="heading-section">EVIDENCE SIGNALS:</span>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-700/80">
+                    <span className="heading-section text-slate-300">EVIDENCE SIGNALS:</span>
                     {alert.signals?.map((sig) => (
                       <span
                         key={sig.id}
-                        className="px-2 py-0.5 rounded text-[11px] bg-slate-900 text-slate-200 border border-slate-800 flex items-center gap-1 font-medium"
+                        className="px-2 py-0.5 rounded text-[11px] bg-[#213B39] text-slate-200 border border-slate-700/80 flex items-center gap-1 font-medium"
                       >
-                        <span className="text-emerald-400 font-bold">✓</span> {sig.title}
+                        <span className="text-emerald-300 font-bold">✓</span> {sig.title}
                       </span>
                     ))}
                   </div>
@@ -190,30 +198,30 @@ export default function RiskDashboardPage() {
         {/* RIGHT COLUMN (4 cols ~ 33%) */}
         <div className="lg:col-span-4 space-y-5">
           {/* High Risk Topology Links Card */}
-          <div className="ui-card p-5 space-y-3">
+          <div className="ui-card p-5 space-y-3 bg-[#2F4945]">
             <h2 className="heading-card flex items-center gap-2">
-              <GitFork className="h-4 w-4 text-indigo-400" />
+              <GitFork className="h-4 w-4 text-sky-300" />
               High-Risk Topology Links
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300">
               Correlated insider staff lookups & circular transfer paths.
             </p>
 
             <div className="space-y-2.5 pt-1">
-              <div className="p-3 rounded-xl bg-[#030712] border border-slate-800 space-y-1">
-                <div className="flex items-center justify-between">
+              <div className="p-3 rounded-xl bg-[#263F3A] border border-slate-700/80 space-y-1">
+                <div className="flex items-center justify-between gap-2">
                   <span className="font-bold text-slate-200 text-xs">Vikram Malhotra (EMP-1001)</span>
                   <span className="badge badge-critical">SCORE 88.5</span>
                 </div>
-                <p className="text-sm text-slate-400">3-node cycle: ACC-1001 &rarr; ACC-1002 &rarr; ACC-1006</p>
+                <p className="text-sm text-slate-300">3-node cycle: ACC-1001 &rarr; ACC-1002 &rarr; ACC-1006</p>
               </div>
 
-              <div className="p-3 rounded-xl bg-[#030712] border border-slate-800 space-y-1">
-                <div className="flex items-center justify-between">
+              <div className="p-3 rounded-xl bg-[#263F3A] border border-slate-700/80 space-y-1">
+                <div className="flex items-center justify-between gap-2">
                   <span className="font-bold text-slate-200 text-xs">Priya Sundaram (EMP-1004)</span>
                   <span className="badge badge-critical">SCORE 92.4</span>
                 </div>
-                <p className="text-sm text-slate-400">Structuring: 3 transfers under ₹5L threshold</p>
+                <p className="text-sm text-slate-300">Structuring: 3 transfers under ₹5L threshold</p>
               </div>
             </div>
 
@@ -223,9 +231,9 @@ export default function RiskDashboardPage() {
           </div>
 
           {/* Active Cases Queue Widget */}
-          <div className="ui-card p-5 space-y-3">
+          <div className="ui-card p-5 space-y-3 bg-[#2F4945]">
             <h2 className="heading-card flex items-center gap-2">
-              <Briefcase className="h-4 w-4 text-amber-400" />
+              <Briefcase className="h-4 w-4 text-amber-300" />
               Active Cases Queue
             </h2>
 
@@ -234,14 +242,14 @@ export default function RiskDashboardPage() {
                 <Link
                   key={cs.id}
                   href={`/cases/${cs.id}`}
-                  className="block p-3 rounded-xl bg-[#030712] hover:bg-slate-900 border border-slate-800 transition space-y-1"
+                  className="block p-3 rounded-xl bg-[#263F3A] hover:bg-[#2C4744] border border-slate-700/80 transition space-y-1"
                 >
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-mono technical-metadata font-medium text-indigo-300">{cs.caseCode}</span>
+                    <span className="font-mono technical-metadata font-medium text-sky-200">{cs.caseCode}</span>
                     <span className="badge badge-high">{cs.status}</span>
                   </div>
                   <p className="text-xs font-bold text-white truncate">{cs.title}</p>
-                  <p className="text-xs text-slate-400">Assigned: {cs.assignedInvestigator}</p>
+                  <p className="text-xs text-slate-300">Assigned: {cs.assignedInvestigator}</p>
                 </Link>
               ))}
             </div>

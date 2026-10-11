@@ -8,39 +8,39 @@
 @layer base {
   :root {
     /* Surface hierarchy */
-    --bg-page: #203234;
-    --bg-card: #2B3D3C;
-    --bg-panel: #314644;
-    --bg-selected: #374C46;
-    --bg-inset: #253736;
+    --bg-page: #1C3431;
+    --bg-card: #304A44;
+    --bg-panel: #354F49;
+    --bg-selected: #3C5B54;
+    --bg-inset: #263F3A;
 
     /* Text hierarchy */
-    --text-primary: #F2F4EF;
-    --text-secondary: #B7C6C0;
-    --text-tertiary: #9BAEA7;
-    --text-heading: #83E0C9;
+    --text-primary: #F3F6F4;
+    --text-secondary: #B6C6C0;
+    --text-tertiary: #8FA8A1;
+    --text-heading: #EAF5F0;
     --text-body: #C4CECD;
     --text-muted: #9BAEA7;
 
     /* Brand accents */
-    --mint: #83E0C9;
-    --mint-dim: rgba(131, 224, 201, 0.14);
-    --mint-border: rgba(131, 224, 201, 0.32);
-    --gold: #C9A84C;
-    --gold-dim: rgba(201, 168, 76, 0.12);
-    --gold-border: rgba(201, 168, 76, 0.25);
+    --mint: #A5EBD9;
+    --mint-dim: rgba(165, 235, 217, 0.12);
+    --mint-border: rgba(165, 235, 217, 0.18);
+    --gold: #D9AE5F;
+    --gold-dim: rgba(217, 174, 95, 0.1);
+    --gold-border: rgba(217, 174, 95, 0.2);
 
     /* Semantic risk */
-    --status-critical: #E05252;
-    --status-high: #D4863C;
-    --status-warning: #D4A844;
-    --status-medium: #D4A844;
-    --status-success: #4CAF82;
-    --status-info: #6B9FD4;
+    --status-critical: #F06B62;
+    --status-high: #D98D4B;
+    --status-warning: #D7A75E;
+    --status-medium: #D7A75E;
+    --status-success: #5ABD8F;
+    --status-info: #7DAFE3;
 
     /* Borders */
-    --border-subtle: #405652;
-    --border-strong: #526963;
+    --border-subtle: #49615A;
+    --border-strong: #58736D;
 
     /* Brand kept for compatibility */
     --brand-primary: #203234;
@@ -225,11 +225,11 @@
 
 .ui-card,
 .glass-panel {
-  background: var(--bg-card) !important;
+  background: linear-gradient(180deg, #304A44 0%, #2B403D 100%) !important;
   color: var(--text-primary);
-  border: 1px solid var(--border-subtle) !important;
+  border: 1px solid rgba(155, 176, 170, 0.18) !important;
   border-radius: 14px !important;
-  box-shadow: none !important;
+  box-shadow: 0 10px 26px rgba(8, 22, 19, 0.16) !important;
   transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
 }
 
@@ -241,19 +241,19 @@
 
 /* Semantic left-border accent — replace old colorful backgrounds */
 .ui-card-critical {
-  border-left: 2px solid var(--status-critical) !important;
+  border-left: 1px solid var(--border-subtle) !important;
 }
 
 .ui-card-warning {
-  border-left: 2px solid var(--status-warning) !important;
+  border-left: 1px solid var(--border-subtle) !important;
 }
 
 .ui-card-success {
-  border-left: 2px solid var(--status-success) !important;
+  border-left: 1px solid var(--border-subtle) !important;
 }
 
 .ui-card-info {
-  border-left: 2px solid var(--status-info) !important;
+  border-left: 1px solid var(--border-subtle) !important;
 }
 
 /* Text inside dark card surfaces */
@@ -322,28 +322,28 @@
 
 /* PRIMARY — Mint CTA */
 .btn-primary {
-  background: var(--mint);
-  color: #172321;
-  border-color: var(--mint);
+  background: #174B3F;
+  color: #F7FBF8;
+  border-color: rgba(165, 235, 217, 0.2);
   font-weight: 700;
 }
 
 .btn-primary:hover {
-  background: #9AE8D4;
-  border-color: #9AE8D4;
+  background: #1C584B;
+  border-color: rgba(165, 235, 217, 0.32);
   box-shadow: none;
 }
 
 /* SECONDARY — Nested teal surface */
 .btn-secondary {
-  background: var(--bg-panel);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
-  border-color: var(--border-subtle);
+  border-color: rgba(164, 191, 184, 0.3);
 }
 
 .btn-secondary:hover {
-  background: var(--bg-selected);
-  border-color: var(--border-strong);
+  background: rgba(131, 224, 201, 0.08);
+  border-color: rgba(131, 224, 201, 0.36);
 }
 
 /* GHOST */
