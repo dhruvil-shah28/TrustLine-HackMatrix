@@ -18,6 +18,7 @@ import {
   useReactFlow,
   ReactFlowProvider,
 } from '@xyflow/react';
+import dagre from 'dagre';
 import '@xyflow/react/dist/style.css';
 import {
   GitFork,
@@ -75,6 +76,81 @@ const T = {
   // divider
   divider: '#405652',
 };
+
+function layoutGraphNodes(nodes: Node[], edges: Edge[]): Node[] {
+  const NODE_WIDTH = 270;
+  const NODE_HEIGHT = 150;
+  const graph = new dagre.graphlib.Graph({ multigraph: true });
+
+  graph.setDefaultEdgeLabel(() => ({}));
+  graph.setGraph({
+    rankdir: 'TB',
+    ranker: 'network-simplex',
+    acyclicer: 'greedy',
+    nodesep: 100,
+    ranksep: 165,
+    edgesep: 46,
+    marginx: 60,
+    marginy: 50,
+  });
+
+  const nodeIds = new Set(nodes.map((node) => node.id));
+
+  nodes.forEach((node) => {
+    graph.setNode(node.id, {
+      width: NODE_WIDTH,
+      height: NODE_HEIGHT,
+    });
+  });
+
+  edges.forEach((edge) => {
+    if (
+      !nodeIds.has(edge.source) ||
+      !nodeIds.has(edge.target) ||
+      edge.source === edge.target
+    ) {
+      return;
+    }
+
+    const data = (edge.data ?? {}) as {
+      label?: string;
+      isSuspicious?: boolean;
+    };
+    const relation =
+      data.label ??
+      (typeof edge.label === 'string' ? edge.label : '');
+
+    const weight =
+      relation === 'TRANSFERRED_TO' ? 8 :
+      relation === 'OWNS' ? 5 :
+      data.isSuspicious ? 4 : 2;
+
+    graph.setEdge(
+      edge.source,
+      edge.target,
+      { weight, minlen: 1 },
+      edge.id,
+    );
+  });
+
+  dagre.layout(graph);
+
+  return nodes.map((node) => {
+    const point = graph.node(node.id) as
+      | { x: number; y: number }
+      | undefined;
+
+    if (!point) return node;
+
+    return {
+      ...node,
+      position: {
+        x: Math.round(point.x - NODE_WIDTH / 2),
+        y: Math.round(point.y - NODE_HEIGHT / 2),
+      },
+    };
+  });
+}
 
 // ─── Custom Node Component ────────────────────────────────────────────
 const CustomGraphNode = ({ data, selected }: any) => {
@@ -530,7 +606,7 @@ function MoneyFlowGraphCanvas() {
         };
       });
 
-      setNodes(formattedNodes);
+      setNodes(layoutGraphNodes(formattedNodes, formattedEdges));
       setEdges(formattedEdges);
     } else {
       // HUNTER TAB: Render Hidden Link Network
@@ -587,7 +663,7 @@ function MoneyFlowGraphCanvas() {
         };
       });
 
-      setNodes(formattedNodes);
+      setNodes(layoutGraphNodes(formattedNodes, formattedEdges));
       setEdges(formattedEdges);
     }
   }, [activeTab, rawNodes, rawEdges, hunterResult, filterSuspiciousOnly, setNodes, setEdges]);

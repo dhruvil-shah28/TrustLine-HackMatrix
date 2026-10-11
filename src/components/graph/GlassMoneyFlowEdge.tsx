@@ -96,18 +96,17 @@ export function GlassMoneyFlowEdge(props: EdgeProps) {
   const legacyTimeLabel =
     typeof label === 'string' && /\\b\\d{2}:\\d{2}\\b/.test(label);
   const showLabel =
-    hasTimestamp ||
     isTransfer ||
     suspicious ||
     selected ||
-    edgeData.linkageStrength !== undefined ||
+    edgeData.isDirectEvidence ||
     legacyTimeLabel;
 
   const edgeHash = Array.from(id).reduce(
     (hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0,
     7,
   );
-  const labelStagger = ((edgeHash % 5) - 2) * 17;
+  const labelStagger = ((edgeHash % 5) - 2) * 30;
 
   return (
     <>
