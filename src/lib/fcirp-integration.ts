@@ -50,7 +50,9 @@ function resolveFcirpModelPath(): string | null {
     process.env.FCIRP_MODEL_PATH,
     process.env.NEXT_PUBLIC_FCIRP_MODEL_PATH,
     process.env.FCIRP_MODEL_DIR ? path.join(process.env.FCIRP_MODEL_DIR, 'case_priority.pkl') : '',
-    path.resolve(process.cwd(), '..', '..', 'Downloads', 'fcirp', 'models', 'case_priority.pkl'),
+    '/app/models/fcirp/case_priority.pkl',
+    path.resolve('/app', 'models', 'fcirp', 'case_priority.pkl'),
+    path.resolve(process.cwd(), 'models', 'fcirp', 'case_priority.pkl'),
     path.resolve(process.cwd(), 'external', 'fcirp', 'models', 'case_priority.pkl'),
     path.resolve(process.cwd(), '..', 'fcirp', 'models', 'case_priority.pkl'),
   ].filter((candidate): candidate is string => Boolean(candidate));
@@ -158,33 +160,18 @@ export function buildFcirpFeatureVectorFromBehaviouralFeatures(
 
 function resolveFcirpPython(): string | null {
   const candidates = [
-    path.resolve(process.cwd(), '.venv-fcirp', 'bin', 'python'),
-    path.resolve(process.cwd(), '..', '..', 'Downloads', 'fcirp', '.venv', 'Scripts', 'python.exe'),
-    path.resolve(process.cwd(), '..', '..', 'Downloads', 'fcirp', '.venv', 'bin', 'python'),
     process.env.FCIRP_PYTHON || '',
+    process.env.PYTHON || '',
     'python3',
+    'python',
   ].filter(Boolean);
 
   for (const candidate of candidates) {
     if (!candidate) continue;
-    if (candidate === 'python3') {
-      const result = spawnSync(candidate, ['-c', 'import joblib, lightgbm, pandas; print("ok")'], {
-        encoding: 'utf-8',
-      });
-      if (result.status === 0) return candidate;
-      continue;
-    }
-
-    if (existsSync(candidate)) {
-      if (candidate.endsWith('.exe') || candidate.endsWith('.cmd')) {
-        return candidate;
-      }
-
-      const result = spawnSync(candidate, ['-c', 'import joblib, lightgbm, pandas; print("ok")'], {
-        encoding: 'utf-8',
-      });
-      if (result.status === 0) return candidate;
-    }
+    const result = spawnSync(candidate, ['-c', 'import joblib, lightgbm, pandas; print("ok")'], {
+      encoding: 'utf-8',
+    });
+    if (result.status === 0) return candidate;
   }
 
   return null;
@@ -246,10 +233,14 @@ score = float(art['model'].predict_proba(X)[:, 1][0])
 print(json.dumps({"priorityScore": round(score, 4), "riskBand": ("CRITICAL" if score >= 0.8 else "HIGH" if score >= 0.6 else "MEDIUM" if score >= 0.35 else "LOW")}, separators=(',', ':')))
 `;
 
-  const result = spawnSync(pythonPath, ['-c', script, JSON.stringify({ modelPath, features: normalized })], {
-    encoding: 'utf-8',
-    maxBuffer: 10 * 1024 * 1024,
-  });
+  const result = spawnSync(
+    /*turbopackIgnore: true*/ pythonPath,
+    ['-c', script, JSON.stringify({ modelPath, features: normalized })],
+    {
+      encoding: 'utf-8',
+      maxBuffer: 10 * 1024 * 1024,
+    },
+  );
 
   if (result.status !== 0) {
     const message = result.stderr?.trim() || result.stdout?.trim() || 'FCIRP inference failed';

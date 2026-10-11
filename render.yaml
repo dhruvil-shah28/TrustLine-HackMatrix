@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: trustline-fin04
+    runtime: docker
+    plan: starter
+    region: oregon
+    branch: ml-integration
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://trustline-fin04.onrender.com
+      - key: FCIRP_MODEL_PATH
+        value: /app/models/fcirp/case_priority.pkl
+      - key: FCIRP_PYTHON
+        value: /opt/fcirp-venv/bin/python
+      - key: ENABLE_DEMO_BOOTSTRAP
+        value: "false"
+      - key: DEMO_EMPLOYEE_PASSWORD
+        sync: false
+      - key: DEMO_INVESTIGATOR_PASSWORD
+        sync: false

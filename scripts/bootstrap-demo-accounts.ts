@@ -11,10 +11,22 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 export async function bootstrapDemoAccounts() {
+  const enabled = process.env.ENABLE_DEMO_BOOTSTRAP === 'true';
+  const employeePassword = process.env.DEMO_EMPLOYEE_PASSWORD;
+  const investigatorPassword = process.env.DEMO_INVESTIGATOR_PASSWORD;
+
+  if (!enabled) {
+    console.log('Demo bootstrap disabled; no seed changes were applied.');
+    return;
+  }
+
+  if (!employeePassword || !investigatorPassword) {
+    throw new Error('DEMO_EMPLOYEE_PASSWORD and DEMO_INVESTIGATOR_PASSWORD must be set when ENABLE_DEMO_BOOTSTRAP=true.');
+  }
+
   console.log('--- Bootstrapping TrustLine Demo Accounts ---');
 
-  // 1. Employee Demo Account: EMP-1001 (Vikram Malhotra)
-  const empPasswordHash = await hashPassword('TL-Employee#2026');
+  const empPasswordHash = await hashPassword(employeePassword);
   const emp = await prisma.employee.upsert({
     where: { employeeCode: 'EMP-1001' },
     update: {
@@ -33,12 +45,8 @@ export async function bootstrapDemoAccounts() {
       passwordHash: empPasswordHash,
     },
   });
-  console.log(`✅ Employee Demo Account Bootstrapped: ${emp.employeeCode} (${emp.email})`);
 
-  // 2. Investigator Demo Account: INVESTIGATOR-001 (Rahul Sharma)
-  const invPasswordHash = await hashPassword('TL-Investigator#2026');
-  
-  // Upsert into Investigator table
+  const invPasswordHash = await hashPassword(investigatorPassword);
   const inv = await prisma.investigator.upsert({
     where: { email: 'rahul.sharma@trustline.in' },
     update: {
@@ -54,7 +62,6 @@ export async function bootstrapDemoAccounts() {
     },
   });
 
-  // Also create/update associated Employee record with INVESTIGATOR role and password hash
   const invEmp = await prisma.employee.upsert({
     where: { employeeCode: 'EMP-INVESTIGATOR-01' },
     update: {
@@ -77,6 +84,7 @@ export async function bootstrapDemoAccounts() {
     },
   });
 
+  console.log(`✅ Employee Demo Account Bootstrapped: ${emp.employeeCode} (${emp.email})`);
   console.log(`✅ Investigator Demo Account Bootstrapped: ${inv.email} / ${invEmp.employeeCode}`);
 }
 
